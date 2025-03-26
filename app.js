@@ -21,11 +21,15 @@ app.controller('CakeController', function($scope, $http) {
 
   $scope.submitOrder = function() {
     if ($scope.order.name && $scope.order.phone && $scope.order.address && $scope.order.selectedCake) {
-      // For real backend
-      // $http.post('/api/order', $scope.order).then(...)
-
-      $scope.orderSuccess = "Thank you, " + $scope.order.name + "! Your order for " + $scope.order.selectedCake + " has been received.";
-      $scope.order = {};
+      $http.post('https://your-cake-shop.onrender.com/api/order', $scope.order)
+      .then(function(response) {
+        $scope.orderSuccess = response.data.message;
+        console.log('Order submitted:', $scope.order);
+        $scope.order = {}; // Reset form
+      }, function(error) {
+        console.error('Order submission failed:', error);
+        alert('Failed to place order. Please try again later.');
+      });
     } else {
       alert('Please fill all fields.');
     }
@@ -33,13 +37,17 @@ app.controller('CakeController', function($scope, $http) {
 
   $scope.sendMessage = function() {
     if ($scope.contact.name && $scope.contact.email && $scope.contact.message) {
-      // $http.post('/api/contact', $scope.contact).then(...)
-      $scope.messageSuccess = "Thank you for reaching out, " + $scope.contact.name + "! We will get back to you soon.";
-      $scope.contact = {};
+      $http.post('https://your-cake-shop.onrender.com/api/contact', $scope.contact)
+      .then(function(response) {
+        $scope.messageSuccess = response.data.message;
+        console.log('Contact message submitted:', $scope.contact);
+        $scope.contact = {}; // Reset form
+      }, function(error) {
+        console.error('Contact submission failed:', error);
+        alert('Failed to send message. Please try again later.');
+      });
     } else {
       alert('Please fill all fields.');
     }
   };
 });
-
-
