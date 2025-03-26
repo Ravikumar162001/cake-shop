@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="cakeApp">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sweet Bites - Homemade Cakes</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+  <script src="app.js"></script>
+</head>
+
+<body ng-controller="CakeController">
+
+  <header>
+    <h1>Sweet Bites</h1>
+    <p>Fresh Homemade Cakes for Every Occasion</p>
+  </header>
+
+  <!-- Image Carousel -->
+  <section class="carousel">
+    <img src="https://via.placeholder.com/800x300?text=Fresh+Homemade+Cakes" alt="Cake Banner">
+  </section>
+
+  <!-- Cake Listing -->
+  <section class="cakes">
+    <div class="cake-card" ng-repeat="cake in cakes">
+      <img ng-src="{{cake.image}}" alt="{{cake.name}}">
+      <h2>{{cake.name}}</h2>
+      <p>{{cake.description}}</p>
+      <p class="price">₹{{cake.price}}</p>
+      <button ng-click="orderCake(cake)">Order Now</button>
+    </div>
+  </section>
+
+  <!-- Order Form -->
+  <section class="order-form">
+    <h2>Place Your Order</h2>
+    <form ng-submit="submitOrder()">
+      <label>Name:</label>
+      <input type="text" ng-model="order.name" required>
+
+      <label>Phone Number:</label>
+      <input type="text" ng-model="order.phone" required>
+
+      <label>Address:</label>
+      <textarea ng-model="order.address" required></textarea>
+
+      <label>Select Cake:</label>
+      <select ng-model="order.selectedCake" required>
+        <option ng-repeat="cake in cakes" value="{{cake.name}}">{{cake.name}} - ₹{{cake.price}}</option>
+      </select>
+
+      <button type="submit">Submit Order</button>
+    </form>
+    <p ng-if="orderSuccess">{{orderSuccess}}</p>
+  </section>
+
+  <!-- Customer Reviews -->
+  <section class="reviews">
+    <h2>Customer Reviews</h2>
+    <div class="review-card" ng-repeat="review in reviews">
+      <p>"{{review.message}}"</p>
+      <p>- {{review.name}}</p>
+    </div>
+  </section>
+
+  <!-- Contact Us Form -->
+  <section class="contact-form">
+    <h2>Contact Us</h2>
+    <form ng-submit="sendMessage()">
+      <label>Your Name:</label>
+      <input type="text" ng-model="contact.name" required>
+
+      <label>Email:</label>
+      <input type="email" ng-model="contact.email" required>
+
+      <label>Message:</label>
+      <textarea ng-model="contact.message" required></textarea>
+
+      <button type="submit">Send Message</button>
+    </form>
+    <p ng-if="messageSuccess">{{messageSuccess}}</p>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Sweet Bites | Call us: +91 98765-43210</p>
+  </footer>
+
+</body>
+</html>
+
