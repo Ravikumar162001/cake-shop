@@ -21,7 +21,7 @@ app.controller('CakeController', function($scope, $http) {
 
   $scope.submitOrder = function() {
     if ($scope.order.name && $scope.order.phone && $scope.order.address && $scope.order.selectedCake) {
-      $http.post('https://your-cake-shop.onrender.com/api/order', $scope.order)
+      $http.post('https://cake-shop-kd2j.onrender.com/api/order', $scope.order)
       .then(function(response) {
         $scope.orderSuccess = response.data.message;
         console.log('Order submitted:', $scope.order);
@@ -37,7 +37,7 @@ app.controller('CakeController', function($scope, $http) {
 
   $scope.sendMessage = function() {
     if ($scope.contact.name && $scope.contact.email && $scope.contact.message) {
-      $http.post('https://your-cake-shop.onrender.com/api/contact', $scope.contact)
+      $http.post('https://cake-shop-kd2j.onrender.com/api/contact', $scope.contact)
       .then(function(response) {
         $scope.messageSuccess = response.data.message;
         console.log('Contact message submitted:', $scope.contact);
@@ -51,3 +51,4 @@ app.controller('CakeController', function($scope, $http) {
     }
   };
 });
+
