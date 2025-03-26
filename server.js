@@ -2,34 +2,52 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const { MongoClient } = require('mongodb');
 
-// Enable CORS & JSON parsing
 app.use(cors());
 app.use(bodyParser.json());
-
-// Serve static files like index.html, style.css, app.js
 app.use(express.static(__dirname));
 
-// API: Order endpoint
-app.post('/api/order', (req, res) => {
-  console.log('Order Received:', req.body);
-  res.send({ message: 'Order received successfully!' });
-});
+// Paste your MongoDB Atlas connection string here 👇
+const uri = "mongodb+srv://atlas-sample-dataset-load-67e3cd0fd329fa5b697c15f4:<db_password>@billa.yrg53j9.mongodb.net/?retryWrites=true&w=majority&appName=Billa";  
+const client = new MongoClient(uri);
 
-// API: Contact endpoint
-app.post('/api/contact', (req, res) => {
-  console.log('Contact Message:', req.body);
-  res.send({ message: 'Message received successfully!' });
-});
+async function run() {
+  try {
+    await client.connect();
+    console.log('✅ Connected to MongoDB Atlas');
+    const db = client.db('cakeShop');
+    const ordersCollection = db.collection('orders');
+    const contactsCollection = db.collection('contacts');
 
-// Serve index.html when visiting root "/"
-app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/index.html');
-});
+    // Save order to DB
+    app.post('/api/order', async (req, res) => {
+      console.log('Order Received:', req.body);
+      await ordersCollection.insertOne(req.body);
+      res.send({ message: 'Order received successfully and saved to database!' });
+    });
 
-// Start server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`✅ Server running on http://localhost:${PORT}`);
-});
+    // Save contact message to DB
+    app.post('/api/contact', async (req, res) => {
+      console.log('Contact Message:', req.body);
+      await contactsCollection.insertOne(req.body);
+      res.send({ message: 'Contact message saved to database!' });
+    });
+
+    // Serve the frontend
+    app.get('/', (req, res) => {
+      res.sendFile(__dirname + '/index.html');
+    });
+
+    // Start the server
+    const PORT = process.env.PORT || 3000;
+    app.listen(PORT, () => {
+      console.log(`✅ Server running on http://localhost:${PORT}`);
+    });
+  } catch (err) {
+    console.error('❌ MongoDB Connection Failed:', err);
+  }
+}
+
+run();
 
