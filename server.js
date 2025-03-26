@@ -9,7 +9,7 @@ app.use(bodyParser.json());
 app.use(express.static(__dirname));
 
 // Paste your MongoDB Atlas connection string here 👇
-const uri = "mongodb+srv://Ravikumar:<db_password>@billa.yrg53j9.mongodb.net/?retryWrites=true&w=majority&appName=Billa";  
+const uri = "mongodb+srv://Ravikumar:Ravi%40123@billa.yrg53j9.mongodb.net/cakeShop?retryWrites=true&w=majority&appName=Billa";  
 const client = new MongoClient(uri);
 
 async function run() {
