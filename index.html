@@ -9,6 +9,47 @@
   <script src="app.js"></script>
 
   <style>
+    /* ✅ Mobile responsiveness */
+  @media (max-width: 768px) {
+    .auth-buttons-header {
+      position: static;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    .auth-buttons-header button {
+      width: 80%;
+      margin: 5px 0;
+      font-size: 16px;
+    }
+
+    .cake-card {
+      width: 90%;
+      margin: 10px auto;
+      text-align: center;
+    }
+
+    .cake-card img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .carousel img {
+      width: 100%;
+      height: auto;
+    }
+
+    table {
+      font-size: 14px;
+    }
+
+    .auth-box, .admin-box {
+      width: 95%;
+      padding: 20px;
+    }
+  }
     body {
       font-family: Arial, sans-serif;
     }
