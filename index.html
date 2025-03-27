@@ -216,7 +216,6 @@
           <td>{{order.name}}</td>
           <td>{{order.phone}}</td>
           <td>{{order.address}}</td>
-          <td>{{order.selectedCake}}</td>
           <td>{{order.userEmail}}</td>
           <td>{{order.timestamp | date:'medium'}}</td>
           <td>{{order.status}}</td>
@@ -291,15 +290,33 @@
     </div>
   </div>
 
-    <!-- Checkout Modal -->
+  <!-- ✅ Final Checkout Modal -->
   <div class="auth-modal" ng-show="checkoutVisible">
     <div class="auth-box">
       <div class="auth-close" ng-click="checkoutVisible = false">&times;</div>
-      <h3>Checkout - {{selectedCake.name}}</h3>
-      <img ng-src="{{selectedCake.image}}" style="max-width: 100%; margin-bottom: 15px;" />
-      <p><strong>Price:</strong> ₹{{selectedCake.price}}</p>
+      <h3>Checkout</h3>
 
-      <form ng-submit="submitOrder()">
+      <!-- Show Cart Summary -->
+      <table ng-if="cart.length">
+        <tr>
+          <th>Name</th>
+          <th>Qty</th>
+          <th>Price</th>
+          <th>Total</th>
+        </tr>
+        <tr ng-repeat="item in cart">
+          <td>{{item.name}}</td>
+          <td>{{item.qty}}</td>
+          <td>₹{{item.price}}</td>
+          <td>₹{{item.price * item.qty}}</td>
+        </tr>
+      </table>
+
+      <p ng-if="!cart.length">Your cart is empty.</p>
+      <h4 ng-if="cart.length">Total: ₹{{getCartTotal()}}</h4>
+
+      <!-- Order Form -->
+      <form ng-if="cart.length" ng-submit="submitOrder()">
         <label>Name:</label>
         <input type="text" ng-model="order.name" required>
 
@@ -311,40 +328,8 @@
 
         <button type="submit">Place Order</button>
       </form>
+
       <p style="color: green;" ng-if="orderSuccess">{{orderSuccess}}</p>
-    </div>
-  </div>
-
-  <!-- 🛒 Cart Modal -->
-  <div class="auth-modal" ng-show="cartVisible">
-    <div class="auth-box">
-      <div class="auth-close" ng-click="cartVisible = false">&times;</div>
-      <h3>Your Cart</h3>
-
-      <table ng-if="cart.length">
-        <tr>
-          <th>Name</th>
-          <th>Qty</th>
-          <th>Price</th>
-          <th>Total</th>
-          <th>Action</th>
-        </tr>
-        <tr ng-repeat="item in cart">
-          <td>{{item.name}}</td>
-          <td>{{item.qty}}</td>
-          <td>₹{{item.price}}</td>
-          <td>₹{{item.qty * item.price}}</td>
-          <td>
-            <button ng-click="increaseQty(item)">+</button>
-            <button ng-click="decreaseQty(item)">-</button>
-          </td>
-        </tr>
-      </table>
-
-      <p ng-if="!cart.length">Your cart is empty.</p>
-      <h4>Total: ₹{{cartTotal()}}</h4>
-
-      <button ng-if="cart.length" ng-click="checkoutVisible = true; cartVisible = false;">Checkout</button>
     </div>
   </div>
 

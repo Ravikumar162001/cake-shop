@@ -19,6 +19,7 @@ app.directive('fileModel', ['$parse', function ($parse) {
 app.controller('CakeController', function ($scope, $http) {
   $scope.cakes = [];
   $scope.cart = [];
+  $scope.cartMap = {};
   $scope.reviews = [
     { name: 'Priya', message: 'Best homemade cakes in town! Highly recommended.' },
     { name: 'Rahul', message: 'Delicious and fresh, will order again!' }
@@ -39,6 +40,14 @@ app.controller('CakeController', function ($scope, $http) {
   $scope.allMessages = [];
   $scope.imagePreview = null;
   $scope.editingCakeId = null;
+
+  // 📌 Utility to update cart map for quick quantity lookup
+  $scope.updateCartMap = function () {
+    $scope.cartMap = {};
+    $scope.cart.forEach(item => {
+      $scope.cartMap[item._id] = item.qty;
+    });
+  };
 
   $scope.previewImage = function (input) {
     if (input.files && input.files[0]) {
@@ -128,19 +137,26 @@ app.controller('CakeController', function ($scope, $http) {
     } else {
       $scope.cart.push({ ...cake, qty: 1 });
     }
+    $scope.updateCartMap();
   };
 
   $scope.removeFromCart = function (cake) {
     $scope.cart = $scope.cart.filter(c => c._id !== cake._id);
+    $scope.updateCartMap();
   };
 
   $scope.increaseQty = function (cake) {
     cake.qty += 1;
+    $scope.updateCartMap();
   };
 
   $scope.decreaseQty = function (cake) {
-    if (cake.qty > 1) cake.qty -= 1;
-    else $scope.removeFromCart(cake);
+    if (cake.qty > 1) {
+      cake.qty -= 1;
+    } else {
+      $scope.removeFromCart(cake);
+    }
+    $scope.updateCartMap();
   };
 
   $scope.getCartTotal = function () {
@@ -168,9 +184,11 @@ app.controller('CakeController', function ($scope, $http) {
     $http.post('/api/order', orderData)
       .then(res => {
         $scope.cart = [];
+        $scope.updateCartMap();
         $scope.checkoutVisible = false;
         $scope.order = {};
-        alert("Order placed successfully!");
+        $scope.orderSuccess = "Order placed successfully!";
+        setTimeout(() => $scope.$apply(() => $scope.orderSuccess = ''), 3000);
       }, () => {
         alert("Failed to place order.");
       });
@@ -193,25 +211,20 @@ app.controller('CakeController', function ($scope, $http) {
       formData.append('image', $scope.newCake.image);
     }
 
-    if ($scope.editingCakeId) {
-      $http.put(`/api/upload/cake/${$scope.editingCakeId}`, formData, {
-        transformRequest: angular.identity,
-        headers: { 'Content-Type': undefined }
-      }).then(() => {
-        $scope.uploadMessage = "Cake updated!";
-        $scope.resetCakeForm();
-        $scope.fetchCakes();
-      }, () => alert("Update failed"));
-    } else {
-      $http.post('/api/upload/cake', formData, {
-        transformRequest: angular.identity,
-        headers: { 'Content-Type': undefined }
-      }).then(() => {
-        $scope.uploadMessage = "Cake added!";
-        $scope.resetCakeForm();
-        $scope.fetchCakes();
-      }, () => alert("Upload failed"));
-    }
+    const url = $scope.editingCakeId
+      ? `/api/upload/cake/${$scope.editingCakeId}`
+      : '/api/upload/cake';
+
+    const method = $scope.editingCakeId ? $http.put : $http.post;
+
+    method(url, formData, {
+      transformRequest: angular.identity,
+      headers: { 'Content-Type': undefined }
+    }).then(() => {
+      $scope.uploadMessage = $scope.editingCakeId ? "Cake updated!" : "Cake added!";
+      $scope.resetCakeForm();
+      $scope.fetchCakes();
+    }, () => alert("Upload failed"));
   };
 
   $scope.editCake = function (cake) {
@@ -247,5 +260,6 @@ app.controller('CakeController', function ($scope, $http) {
       });
   };
 
+  // Init
   $scope.fetchCakes();
 });
