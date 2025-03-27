@@ -81,6 +81,18 @@
     </form>
     <p ng-if="messageSuccess">{{messageSuccess}}</p>
   </section>
+  <!-- Login Form -->
+  <section class="login-form">
+    <h2>User Login</h2>
+    <form ng-submit="loginUser()">
+      <label>Email:</label>
+      <input type="email" ng-model="login.email" required>
+      <label>Password:</label>
+      <input type="password" ng-model="login.password" required>
+      <button type="submit">Login</button>
+    </form>
+   <p ng-if="loginMessage">{{loginMessage}}</p>
+  </section>
 
   <footer>
     <p>&copy; 2025 Sweet Bites | Call us: +91 98765-43210</p>

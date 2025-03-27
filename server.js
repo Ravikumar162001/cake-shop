@@ -8,8 +8,7 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static(__dirname));
 
-// Paste your MongoDB Atlas connection string here 👇
-const uri = "mongodb+srv://Ravikumar:BILLAdavid%4016@billa.yrg53j9.mongodb.net/cakeShop?retryWrites=true&w=majority&appName=Billa";  
+const uri = "mongodb+srv://Ravikumar:BILLAdavid%4016@billa.yrg53j9.mongodb.net/cakeShop?retryWrites=true&w=majority&appName=Billa"; 
 const client = new MongoClient(uri);
 
 async function run() {
@@ -20,26 +19,26 @@ async function run() {
     const ordersCollection = db.collection('orders');
     const contactsCollection = db.collection('contacts');
 
-    // Save order to DB
+    // Auth Routes
+    const authRoutes = require('./auth')(db);
+    app.use('/api/auth', authRoutes);
+
     app.post('/api/order', async (req, res) => {
       console.log('Order Received:', req.body);
       await ordersCollection.insertOne(req.body);
       res.send({ message: 'Order received successfully and saved to database!' });
     });
 
-    // Save contact message to DB
     app.post('/api/contact', async (req, res) => {
       console.log('Contact Message:', req.body);
       await contactsCollection.insertOne(req.body);
       res.send({ message: 'Contact message saved to database!' });
     });
 
-    // Serve the frontend
     app.get('/', (req, res) => {
       res.sendFile(__dirname + '/index.html');
     });
 
-    // Start the server
     const PORT = process.env.PORT || 3000;
     app.listen(PORT, () => {
       console.log(`✅ Server running on http://localhost:${PORT}`);

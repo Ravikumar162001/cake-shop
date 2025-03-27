@@ -14,6 +14,7 @@ app.controller('CakeController', function($scope, $http) {
 
   $scope.order = {};
   $scope.contact = {};
+  $scope.login = {};
 
   $scope.orderCake = function(cake) {
     alert('You have ordered: ' + cake.name);
@@ -25,7 +26,7 @@ app.controller('CakeController', function($scope, $http) {
       .then(function(response) {
         $scope.orderSuccess = response.data.message;
         console.log('Order submitted:', $scope.order);
-        $scope.order = {}; // Reset form
+        $scope.order = {};
       }, function(error) {
         console.error('Order submission failed:', error);
         alert('Failed to place order. Please try again later.');
@@ -41,7 +42,7 @@ app.controller('CakeController', function($scope, $http) {
       .then(function(response) {
         $scope.messageSuccess = response.data.message;
         console.log('Contact message submitted:', $scope.contact);
-        $scope.contact = {}; // Reset form
+        $scope.contact = {};
       }, function(error) {
         console.error('Contact submission failed:', error);
         alert('Failed to send message. Please try again later.');
@@ -49,6 +50,17 @@ app.controller('CakeController', function($scope, $http) {
     } else {
       alert('Please fill all fields.');
     }
+  };
+
+  $scope.loginUser = function () {
+    $http.post('https://cake-shop-kd2j.onrender.com/api/auth/login', $scope.login)
+      .then(function (response) {
+        $scope.loginMessage = "Login successful!";
+        localStorage.setItem('token', response.data.token);
+        console.log('User logged in:', response.data.email);
+      }, function (error) {
+        $scope.loginMessage = error.data.msg || "Login failed.";
+      });
   };
 });
 
