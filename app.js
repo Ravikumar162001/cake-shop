@@ -22,6 +22,24 @@ app.controller('CakeController', function ($scope, $http) {
   $scope.authModalVisible = false;
   $scope.currentUser = localStorage.getItem('userEmail') || null;
 
+  // Admin dashboard state
+  $scope.adminVisible = false;
+  $scope.allOrders = [];
+  $scope.allMessages = [];
+
+  // Admin toggle and fetch
+  $scope.toggleAdminDashboard = function () {
+    $scope.adminVisible = !$scope.adminVisible;
+
+    if ($scope.adminVisible) {
+      $http.get('https://cake-shop-kd2j.onrender.com/api/admin/orders')
+        .then(res => $scope.allOrders = res.data);
+
+      $http.get('https://cake-shop-kd2j.onrender.com/api/admin/messages')
+        .then(res => $scope.allMessages = res.data);
+    }
+  };
+
   // Toggle modal and forms
   $scope.openAuthModal = function (mode) {
     $scope.authMode = mode;
@@ -40,6 +58,7 @@ app.controller('CakeController', function ($scope, $http) {
     localStorage.removeItem('token');
     localStorage.removeItem('userEmail');
     $scope.currentUser = null;
+    $scope.adminVisible = false;
     alert("You have been logged out.");
   };
 
@@ -114,4 +133,3 @@ app.controller('CakeController', function ($scope, $http) {
       });
   };
 });
-

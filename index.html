@@ -85,6 +85,32 @@
       font-size: 20px;
       cursor: pointer;
     }
+
+    .admin-dashboard {
+      background: #fff8f0;
+      margin: 30px auto;
+      padding: 20px;
+      max-width: 900px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .admin-dashboard table {
+      width: 100%;
+      margin-bottom: 30px;
+      border-collapse: collapse;
+    }
+
+    .admin-dashboard th, .admin-dashboard td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: left;
+    }
+
+    .admin-toggle {
+      text-align: center;
+      margin: 20px 0;
+    }
   </style>
 </head>
 
@@ -103,106 +129,144 @@
   </div>
 </header>
 
+<!-- Image Carousel -->
+<section class="carousel">
+  <img src="https://via.placeholder.com/800x300?text=Fresh+Homemade+Cakes" alt="Cake Banner">
+</section>
 
-  <!-- Image Carousel -->
-  <section class="carousel">
-    <img src="https://via.placeholder.com/800x300?text=Fresh+Homemade+Cakes" alt="Cake Banner">
-  </section>
-
-  <!-- Cake Listing -->
-  <section class="cakes">
-    <div class="cake-card" ng-repeat="cake in cakes">
-      <img ng-src="{{cake.image}}" alt="{{cake.name}}">
-      <h2>{{cake.name}}</h2>
-      <p>{{cake.description}}</p>
-      <p class="price">₹{{cake.price}}</p>
-      <button ng-click="orderCake(cake)">Order Now</button>
-    </div>
-  </section>
-
-  <!-- Order Form -->
-  <section class="order-form">
-    <h2>Place Your Order</h2>
-    <form ng-submit="submitOrder()">
-      <label>Name:</label>
-      <input type="text" ng-model="order.name" required>
-
-      <label>Phone Number:</label>
-      <input type="text" ng-model="order.phone" required>
-
-      <label>Address:</label>
-      <textarea ng-model="order.address" required></textarea>
-
-      <label>Select Cake:</label>
-      <select ng-model="order.selectedCake" required>
-        <option ng-repeat="cake in cakes" value="{{cake.name}}">{{cake.name}} - ₹{{cake.price}}</option>
-      </select>
-
-      <button type="submit">Submit Order</button>
-    </form>
-    <p ng-if="orderSuccess">{{orderSuccess}}</p>
-  </section>
-
-  <!-- Customer Reviews -->
-  <section class="reviews">
-    <h2>Customer Reviews</h2>
-    <div class="review-card" ng-repeat="review in reviews">
-      <p>"{{review.message}}"</p>
-      <p>- {{review.name}}</p>
-    </div>
-  </section>
-
-  <!-- Contact Us Form -->
-  <section class="contact-form">
-    <h2>Contact Us</h2>
-    <form ng-submit="sendMessage()">
-      <label>Your Name:</label>
-      <input type="text" ng-model="contact.name" required>
-
-      <label>Email:</label>
-      <input type="email" ng-model="contact.email" required>
-
-      <label>Message:</label>
-      <textarea ng-model="contact.message" required></textarea>
-
-      <button type="submit">Send Message</button>
-    </form>
-    <p ng-if="messageSuccess">{{messageSuccess}}</p>
-  </section>
-
-  <!-- Auth Modal -->
-  <div class="auth-modal" ng-show="authModalVisible">
-    <div class="auth-box">
-      <div class="auth-close" ng-click="authModalVisible = false">&times;</div>
-
-      <div class="auth-tabs">
-        <button ng-click="showAuthForm('login')" ng-class="{active: authMode==='login'}">Login</button>
-        <button ng-click="showAuthForm('signup')" ng-class="{active: authMode==='signup'}">Sign Up</button>
-      </div>
-
-      <!-- Login Form -->
-      <form ng-submit="loginUser()" ng-show="authMode === 'login'">
-        <input type="email" ng-model="login.email" placeholder="Email" required>
-        <input type="password" ng-model="login.password" placeholder="Password" required>
-        <button type="submit">Login</button>
-        <p ng-if="loginMessage">{{loginMessage}}</p>
-      </form>
-
-      <!-- Signup Form -->
-      <form ng-submit="signupUser()" ng-show="authMode === 'signup'">
-        <input type="text" ng-model="signup.name" placeholder="Name" required>
-        <input type="email" ng-model="signup.email" placeholder="Email" required>
-        <input type="password" ng-model="signup.password" placeholder="Password" required>
-        <button type="submit">Sign Up</button>
-        <p ng-if="signupMessage">{{signupMessage}}</p>
-      </form>
-    </div>
+<!-- Cake Listing -->
+<section class="cakes">
+  <div class="cake-card" ng-repeat="cake in cakes">
+    <img ng-src="{{cake.image}}" alt="{{cake.name}}">
+    <h2>{{cake.name}}</h2>
+    <p>{{cake.description}}</p>
+    <p class="price">₹{{cake.price}}</p>
+    <button ng-click="orderCake(cake)">Order Now</button>
   </div>
+</section>
 
-  <footer>
-    <p>&copy; 2025 Sweet Bites | Call us: +91 98765-43210</p>
-  </footer>
+<!-- Order Form -->
+<section class="order-form">
+  <h2>Place Your Order</h2>
+  <form ng-submit="submitOrder()">
+    <label>Name:</label>
+    <input type="text" ng-model="order.name" required>
+
+    <label>Phone Number:</label>
+    <input type="text" ng-model="order.phone" required>
+
+    <label>Address:</label>
+    <textarea ng-model="order.address" required></textarea>
+
+    <label>Select Cake:</label>
+    <select ng-model="order.selectedCake" required>
+      <option ng-repeat="cake in cakes" value="{{cake.name}}">{{cake.name}} - ₹{{cake.price}}</option>
+    </select>
+
+    <button type="submit">Submit Order</button>
+  </form>
+  <p ng-if="orderSuccess">{{orderSuccess}}</p>
+</section>
+
+<!-- Customer Reviews -->
+<section class="reviews">
+  <h2>Customer Reviews</h2>
+  <div class="review-card" ng-repeat="review in reviews">
+    <p>"{{review.message}}"</p>
+    <p>- {{review.name}}</p>
+  </div>
+</section>
+
+<!-- Contact Us Form -->
+<section class="contact-form">
+  <h2>Contact Us</h2>
+  <form ng-submit="sendMessage()">
+    <label>Your Name:</label>
+    <input type="text" ng-model="contact.name" required>
+
+    <label>Email:</label>
+    <input type="email" ng-model="contact.email" required>
+
+    <label>Message:</label>
+    <textarea ng-model="contact.message" required></textarea>
+
+    <button type="submit">Send Message</button>
+  </form>
+  <p ng-if="messageSuccess">{{messageSuccess}}</p>
+</section>
+
+<!-- Admin Toggle Button -->
+<div class="admin-toggle" ng-if="currentUser === 'ravikumar162001@gmail.com'">
+  <button ng-click="toggleAdminDashboard()">Toggle Admin Dashboard</button>
+</div>
+
+<!-- Admin Dashboard Section -->
+<section class="admin-dashboard" ng-show="adminVisible && currentUser === 'ravikumar162001@gmail.com'">
+  <h2>Admin Dashboard</h2>
+
+  <h3>Orders</h3>
+  <table>
+    <tr>
+      <th>Name</th>
+      <th>Phone</th>
+      <th>Address</th>
+      <th>Cake</th>
+    </tr>
+    <tr ng-repeat="order in allOrders">
+      <td>{{order.name}}</td>
+      <td>{{order.phone}}</td>
+      <td>{{order.address}}</td>
+      <td>{{order.selectedCake}}</td>
+    </tr>
+  </table>
+
+  <h3>Contact Messages</h3>
+  <table>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Message</th>
+    </tr>
+    <tr ng-repeat="msg in allMessages">
+      <td>{{msg.name}}</td>
+      <td>{{msg.email}}</td>
+      <td>{{msg.message}}</td>
+    </tr>
+  </table>
+</section>
+
+<!-- Auth Modal -->
+<div class="auth-modal" ng-show="authModalVisible">
+  <div class="auth-box">
+    <div class="auth-close" ng-click="authModalVisible = false">&times;</div>
+
+    <div class="auth-tabs">
+      <button ng-click="showAuthForm('login')" ng-class="{active: authMode==='login'}">Login</button>
+      <button ng-click="showAuthForm('signup')" ng-class="{active: authMode==='signup'}">Sign Up</button>
+    </div>
+
+    <!-- Login Form -->
+    <form ng-submit="loginUser()" ng-show="authMode === 'login'">
+      <input type="email" ng-model="login.email" placeholder="Email" required>
+      <input type="password" ng-model="login.password" placeholder="Password" required>
+      <button type="submit">Login</button>
+      <p ng-if="loginMessage">{{loginMessage}}</p>
+    </form>
+
+    <!-- Signup Form -->
+    <form ng-submit="signupUser()" ng-show="authMode === 'signup'">
+      <input type="text" ng-model="signup.name" placeholder="Name" required>
+      <input type="email" ng-model="signup.email" placeholder="Email" required>
+      <input type="password" ng-model="signup.password" placeholder="Password" required>
+      <button type="submit">Sign Up</button>
+      <p ng-if="signupMessage">{{signupMessage}}</p>
+    </form>
+  </div>
+</div>
+
+<footer>
+  <p>&copy; 2025 Sweet Bites | Call us: +91 98765-43210</p>
+</footer>
 
 </body>
 </html>
-
