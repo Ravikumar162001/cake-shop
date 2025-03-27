@@ -200,7 +200,7 @@
           <th>Name</th>
           <th>Phone</th>
           <th>Address</th>
-          <th>Cake</th>
+          <th>Cakes</th>
           <th>Email</th>
           <th>Time</th>
           <th>Status</th>
@@ -210,6 +210,13 @@
           <td>{{order.name}}</td>
           <td>{{order.phone}}</td>
           <td>{{order.address}}</td>
+          <td>
+            <ul style="margin: 0; padding-left: 15px;">
+              <li ng-repeat="item in order.items">
+                {{item.name}} (x{{item.qty}})
+              </li>
+            </ul>
+          </td>
           <td>{{order.userEmail}}</td>
           <td>{{order.timestamp | date:'medium'}}</td>
           <td>{{order.status}}</td>
