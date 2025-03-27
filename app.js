@@ -177,7 +177,7 @@ app.controller('CakeController', function ($scope, $http) {
       phone: $scope.order.phone,
       address: $scope.order.address,
       userEmail: $scope.currentUser,
-      items: angular.copy($scope.cart), // Ensure clean copy
+      items: angular.copy($scope.cart),
       totalAmount: $scope.getCartTotal(),
       status: 'Pending',
       timestamp: new Date().toISOString()
@@ -190,13 +190,13 @@ app.controller('CakeController', function ($scope, $http) {
         // 🧹 Reset UI
         $scope.order = {};
         $scope.cart = [];
+        $scope.updateCartMap();  // ✅ Add this line
         $scope.cartVisible = false;
         $scope.checkoutVisible = false;
       }, err => {
         alert("Failed to place order.");
       });
   };
-  
 
   $scope.sendMessage = function () {
     $http.post('/api/contact', $scope.contact)
