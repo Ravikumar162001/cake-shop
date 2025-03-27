@@ -7,6 +7,34 @@
   <link rel="stylesheet" href="style.css">
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
   <script src="app.js"></script>
+  <style>
+    .auth-buttons {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .auth-buttons button {
+      margin: 0 10px;
+      padding: 10px 20px;
+      background-color: #d2691e;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    .auth-buttons button.active {
+      background-color: #a0522d;
+    }
+
+    .login-form, .signup-form {
+      background: #fff;
+      padding: 20px;
+      margin: 20px auto;
+      border-radius: 8px;
+      max-width: 600px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+  </style>
 </head>
 
 <body ng-controller="CakeController">
@@ -81,8 +109,15 @@
     </form>
     <p ng-if="messageSuccess">{{messageSuccess}}</p>
   </section>
+
+  <!-- Auth Toggle Buttons -->
+  <div class="auth-buttons">
+    <button ng-click="showAuthForm('login')" ng-class="{active: authMode === 'login'}">Login</button>
+    <button ng-click="showAuthForm('signup')" ng-class="{active: authMode === 'signup'}">Sign Up</button>
+  </div>
+
   <!-- Login Form -->
-  <section class="login-form">
+  <section class="login-form" ng-show="authMode === 'login'">
     <h2>User Login</h2>
     <form ng-submit="loginUser()">
       <label>Email:</label>
@@ -91,7 +126,22 @@
       <input type="password" ng-model="login.password" required>
       <button type="submit">Login</button>
     </form>
-   <p ng-if="loginMessage">{{loginMessage}}</p>
+    <p ng-if="loginMessage">{{loginMessage}}</p>
+  </section>
+
+  <!-- Signup Form -->
+  <section class="signup-form" ng-show="authMode === 'signup'">
+    <h2>Sign Up</h2>
+    <form ng-submit="signupUser()">
+      <label>Name:</label>
+      <input type="text" ng-model="signup.name" required>
+      <label>Email:</label>
+      <input type="email" ng-model="signup.email" required>
+      <label>Password:</label>
+      <input type="password" ng-model="signup.password" required>
+      <button type="submit">Sign Up</button>
+    </form>
+    <p ng-if="signupMessage">{{signupMessage}}</p>
   </section>
 
   <footer>

@@ -12,14 +12,25 @@ app.controller('CakeController', function($scope, $http) {
     { name: 'Rahul', message: 'Delicious and fresh, will order again!' }
   ];
 
+  // UI and data models
   $scope.order = {};
   $scope.contact = {};
   $scope.login = {};
+  $scope.signup = {};
+  $scope.authMode = 'login'; // default to login
+
+  // Toggle Login/Signup view
+  $scope.showAuthForm = function(mode) {
+    $scope.authMode = mode;
+    $scope.loginMessage = '';
+    $scope.signupMessage = '';
+  };
 
   $scope.orderCake = function(cake) {
     alert('You have ordered: ' + cake.name);
   };
 
+  // Submit Order
   $scope.submitOrder = function() {
     if ($scope.order.name && $scope.order.phone && $scope.order.address && $scope.order.selectedCake) {
       $http.post('https://cake-shop-kd2j.onrender.com/api/order', $scope.order)
@@ -36,6 +47,7 @@ app.controller('CakeController', function($scope, $http) {
     }
   };
 
+  // Contact Form
   $scope.sendMessage = function() {
     if ($scope.contact.name && $scope.contact.email && $scope.contact.message) {
       $http.post('https://cake-shop-kd2j.onrender.com/api/contact', $scope.contact)
@@ -52,14 +64,29 @@ app.controller('CakeController', function($scope, $http) {
     }
   };
 
+  // Login User
   $scope.loginUser = function () {
     $http.post('https://cake-shop-kd2j.onrender.com/api/auth/login', $scope.login)
       .then(function (response) {
         $scope.loginMessage = "Login successful!";
         localStorage.setItem('token', response.data.token);
         console.log('User logged in:', response.data.email);
+        $scope.login = {};
       }, function (error) {
         $scope.loginMessage = error.data.msg || "Login failed.";
+      });
+  };
+
+  // Signup User
+  $scope.signupUser = function () {
+    $http.post('https://cake-shop-kd2j.onrender.com/api/auth/signup', $scope.signup)
+      .then(function (response) {
+        $scope.signupMessage = "Signup successful!";
+        localStorage.setItem('token', response.data.token);
+        console.log('User signed up:', response.data.email);
+        $scope.signup = {};
+      }, function (error) {
+        $scope.signupMessage = error.data.msg || "Signup failed.";
       });
   };
 });
