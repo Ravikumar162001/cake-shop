@@ -124,19 +124,25 @@
   <header style="position: relative;">
     <h1>Sweet Bites</h1>
     <p>Fresh Homemade Cakes for Every Occasion</p>
-
+  
     <div class="auth-buttons-header">
       <span ng-if="currentUser">Welcome, {{currentUser}}!</span>
       <button ng-if="!currentUser" ng-click="openAuthModal('login')">Login</button>
       <button ng-if="!currentUser" ng-click="openAuthModal('signup')">Sign Up</button>
       <button ng-if="currentUser" ng-click="logout()">Logout</button>
-
+  
+      <!-- Cart Button -->
+      <button class="admin-button" ng-if="currentUser" ng-click="toggleCart()">
+        🛒 Cart ({{cart.length}})
+      </button>
+  
       <!-- Admin button -->
       <button class="admin-button" ng-if="currentUser === 'ravikumar162001@gmail.com'" ng-click="openAdminDashboard()">
         Admin Dashboard
       </button>
     </div>
   </header>
+  
 
   <!-- Carousel -->
   <section class="carousel">
@@ -150,7 +156,11 @@
       <h2>{{cake.name}}</h2>
       <p>{{cake.description}}</p>
       <p class="price">₹{{cake.price}}</p>
-      <button ng-click="openCheckout(cake)">Order Now</button>
+
+      <div>
+        <button ng-click="addToCart(cake)">Add to Cart</button>
+        <span ng-if="cartMap[cake._id]">Quantity: {{cartMap[cake._id]}}</span>
+      </div>
     </div>
   </section>
 
@@ -303,6 +313,38 @@
     </div>
   </div>
 
+  <!-- 🛒 Cart Modal -->
+  <div class="auth-modal" ng-show="cartVisible">
+    <div class="auth-box">
+      <div class="auth-close" ng-click="cartVisible = false">&times;</div>
+      <h3>Your Cart</h3>
+
+      <table ng-if="cart.length">
+        <tr>
+          <th>Name</th>
+          <th>Qty</th>
+          <th>Price</th>
+          <th>Total</th>
+          <th>Action</th>
+        </tr>
+        <tr ng-repeat="item in cart">
+          <td>{{item.name}}</td>
+          <td>{{item.qty}}</td>
+          <td>₹{{item.price}}</td>
+          <td>₹{{item.qty * item.price}}</td>
+          <td>
+            <button ng-click="increaseQty(item)">+</button>
+            <button ng-click="decreaseQty(item)">-</button>
+          </td>
+        </tr>
+      </table>
+
+      <p ng-if="!cart.length">Your cart is empty.</p>
+      <h4>Total: ₹{{cartTotal()}}</h4>
+
+      <button ng-if="cart.length" ng-click="checkoutVisible = true; cartVisible = false;">Checkout</button>
+    </div>
+  </div>
 
   <!-- Auth Modal -->
   <div class="auth-modal" ng-show="authModalVisible">
