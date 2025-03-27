@@ -33,6 +33,7 @@ app.controller('CakeController', function ($scope, $http) {
   $scope.authModalVisible = false;
   $scope.adminModalVisible = false;
   $scope.checkoutVisible = false;
+  $scope.cartVisible = false;
   $scope.currentUser = localStorage.getItem('userEmail') || null;
   $scope.allOrders = [];
   $scope.allMessages = [];
