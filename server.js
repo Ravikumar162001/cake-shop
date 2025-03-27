@@ -4,15 +4,22 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const { MongoClient } = require('mongodb');
 const path = require('path');
+const fs = require('fs');
 
+// ===== Middleware =====
 app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static(__dirname));
 
-// Serve static images from /uploads
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+// ✅ Serve static images from /uploads
+const uploadsPath = path.join(__dirname, 'uploads');
+if (!fs.existsSync(uploadsPath)) {
+  fs.mkdirSync(uploadsPath);
+  console.log('📁 /uploads folder created automatically');
+}
+app.use('/uploads', express.static(uploadsPath));
 
-// MongoDB Connection URI
+// ===== MongoDB Connection =====
 const uri = "mongodb+srv://Ravikumar:BILLAdavid%4016@billa.yrg53j9.mongodb.net/cakeShop?retryWrites=true&w=majority&appName=Billa";
 const client = new MongoClient(uri);
 
@@ -25,21 +32,29 @@ async function run() {
     const ordersCollection = db.collection('orders');
     const contactsCollection = db.collection('contacts');
 
-    // ===== Routes Setup =====
-
-    // Auth Routes (Login/Signup)
+    // ✅ Auth Routes
     const authRoutes = require('./auth')(db);
     app.use('/api/auth', authRoutes);
 
-    // Admin Routes (Orders, Messages, Actions)
+    // ✅ Admin Routes
     const adminRoutes = require('./routes/admin')(db);
     app.use('/api/admin', adminRoutes);
 
-    // Upload Route (Cake Image + Info)
+    // ✅ Upload Routes (cake image + data)
     const uploadRoutes = require('./routes/upload')(db);
     app.use('/api/upload', uploadRoutes);
 
-    // Customer Order Endpoint
+    // ✅ Get Cakes from DB
+    app.get('/api/cakes', async (req, res) => {
+      try {
+        const cakes = await db.collection('cakes').find().toArray();
+        res.json(cakes);
+      } catch (err) {
+        res.status(500).json({ msg: 'Failed to fetch cakes' });
+      }
+    });
+
+    // ✅ Save Order
     app.post('/api/order', async (req, res) => {
       try {
         console.log('📦 Order Received:', req.body);
@@ -51,7 +66,7 @@ async function run() {
       }
     });
 
-    // Contact Form Endpoint
+    // ✅ Save Contact Message
     app.post('/api/contact', async (req, res) => {
       try {
         console.log('📩 Contact Message:', req.body);
@@ -63,12 +78,12 @@ async function run() {
       }
     });
 
-    // Serve index.html by default
+    // ✅ Serve index.html as default route
     app.get('/', (req, res) => {
       res.sendFile(path.join(__dirname, 'index.html'));
     });
 
-    // Start the server
+    // ✅ Start Server
     const PORT = process.env.PORT || 3000;
     app.listen(PORT, () => {
       console.log(`✅ Server running on http://localhost:${PORT}`);

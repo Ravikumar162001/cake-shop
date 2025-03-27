@@ -4,11 +4,11 @@ var app = angular.module('cakeApp', []);
 app.directive('fileModel', ['$parse', function ($parse) {
   return {
     restrict: 'A',
-    link: function(scope, element, attrs) {
+    link: function (scope, element, attrs) {
       var model = $parse(attrs.fileModel);
       var modelSetter = model.assign;
-      element.bind('change', function(){
-        scope.$apply(function(){
+      element.bind('change', function () {
+        scope.$apply(function () {
           modelSetter(scope, element[0].files[0]);
         });
       });
@@ -18,12 +18,12 @@ app.directive('fileModel', ['$parse', function ($parse) {
 
 app.controller('CakeController', function ($scope, $http) {
   $scope.cakes = [];
-
   $scope.reviews = [
     { name: 'Priya', message: 'Best homemade cakes in town! Highly recommended.' },
     { name: 'Rahul', message: 'Delicious and fresh, will order again!' }
   ];
 
+  // Auth & State
   $scope.order = {};
   $scope.contact = {};
   $scope.login = {};
@@ -36,6 +36,7 @@ app.controller('CakeController', function ($scope, $http) {
   $scope.allOrders = [];
   $scope.allMessages = [];
 
+  // Admin Panel
   $scope.openAdminDashboard = function () {
     $scope.adminModalVisible = true;
     $scope.fetchAdminData();
@@ -46,24 +47,23 @@ app.controller('CakeController', function ($scope, $http) {
   };
 
   $scope.fetchAdminData = function () {
-    $http.get('https://cake-shop-kd2j.onrender.com/api/admin/orders')
-      .then(res => $scope.allOrders = res.data);
-    $http.get('https://cake-shop-kd2j.onrender.com/api/admin/messages')
-      .then(res => $scope.allMessages = res.data);
+    $http.get('/api/admin/orders').then(res => $scope.allOrders = res.data);
+    $http.get('/api/admin/messages').then(res => $scope.allMessages = res.data);
   };
 
   $scope.markAsDelivered = function (orderId) {
-    $http.patch(`https://cake-shop-kd2j.onrender.com/api/admin/order/${orderId}/deliver`)
-      .then(() => $scope.fetchAdminData(), error => alert("Failed to update status."));
+    $http.patch(`/api/admin/order/${orderId}/deliver`)
+      .then(() => $scope.fetchAdminData(), () => alert("Failed to update status."));
   };
 
   $scope.deleteOrder = function (orderId) {
     if (confirm("Are you sure you want to delete this order?")) {
-      $http.delete(`https://cake-shop-kd2j.onrender.com/api/admin/order/${orderId}`)
-        .then(() => $scope.fetchAdminData(), error => alert("Failed to delete order."));
+      $http.delete(`/api/admin/order/${orderId}`)
+        .then(() => $scope.fetchAdminData(), () => alert("Failed to delete order."));
     }
   };
 
+  // Auth Modal
   $scope.openAuthModal = function (mode) {
     $scope.authMode = mode;
     $scope.authModalVisible = true;
@@ -85,6 +85,7 @@ app.controller('CakeController', function ($scope, $http) {
     alert("You have been logged out.");
   };
 
+  // Order Submit
   $scope.submitOrder = function () {
     if (!$scope.currentUser) return alert("Please log in to place an order.");
 
@@ -96,30 +97,32 @@ app.controller('CakeController', function ($scope, $http) {
         status: 'Pending'
       };
 
-      $http.post('https://cake-shop-kd2j.onrender.com/api/order', orderData)
+      $http.post('/api/order', orderData)
         .then(res => {
           $scope.orderSuccess = res.data.message;
           $scope.order = {};
-        }, err => alert('Failed to place order.'));
+        }, () => alert('Failed to place order.'));
     } else {
       alert('Please fill all fields.');
     }
   };
 
+  // Contact Form
   $scope.sendMessage = function () {
     if ($scope.contact.name && $scope.contact.email && $scope.contact.message) {
-      $http.post('https://cake-shop-kd2j.onrender.com/api/contact', $scope.contact)
+      $http.post('/api/contact', $scope.contact)
         .then(res => {
           $scope.messageSuccess = res.data.message;
           $scope.contact = {};
-        }, err => alert('Failed to send message.'));
+        }, () => alert('Failed to send message.'));
     } else {
       alert('Please fill all fields.');
     }
   };
 
+  // Auth: Login / Signup
   $scope.loginUser = function () {
-    $http.post('https://cake-shop-kd2j.onrender.com/api/auth/login', $scope.login)
+    $http.post('/api/auth/login', $scope.login)
       .then(res => {
         $scope.loginMessage = "Login successful!";
         localStorage.setItem('token', res.data.token);
@@ -133,7 +136,7 @@ app.controller('CakeController', function ($scope, $http) {
   };
 
   $scope.signupUser = function () {
-    $http.post('https://cake-shop-kd2j.onrender.com/api/auth/signup', $scope.signup)
+    $http.post('/api/auth/signup', $scope.signup)
       .then(res => {
         $scope.signupMessage = "Signup successful! Please login to continue.";
         $scope.signup = {};
@@ -143,6 +146,7 @@ app.controller('CakeController', function ($scope, $http) {
       });
   };
 
+  // Upload New Cake
   $scope.uploadCake = function () {
     const formData = new FormData();
     formData.append('name', $scope.newCake.name);
@@ -150,27 +154,28 @@ app.controller('CakeController', function ($scope, $http) {
     formData.append('price', $scope.newCake.price);
     formData.append('image', $scope.newCake.image);
 
-    $http.post('https://cake-shop-kd2j.onrender.com/api/upload/cake', formData, {
+    $http.post('/api/upload/cake', formData, {
       transformRequest: angular.identity,
       headers: { 'Content-Type': undefined }
-    }).then(function (response) {
-      $scope.uploadMessage = response.data.message;
+    }).then(res => {
+      $scope.uploadMessage = res.data.message;
       $scope.newCake = {};
       $scope.fetchCakes();
-    }, function (error) {
+    }, () => {
       alert("Upload failed");
     });
   };
 
+  // Fetch Cakes from MongoDB
   $scope.fetchCakes = function () {
-    $http.get('https://cake-shop-kd2j.onrender.com/api/cakes')
-      .then(function (res) {
+    $http.get('/api/cakes')
+      .then(res => {
         $scope.cakes = res.data;
-      }, function () {
-        console.warn("Could not load cakes from DB. Using dummy.");
+      }, () => {
+        console.warn("Could not load cakes from DB.");
       });
   };
 
-  // Load cakes from DB on startup
+  // Init
   $scope.fetchCakes();
 });
