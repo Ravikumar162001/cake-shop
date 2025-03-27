@@ -1,6 +1,6 @@
 var app = angular.module('cakeApp', []);
 
-// File model directive for binding file input to scope
+// 👇 File directive for preview
 app.directive('fileModel', ['$parse', function ($parse) {
   return {
     restrict: 'A',
@@ -11,7 +11,6 @@ app.directive('fileModel', ['$parse', function ($parse) {
         scope.$apply(function () {
           modelSetter(scope, element[0].files[0]);
         });
-        // 👇 Trigger image preview
         scope.previewImage(element[0]);
       });
     }
@@ -25,7 +24,6 @@ app.controller('CakeController', function ($scope, $http) {
     { name: 'Rahul', message: 'Delicious and fresh, will order again!' }
   ];
 
-  // Auth & State
   $scope.order = {};
   $scope.contact = {};
   $scope.login = {};
@@ -38,8 +36,9 @@ app.controller('CakeController', function ($scope, $http) {
   $scope.allOrders = [];
   $scope.allMessages = [];
   $scope.imagePreview = null;
+  $scope.editingCakeId = null;
 
-  // Preview uploaded image
+  // 🔍 Image preview
   $scope.previewImage = function (input) {
     if (input.files && input.files[0]) {
       const reader = new FileReader();
@@ -52,7 +51,7 @@ app.controller('CakeController', function ($scope, $http) {
     }
   };
 
-  // Admin Panel
+  // 🔓 Admin panel
   $scope.openAdminDashboard = function () {
     $scope.adminModalVisible = true;
     $scope.fetchAdminData();
@@ -60,6 +59,7 @@ app.controller('CakeController', function ($scope, $http) {
 
   $scope.closeAdminDashboard = function () {
     $scope.adminModalVisible = false;
+    $scope.resetCakeForm();
   };
 
   $scope.fetchAdminData = function () {
@@ -69,17 +69,23 @@ app.controller('CakeController', function ($scope, $http) {
 
   $scope.markAsDelivered = function (orderId) {
     $http.patch(`/api/admin/order/${orderId}/deliver`)
-      .then(() => $scope.fetchAdminData(), () => alert("Failed to update status."));
+      .then(() => $scope.fetchAdminData());
   };
 
   $scope.deleteOrder = function (orderId) {
-    if (confirm("Are you sure you want to delete this order?")) {
+    if (confirm("Delete this order?")) {
       $http.delete(`/api/admin/order/${orderId}`)
-        .then(() => $scope.fetchAdminData(), () => alert("Failed to delete order."));
+        .then(() => $scope.fetchAdminData());
     }
   };
 
-  // Auth Modal
+  $scope.logout = function () {
+    localStorage.clear();
+    $scope.currentUser = null;
+    $scope.adminModalVisible = false;
+    alert("Logged out.");
+  };
+
   $scope.openAuthModal = function (mode) {
     $scope.authMode = mode;
     $scope.authModalVisible = true;
@@ -89,63 +95,17 @@ app.controller('CakeController', function ($scope, $http) {
 
   $scope.showAuthForm = function (mode) {
     $scope.authMode = mode;
-    $scope.loginMessage = '';
-    $scope.signupMessage = '';
   };
 
-  $scope.logout = function () {
-    localStorage.removeItem('token');
-    localStorage.removeItem('userEmail');
-    $scope.currentUser = null;
-    $scope.adminModalVisible = false;
-    alert("You have been logged out.");
-  };
-
-  // Order Submit
-  $scope.submitOrder = function () {
-    if (!$scope.currentUser) return alert("Please log in to place an order.");
-
-    if ($scope.order.name && $scope.order.phone && $scope.order.address && $scope.order.selectedCake) {
-      const orderData = {
-        ...$scope.order,
-        userEmail: $scope.currentUser,
-        timestamp: new Date().toISOString(),
-        status: 'Pending'
-      };
-
-      $http.post('/api/order', orderData)
-        .then(res => {
-          $scope.orderSuccess = res.data.message;
-          $scope.order = {};
-        }, () => alert('Failed to place order.'));
-    } else {
-      alert('Please fill all fields.');
-    }
-  };
-
-  // Contact Form
-  $scope.sendMessage = function () {
-    if ($scope.contact.name && $scope.contact.email && $scope.contact.message) {
-      $http.post('/api/contact', $scope.contact)
-        .then(res => {
-          $scope.messageSuccess = res.data.message;
-          $scope.contact = {};
-        }, () => alert('Failed to send message.'));
-    } else {
-      alert('Please fill all fields.');
-    }
-  };
-
-  // Auth: Login / Signup
+  // 🔐 Auth
   $scope.loginUser = function () {
     $http.post('/api/auth/login', $scope.login)
       .then(res => {
-        $scope.loginMessage = "Login successful!";
         localStorage.setItem('token', res.data.token);
         localStorage.setItem('userEmail', res.data.email);
         $scope.currentUser = res.data.email;
-        $scope.login = {};
         $scope.authModalVisible = false;
+        $scope.login = {};
       }, err => {
         $scope.loginMessage = err.data.msg || "Login failed.";
       });
@@ -154,45 +114,110 @@ app.controller('CakeController', function ($scope, $http) {
   $scope.signupUser = function () {
     $http.post('/api/auth/signup', $scope.signup)
       .then(res => {
-        $scope.signupMessage = "Signup successful! Please login to continue.";
-        $scope.signup = {};
+        $scope.signupMessage = "Signup successful! Please login.";
         $scope.authMode = 'login';
+        $scope.signup = {};
       }, err => {
         $scope.signupMessage = err.data.msg || "Signup failed.";
       });
   };
 
-  // Upload New Cake
+  // 🧾 Order
+  $scope.submitOrder = function () {
+    if (!$scope.currentUser) return alert("Login first.");
+
+    const orderData = {
+      ...$scope.order,
+      userEmail: $scope.currentUser,
+      timestamp: new Date().toISOString(),
+      status: 'Pending'
+    };
+
+    $http.post('/api/order', orderData)
+      .then(res => {
+        $scope.orderSuccess = res.data.message;
+        $scope.order = {};
+      });
+  };
+
+  // ✉️ Contact
+  $scope.sendMessage = function () {
+    $http.post('/api/contact', $scope.contact)
+      .then(res => {
+        $scope.messageSuccess = res.data.message;
+        $scope.contact = {};
+      });
+  };
+
+  // 🆕 Upload OR Edit Cake
   $scope.uploadCake = function () {
     const formData = new FormData();
     formData.append('name', $scope.newCake.name);
     formData.append('description', $scope.newCake.description);
     formData.append('price', $scope.newCake.price);
-    formData.append('image', $scope.newCake.image);
+    if ($scope.newCake.image) {
+      formData.append('image', $scope.newCake.image);
+    }
 
-    $http.post('/api/upload/cake', formData, {
-      transformRequest: angular.identity,
-      headers: { 'Content-Type': undefined }
-    }).then(res => {
-      $scope.uploadMessage = res.data.message;
-      $scope.newCake = {};
-      $scope.imagePreview = null; // reset image preview
-      $scope.fetchCakes();
-    }, () => {
-      alert("Upload failed");
-    });
+    // Editing
+    if ($scope.editingCakeId) {
+      $http.put(`/api/upload/cake/${$scope.editingCakeId}`, formData, {
+        transformRequest: angular.identity,
+        headers: { 'Content-Type': undefined }
+      }).then(res => {
+        $scope.uploadMessage = "Cake updated!";
+        $scope.resetCakeForm();
+        $scope.fetchCakes();
+      }, () => alert("Update failed"));
+    } else {
+      // New Cake
+      $http.post('/api/upload/cake', formData, {
+        transformRequest: angular.identity,
+        headers: { 'Content-Type': undefined }
+      }).then(res => {
+        $scope.uploadMessage = "Cake added!";
+        $scope.resetCakeForm();
+        $scope.fetchCakes();
+      }, () => alert("Upload failed"));
+    }
   };
 
-  // Fetch Cakes from MongoDB
+  // ✏️ Load cake into form for editing
+  $scope.editCake = function (cake) {
+    $scope.newCake = {
+      name: cake.name,
+      description: cake.description,
+      price: cake.price
+    };
+    $scope.imagePreview = cake.image;
+    $scope.editingCakeId = cake._id;
+    $scope.uploadMessage = '';
+  };
+
+  // 🗑️ Delete cake
+  $scope.deleteCake = function (id) {
+    if (confirm("Delete this cake?")) {
+      $http.delete(`/api/upload/cake/${id}`)
+        .then(() => $scope.fetchCakes());
+    }
+  };
+
+  // 🎯 Reset form
+  $scope.resetCakeForm = function () {
+    $scope.newCake = {};
+    $scope.editingCakeId = null;
+    $scope.imagePreview = null;
+    $scope.uploadMessage = '';
+  };
+
+  // 🚀 Load cakes
   $scope.fetchCakes = function () {
     $http.get('/api/cakes')
       .then(res => {
         $scope.cakes = res.data;
-      }, () => {
-        console.warn("Could not load cakes from DB.");
       });
   };
 
-  // Init
+  // ⏯️ Init
   $scope.fetchCakes();
 });

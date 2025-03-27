@@ -210,6 +210,7 @@
       <div class="admin-close" ng-click="closeAdminDashboard()">&times;</div>
       <h2>Admin Dashboard</h2>
 
+      <!-- Orders -->
       <h3>Orders</h3>
       <table>
         <tr>
@@ -237,6 +238,7 @@
         </tr>
       </table>
 
+      <!-- Contact Messages -->
       <h3>Contact Messages</h3>
       <table>
         <tr>
@@ -250,8 +252,8 @@
           <td>{{msg.message}}</td>
         </tr>
       </table>
-      
-      <!-- New Cake Upload Form -->
+
+      <!-- Upload New Cake -->
       <h3>Add New Cake</h3>
       <form ng-submit="uploadCake()" enctype="multipart/form-data">
         <label>Cake Name:</label>
@@ -275,6 +277,28 @@
         <button type="submit" class="action-btn">Upload Cake</button>
         <p style="color: green;" ng-if="uploadMessage">{{uploadMessage}}</p>
       </form>
+
+      <!-- Manage Cakes -->
+      <h3>Manage Cakes</h3>
+      <table>
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Price</th>
+          <th>Image</th>
+          <th>Actions</th>
+        </tr>
+        <tr ng-repeat="cake in cakes">
+          <td><input type="text" ng-model="cake.name" /></td>
+          <td><input type="text" ng-model="cake.description" /></td>
+          <td><input type="number" ng-model="cake.price" /></td>
+          <td><img ng-src="{{cake.image}}" width="60"></td>
+          <td>
+            <button class="action-btn" ng-click="updateCake(cake)">Save</button>
+            <button class="action-btn" ng-click="deleteCake(cake._id)">Delete</button>
+          </td>
+        </tr>
+      </table>
     </div>
   </div>
 

@@ -1,12 +1,13 @@
 const express = require('express');
 const multer = require('multer');
 const path = require('path');
+const { ObjectId } = require('mongodb');
 const router = express.Router();
 
-// 🔧 Set up multer storage
+// 🔧 Multer storage config
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, './uploads'); // Save to /uploads folder
+    cb(null, './uploads'); // Save images to /uploads
   },
   filename: function (req, file, cb) {
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
@@ -19,7 +20,7 @@ const upload = multer({ storage: storage });
 module.exports = function (db) {
   const cakes = db.collection('cakes');
 
-  // 🚀 POST /api/upload/cake → Save image + cake info
+  // 🚀 Add new cake
   router.post('/cake', upload.single('image'), async (req, res) => {
     try {
       const { name, price, description } = req.body;
@@ -46,13 +47,50 @@ module.exports = function (db) {
     }
   });
 
-  // 🍰 GET /api/cakes → fetch all cakes
+  // 🍰 Get all cakes
   router.get('/cakes', async (req, res) => {
     try {
       const allCakes = await cakes.find().toArray();
       res.status(200).json(allCakes);
     } catch (err) {
       res.status(500).json({ msg: 'Failed to fetch cakes' });
+    }
+  });
+
+  // ✏️ Update cake by ID
+  router.put('/cake/:id', upload.single('image'), async (req, res) => {
+    try {
+      const id = req.params.id;
+      const { name, price, description } = req.body;
+
+      const updateData = {
+        name,
+        price: parseInt(price),
+        description
+      };
+
+      if (req.file) {
+        updateData.image = '/uploads/' + req.file.filename;
+      }
+
+      await cakes.updateOne({ _id: new ObjectId(id) }, { $set: updateData });
+      res.json({ message: 'Cake updated successfully!' });
+
+    } catch (err) {
+      console.error('❌ Error updating cake:', err);
+      res.status(500).json({ msg: 'Failed to update cake' });
+    }
+  });
+
+  // 🗑️ Delete cake by ID
+  router.delete('/cake/:id', async (req, res) => {
+    try {
+      const id = req.params.id;
+      await cakes.deleteOne({ _id: new ObjectId(id) });
+      res.json({ message: 'Cake deleted successfully!' });
+    } catch (err) {
+      console.error('❌ Error deleting cake:', err);
+      res.status(500).json({ msg: 'Failed to delete cake' });
     }
   });
 
