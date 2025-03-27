@@ -185,7 +185,6 @@ app.controller('CakeController', function ($scope, $http) {
 
     $http.post('/api/order', orderData)
       .then(res => {
-        $scope.cart = [];
         $scope.updateCartMap();
         $scope.checkoutVisible = false;
         $scope.order = {};
