@@ -131,13 +131,7 @@
       <button ng-if="!currentUser" ng-click="openAuthModal('signup')">Sign Up</button>
       <button ng-if="currentUser" ng-click="logout()">Logout</button>
       <button ng-click="cartVisible = true">🛒 Cart ({{cart.length}})</button>
-
-  
-      <!-- Cart Button -->
-      <!-- <button class="admin-button" ng-if="currentUser" ng-click="toggleCart()">
-        🛒 Cart ({{cart.length}})
-      </button> -->
-  
+ 
       <!-- Admin button -->
       <button class="admin-button" ng-if="currentUser === 'ravikumar162001@gmail.com'" ng-click="openAdminDashboard()">
         Admin Dashboard
@@ -326,27 +320,7 @@
   </div>
 
 
-    <!-- Checkout Modal -->
-  <div class="auth-modal" ng-show="checkoutVisible">
-    <div class="auth-box">
-      <div class="auth-close" ng-click="checkoutVisible = false">&times;</div>
-      <form ng-submit="submitOrder()">
-        <label>Name:</label>
-        <input type="text" ng-model="order.name" required>
-
-        <label>Phone Number:</label>
-        <input type="text" ng-model="order.phone" required>
-
-        <label>Address:</label>
-        <textarea ng-model="order.address" required></textarea>
-
-        <button type="submit">Place Order</button>
-      </form>
-      <p style="color: green;" ng-if="orderSuccess">{{orderSuccess}}</p>
-    </div>
-  </div>
-
-    <!-- ✅ Updated Checkout Modal -->
+  <!-- ✅ Updated Checkout Modal -->
   <div class="auth-modal" ng-show="checkoutVisible">
     <div class="auth-box">
       <div class="auth-close" ng-click="checkoutVisible = false">&times;</div>
@@ -384,6 +358,7 @@
       </form>
     </div>
   </div>
+
 
   <!-- Auth Modal -->
   <div class="auth-modal" ng-show="authModalVisible">

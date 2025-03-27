@@ -131,20 +131,18 @@ app.controller('CakeController', function ($scope, $http) {
   };
 
   $scope.addToCart = function (cake) {
-    const existing = $scope.cart.find(c => c._id === cake._id);
+    const existing = $scope.cart.find(c => c._id === cake._id || c.name === cake.name);
     if (existing) {
       existing.qty += 1;
     } else {
       $scope.cart.push({ ...cake, qty: 1 });
     }
-    $scope.updateCartMap();
   };
-
+  
   $scope.removeFromCart = function (cake) {
-    $scope.cart = $scope.cart.filter(c => c._id !== cake._id);
-    $scope.updateCartMap();
+    $scope.cart = $scope.cart.filter(c => (c._id !== cake._id && c.name !== cake.name));
   };
-
+  
   $scope.increaseQty = function (cake) {
     cake.qty += 1;
     $scope.updateCartMap();
