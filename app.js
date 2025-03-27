@@ -137,7 +137,11 @@ app.controller('CakeController', function ($scope, $http) {
     } else {
       $scope.cart.push({ ...cake, qty: 1 });
     }
+  
+    // 🔧 This line is missing in your current code
+    $scope.updateCartMap();
   };
+  
   
   $scope.removeFromCart = function (cake) {
     $scope.cart = $scope.cart.filter(c => (c._id !== cake._id && c.name !== cake.name));
