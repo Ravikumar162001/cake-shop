@@ -150,31 +150,8 @@
       <h2>{{cake.name}}</h2>
       <p>{{cake.description}}</p>
       <p class="price">₹{{cake.price}}</p>
-      <button ng-click="orderCake(cake)">Order Now</button>
+      <button ng-click="openCheckout(cake)">Order Now</button>
     </div>
-  </section>
-
-  <!-- Order Form -->
-  <section class="order-form">
-    <h2>Place Your Order</h2>
-    <form ng-submit="submitOrder()">
-      <label>Name:</label>
-      <input type="text" ng-model="order.name" required>
-
-      <label>Phone Number:</label>
-      <input type="text" ng-model="order.phone" required>
-
-      <label>Address:</label>
-      <textarea ng-model="order.address" required></textarea>
-
-      <label>Select Cake:</label>
-      <select ng-model="order.selectedCake" required>
-        <option ng-repeat="cake in cakes" value="{{cake.name}}">{{cake.name}} - ₹{{cake.price}}</option>
-      </select>
-
-      <button type="submit">Submit Order</button>
-    </form>
-    <p ng-if="orderSuccess">{{orderSuccess}}</p>
   </section>
 
   <!-- Reviews -->
@@ -301,6 +278,31 @@
       </table>
     </div>
   </div>
+
+    <!-- Checkout Modal -->
+  <div class="auth-modal" ng-show="checkoutVisible">
+    <div class="auth-box">
+      <div class="auth-close" ng-click="checkoutVisible = false">&times;</div>
+      <h3>Checkout - {{selectedCake.name}}</h3>
+      <img ng-src="{{selectedCake.image}}" style="max-width: 100%; margin-bottom: 15px;" />
+      <p><strong>Price:</strong> ₹{{selectedCake.price}}</p>
+
+      <form ng-submit="submitOrder()">
+        <label>Name:</label>
+        <input type="text" ng-model="order.name" required>
+
+        <label>Phone Number:</label>
+        <input type="text" ng-model="order.phone" required>
+
+        <label>Address:</label>
+        <textarea ng-model="order.address" required></textarea>
+
+        <button type="submit">Place Order</button>
+      </form>
+      <p style="color: green;" ng-if="orderSuccess">{{orderSuccess}}</p>
+    </div>
+  </div>
+
 
   <!-- Auth Modal -->
   <div class="auth-modal" ng-show="authModalVisible">
