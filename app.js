@@ -102,16 +102,13 @@ app.controller('CakeController', function ($scope, $http) {
       });
   };
 
-  // Signup
+  // Signup (without auto-login)
   $scope.signupUser = function () {
     $http.post('https://cake-shop-kd2j.onrender.com/api/auth/signup', $scope.signup)
       .then(function (response) {
-        $scope.signupMessage = "Signup successful!";
-        localStorage.setItem('token', response.data.token);
-        localStorage.setItem('userEmail', response.data.email);
-        $scope.currentUser = response.data.email;
+        $scope.signupMessage = "Signup successful! Please login to continue.";
         $scope.signup = {};
-        $scope.authModalVisible = false;
+        $scope.authMode = 'login'; // Switch to login tab
       }, function (error) {
         $scope.signupMessage = error.data.msg || "Signup failed.";
       });
