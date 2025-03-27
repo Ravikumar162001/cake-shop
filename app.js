@@ -11,6 +11,8 @@ app.directive('fileModel', ['$parse', function ($parse) {
         scope.$apply(function () {
           modelSetter(scope, element[0].files[0]);
         });
+        // 👇 Trigger image preview
+        scope.previewImage(element[0]);
       });
     }
   };
@@ -35,6 +37,20 @@ app.controller('CakeController', function ($scope, $http) {
   $scope.currentUser = localStorage.getItem('userEmail') || null;
   $scope.allOrders = [];
   $scope.allMessages = [];
+  $scope.imagePreview = null;
+
+  // Preview uploaded image
+  $scope.previewImage = function (input) {
+    if (input.files && input.files[0]) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        $scope.$apply(function () {
+          $scope.imagePreview = e.target.result;
+        });
+      };
+      reader.readAsDataURL(input.files[0]);
+    }
+  };
 
   // Admin Panel
   $scope.openAdminDashboard = function () {
@@ -160,6 +176,7 @@ app.controller('CakeController', function ($scope, $http) {
     }).then(res => {
       $scope.uploadMessage = res.data.message;
       $scope.newCake = {};
+      $scope.imagePreview = null; // reset image preview
       $scope.fetchCakes();
     }, () => {
       alert("Upload failed");

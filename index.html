@@ -256,16 +256,22 @@
       <form ng-submit="uploadCake()" enctype="multipart/form-data">
         <label>Cake Name:</label>
         <input type="text" ng-model="newCake.name" required>
-        
+
         <label>Description:</label>
         <input type="text" ng-model="newCake.description" required>
-        
+
         <label>Price:</label>
         <input type="number" ng-model="newCake.price" required>
-        
+
         <label>Image:</label>
-        <input type="file" file-model="newCake.image" required>
-        
+        <input type="file" file-model="newCake.image" onchange="angular.element(this).scope().previewImage(this)" required>
+
+        <!-- 🔍 Image Preview -->
+        <div ng-if="imagePreview">
+          <p>Preview:</p>
+          <img ng-src="{{imagePreview}}" style="max-width: 200px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px;">
+        </div>
+
         <button type="submit" class="action-btn">Upload Cake</button>
         <p style="color: green;" ng-if="uploadMessage">{{uploadMessage}}</p>
       </form>
