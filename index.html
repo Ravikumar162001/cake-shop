@@ -130,13 +130,13 @@
       <button ng-if="!currentUser" ng-click="openAuthModal('login')">Login</button>
       <button ng-if="!currentUser" ng-click="openAuthModal('signup')">Sign Up</button>
       <button ng-if="currentUser" ng-click="logout()">Logout</button>
-      <!-- <button ng-click="cartVisible = true">🛒 Cart ({{cart.length}})</button> -->
+      <button ng-click="cartVisible = true">🛒 Cart ({{cart.length}})</button>
 
   
       <!-- Cart Button -->
-      <button class="admin-button" ng-if="currentUser" ng-click="toggleCart()">
+      <!-- <button class="admin-button" ng-if="currentUser" ng-click="toggleCart()">
         🛒 Cart ({{cart.length}})
-      </button>
+      </button> -->
   
       <!-- Admin button -->
       <button class="admin-button" ng-if="currentUser === 'ravikumar162001@gmail.com'" ng-click="openAdminDashboard()">
