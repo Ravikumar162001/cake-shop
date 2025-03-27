@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="cakeApp">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Sweet Bites - Homemade Cakes</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
   <script src="app.js"></script>
 
   <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+
     .auth-buttons-header {
       position: absolute;
       top: 20px;
@@ -25,7 +29,7 @@
       border-radius: 4px;
     }
 
-    .auth-modal {
+    .auth-modal, .admin-modal {
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
@@ -36,13 +40,15 @@
       z-index: 1000;
     }
 
-    .auth-box {
+    .auth-box, .admin-box {
       background: #fff;
       padding: 30px;
       border-radius: 8px;
-      width: 90%;
-      max-width: 400px;
+      width: 95%;
+      max-width: 1000px;
       box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      overflow-y: auto;
+      max-height: 90vh;
     }
 
     .auth-tabs {
@@ -72,201 +78,210 @@
       border: 1px solid #ccc;
     }
 
-    .auth-box button[type="submit"] {
+    .auth-box button[type="submit"],
+    .admin-box button.action-btn {
       background: #d2691e;
       color: white;
-      width: 100%;
-      padding: 10px;
+      padding: 8px 12px;
       border: none;
+      margin: 4px;
+      border-radius: 4px;
+      cursor: pointer;
     }
 
-    .auth-close {
+    .auth-close, .admin-close {
       text-align: right;
       font-size: 20px;
       cursor: pointer;
     }
 
-    .admin-dashboard {
-      background: #fff8f0;
-      margin: 30px auto;
-      padding: 20px;
-      max-width: 900px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-
-    .admin-dashboard table {
+    table {
       width: 100%;
-      margin-bottom: 30px;
       border-collapse: collapse;
+      margin: 20px 0;
     }
 
-    .admin-dashboard th, .admin-dashboard td {
+    th, td {
       border: 1px solid #ccc;
       padding: 8px;
       text-align: left;
     }
 
-    .admin-toggle {
-      text-align: center;
-      margin: 20px 0;
+    .admin-button {
+      display: inline-block;
+      margin-left: 10px;
+      background: #d2691e;
+      color: #fff;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 4px;
+      cursor: pointer;
     }
   </style>
 </head>
 
 <body ng-controller="CakeController">
+  <header style="position: relative;">
+    <h1>Sweet Bites</h1>
+    <p>Fresh Homemade Cakes for Every Occasion</p>
 
-<header style="position: relative;">
-  <h1>Sweet Bites</h1>
-  <p>Fresh Homemade Cakes for Every Occasion</p>
+    <div class="auth-buttons-header">
+      <span ng-if="currentUser">Welcome, {{currentUser}}!</span>
+      <button ng-if="!currentUser" ng-click="openAuthModal('login')">Login</button>
+      <button ng-if="!currentUser" ng-click="openAuthModal('signup')">Sign Up</button>
+      <button ng-if="currentUser" ng-click="logout()">Logout</button>
 
-  <!-- User Auth Buttons -->
-  <div class="auth-buttons-header">
-    <span ng-if="currentUser">Welcome, {{currentUser}}!</span>
-    <button ng-if="!currentUser" ng-click="openAuthModal('login')">Login</button>
-    <button ng-if="!currentUser" ng-click="openAuthModal('signup')">Sign Up</button>
-    <button ng-if="currentUser" ng-click="logout()">Logout</button>
-  </div>
-</header>
-
-<!-- Image Carousel -->
-<section class="carousel">
-  <img src="https://via.placeholder.com/800x300?text=Fresh+Homemade+Cakes" alt="Cake Banner">
-</section>
-
-<!-- Cake Listing -->
-<section class="cakes">
-  <div class="cake-card" ng-repeat="cake in cakes">
-    <img ng-src="{{cake.image}}" alt="{{cake.name}}">
-    <h2>{{cake.name}}</h2>
-    <p>{{cake.description}}</p>
-    <p class="price">₹{{cake.price}}</p>
-    <button ng-click="orderCake(cake)">Order Now</button>
-  </div>
-</section>
-
-<!-- Order Form -->
-<section class="order-form">
-  <h2>Place Your Order</h2>
-  <form ng-submit="submitOrder()">
-    <label>Name:</label>
-    <input type="text" ng-model="order.name" required>
-
-    <label>Phone Number:</label>
-    <input type="text" ng-model="order.phone" required>
-
-    <label>Address:</label>
-    <textarea ng-model="order.address" required></textarea>
-
-    <label>Select Cake:</label>
-    <select ng-model="order.selectedCake" required>
-      <option ng-repeat="cake in cakes" value="{{cake.name}}">{{cake.name}} - ₹{{cake.price}}</option>
-    </select>
-
-    <button type="submit">Submit Order</button>
-  </form>
-  <p ng-if="orderSuccess">{{orderSuccess}}</p>
-</section>
-
-<!-- Customer Reviews -->
-<section class="reviews">
-  <h2>Customer Reviews</h2>
-  <div class="review-card" ng-repeat="review in reviews">
-    <p>"{{review.message}}"</p>
-    <p>- {{review.name}}</p>
-  </div>
-</section>
-
-<!-- Contact Us Form -->
-<section class="contact-form">
-  <h2>Contact Us</h2>
-  <form ng-submit="sendMessage()">
-    <label>Your Name:</label>
-    <input type="text" ng-model="contact.name" required>
-
-    <label>Email:</label>
-    <input type="email" ng-model="contact.email" required>
-
-    <label>Message:</label>
-    <textarea ng-model="contact.message" required></textarea>
-
-    <button type="submit">Send Message</button>
-  </form>
-  <p ng-if="messageSuccess">{{messageSuccess}}</p>
-</section>
-
-<!-- Admin Toggle Button -->
-<div class="admin-toggle" ng-if="currentUser === 'ravikumar162001@gmail.com'">
-  <button ng-click="toggleAdminDashboard()">Toggle Admin Dashboard</button>
-</div>
-
-<!-- Admin Dashboard Section -->
-<section class="admin-dashboard" ng-show="adminVisible && currentUser === 'ravikumar162001@gmail.com'">
-  <h2>Admin Dashboard</h2>
-
-  <h3>Orders</h3>
-  <table>
-    <tr>
-      <th>Name</th>
-      <th>Phone</th>
-      <th>Address</th>
-      <th>Cake</th>
-    </tr>
-    <tr ng-repeat="order in allOrders">
-      <td>{{order.name}}</td>
-      <td>{{order.phone}}</td>
-      <td>{{order.address}}</td>
-      <td>{{order.selectedCake}}</td>
-    </tr>
-  </table>
-
-  <h3>Contact Messages</h3>
-  <table>
-    <tr>
-      <th>Name</th>
-      <th>Email</th>
-      <th>Message</th>
-    </tr>
-    <tr ng-repeat="msg in allMessages">
-      <td>{{msg.name}}</td>
-      <td>{{msg.email}}</td>
-      <td>{{msg.message}}</td>
-    </tr>
-  </table>
-</section>
-
-<!-- Auth Modal -->
-<div class="auth-modal" ng-show="authModalVisible">
-  <div class="auth-box">
-    <div class="auth-close" ng-click="authModalVisible = false">&times;</div>
-
-    <div class="auth-tabs">
-      <button ng-click="showAuthForm('login')" ng-class="{active: authMode==='login'}">Login</button>
-      <button ng-click="showAuthForm('signup')" ng-class="{active: authMode==='signup'}">Sign Up</button>
+      <!-- Admin button -->
+      <button class="admin-button" ng-if="currentUser === 'ravikumar162001@gmail.com'" ng-click="openAdminDashboard()">
+        Admin Dashboard
+      </button>
     </div>
+  </header>
 
-    <!-- Login Form -->
-    <form ng-submit="loginUser()" ng-show="authMode === 'login'">
-      <input type="email" ng-model="login.email" placeholder="Email" required>
-      <input type="password" ng-model="login.password" placeholder="Password" required>
-      <button type="submit">Login</button>
-      <p ng-if="loginMessage">{{loginMessage}}</p>
-    </form>
+  <!-- Carousel -->
+  <section class="carousel">
+    <img src="https://via.placeholder.com/800x300?text=Fresh+Homemade+Cakes" alt="Cake Banner" />
+  </section>
 
-    <!-- Signup Form -->
-    <form ng-submit="signupUser()" ng-show="authMode === 'signup'">
-      <input type="text" ng-model="signup.name" placeholder="Name" required>
-      <input type="email" ng-model="signup.email" placeholder="Email" required>
-      <input type="password" ng-model="signup.password" placeholder="Password" required>
-      <button type="submit">Sign Up</button>
-      <p ng-if="signupMessage">{{signupMessage}}</p>
+  <!-- Cake Listing -->
+  <section class="cakes">
+    <div class="cake-card" ng-repeat="cake in cakes">
+      <img ng-src="{{cake.image}}" alt="{{cake.name}}">
+      <h2>{{cake.name}}</h2>
+      <p>{{cake.description}}</p>
+      <p class="price">₹{{cake.price}}</p>
+      <button ng-click="orderCake(cake)">Order Now</button>
+    </div>
+  </section>
+
+  <!-- Order Form -->
+  <section class="order-form">
+    <h2>Place Your Order</h2>
+    <form ng-submit="submitOrder()">
+      <label>Name:</label>
+      <input type="text" ng-model="order.name" required>
+
+      <label>Phone Number:</label>
+      <input type="text" ng-model="order.phone" required>
+
+      <label>Address:</label>
+      <textarea ng-model="order.address" required></textarea>
+
+      <label>Select Cake:</label>
+      <select ng-model="order.selectedCake" required>
+        <option ng-repeat="cake in cakes" value="{{cake.name}}">{{cake.name}} - ₹{{cake.price}}</option>
+      </select>
+
+      <button type="submit">Submit Order</button>
     </form>
+    <p ng-if="orderSuccess">{{orderSuccess}}</p>
+  </section>
+
+  <!-- Reviews -->
+  <section class="reviews">
+    <h2>Customer Reviews</h2>
+    <div class="review-card" ng-repeat="review in reviews">
+      <p>"{{review.message}}"</p>
+      <p>- {{review.name}}</p>
+    </div>
+  </section>
+
+  <!-- Contact Form -->
+  <section class="contact-form">
+    <h2>Contact Us</h2>
+    <form ng-submit="sendMessage()">
+      <label>Your Name:</label>
+      <input type="text" ng-model="contact.name" required>
+
+      <label>Email:</label>
+      <input type="email" ng-model="contact.email" required>
+
+      <label>Message:</label>
+      <textarea ng-model="contact.message" required></textarea>
+
+      <button type="submit">Send Message</button>
+    </form>
+    <p ng-if="messageSuccess">{{messageSuccess}}</p>
+  </section>
+
+  <!-- Admin Dashboard Modal -->
+  <div class="admin-modal" ng-show="adminModalVisible">
+    <div class="admin-box">
+      <div class="admin-close" ng-click="closeAdminDashboard()">&times;</div>
+      <h2>Admin Dashboard</h2>
+
+      <h3>Orders</h3>
+      <table>
+        <tr>
+          <th>Name</th>
+          <th>Phone</th>
+          <th>Address</th>
+          <th>Cake</th>
+          <th>Email</th>
+          <th>Time</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+        <tr ng-repeat="order in allOrders">
+          <td>{{order.name}}</td>
+          <td>{{order.phone}}</td>
+          <td>{{order.address}}</td>
+          <td>{{order.selectedCake}}</td>
+          <td>{{order.userEmail}}</td>
+          <td>{{order.timestamp | date:'medium'}}</td>
+          <td>{{order.status}}</td>
+          <td>
+            <button class="action-btn" ng-click="markAsDelivered(order._id)">Mark Delivered</button>
+            <button class="action-btn" ng-click="deleteOrder(order._id)">Delete</button>
+          </td>
+        </tr>
+      </table>
+
+      <h3>Contact Messages</h3>
+      <table>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Message</th>
+        </tr>
+        <tr ng-repeat="msg in allMessages">
+          <td>{{msg.name}}</td>
+          <td>{{msg.email}}</td>
+          <td>{{msg.message}}</td>
+        </tr>
+      </table>
+    </div>
   </div>
-</div>
 
-<footer>
-  <p>&copy; 2025 Sweet Bites | Call us: +91 98765-43210</p>
-</footer>
+  <!-- Auth Modal -->
+  <div class="auth-modal" ng-show="authModalVisible">
+    <div class="auth-box">
+      <div class="auth-close" ng-click="authModalVisible = false">&times;</div>
 
+      <div class="auth-tabs">
+        <button ng-click="showAuthForm('login')" ng-class="{active: authMode==='login'}">Login</button>
+        <button ng-click="showAuthForm('signup')" ng-class="{active: authMode==='signup'}">Sign Up</button>
+      </div>
+
+      <form ng-submit="loginUser()" ng-show="authMode === 'login'">
+        <input type="email" ng-model="login.email" placeholder="Email" required>
+        <input type="password" ng-model="login.password" placeholder="Password" required>
+        <button type="submit">Login</button>
+        <p ng-if="loginMessage">{{loginMessage}}</p>
+      </form>
+
+      <form ng-submit="signupUser()" ng-show="authMode === 'signup'">
+        <input type="text" ng-model="signup.name" placeholder="Name" required>
+        <input type="email" ng-model="signup.email" placeholder="Email" required>
+        <input type="password" ng-model="signup.password" placeholder="Password" required>
+        <button type="submit">Sign Up</button>
+        <p ng-if="signupMessage">{{signupMessage}}</p>
+      </form>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 Sweet Bites | Call us: +91 98765-43210</p>
+  </footer>
 </body>
 </html>

@@ -20,23 +20,50 @@ app.controller('CakeController', function ($scope, $http) {
   $scope.signup = {};
   $scope.authMode = 'login';
   $scope.authModalVisible = false;
+  $scope.adminModalVisible = false;
   $scope.currentUser = localStorage.getItem('userEmail') || null;
 
   // Admin dashboard state
-  $scope.adminVisible = false;
   $scope.allOrders = [];
   $scope.allMessages = [];
 
-  // Admin toggle and fetch
-  $scope.toggleAdminDashboard = function () {
-    $scope.adminVisible = !$scope.adminVisible;
+  // Toggle admin modal
+  $scope.openAdminDashboard = function () {
+    $scope.adminModalVisible = true;
+    $scope.fetchAdminData();
+  };
 
-    if ($scope.adminVisible) {
-      $http.get('https://cake-shop-kd2j.onrender.com/api/admin/orders')
-        .then(res => $scope.allOrders = res.data);
+  $scope.closeAdminDashboard = function () {
+    $scope.adminModalVisible = false;
+  };
 
-      $http.get('https://cake-shop-kd2j.onrender.com/api/admin/messages')
-        .then(res => $scope.allMessages = res.data);
+  $scope.fetchAdminData = function () {
+    $http.get('https://cake-shop-kd2j.onrender.com/api/admin/orders')
+      .then(res => $scope.allOrders = res.data);
+
+    $http.get('https://cake-shop-kd2j.onrender.com/api/admin/messages')
+      .then(res => $scope.allMessages = res.data);
+  };
+
+  $scope.markAsDelivered = function (orderId) {
+    $http.patch(`https://cake-shop-kd2j.onrender.com/api/admin/order/${orderId}/deliver`)
+      .then(function () {
+        $scope.fetchAdminData(); // refresh
+      }, function (error) {
+        alert("Failed to update status.");
+        console.error(error);
+      });
+  };
+
+  $scope.deleteOrder = function (orderId) {
+    if (confirm("Are you sure you want to delete this order?")) {
+      $http.delete(`https://cake-shop-kd2j.onrender.com/api/admin/order/${orderId}`)
+        .then(function () {
+          $scope.fetchAdminData(); // refresh
+        }, function (error) {
+          alert("Failed to delete order.");
+          console.error(error);
+        });
     }
   };
 
@@ -58,16 +85,11 @@ app.controller('CakeController', function ($scope, $http) {
     localStorage.removeItem('token');
     localStorage.removeItem('userEmail');
     $scope.currentUser = null;
-    $scope.adminVisible = false;
+    $scope.adminModalVisible = false;
     alert("You have been logged out.");
   };
 
-  // Order Cake button (just UI alert)
-  $scope.orderCake = function (cake) {
-    alert('You have ordered: ' + cake.name);
-  };
-
-  // Submit Order
+  // Submit Order (with timestamp & user email)
   $scope.submitOrder = function () {
     if (!$scope.currentUser) {
       alert("Please log in to place an order.");
@@ -75,10 +97,17 @@ app.controller('CakeController', function ($scope, $http) {
     }
 
     if ($scope.order.name && $scope.order.phone && $scope.order.address && $scope.order.selectedCake) {
-      $http.post('https://cake-shop-kd2j.onrender.com/api/order', $scope.order)
+      const orderData = {
+        ...$scope.order,
+        userEmail: $scope.currentUser,
+        timestamp: new Date().toISOString(),
+        status: 'Pending'
+      };
+
+      $http.post('https://cake-shop-kd2j.onrender.com/api/order', orderData)
         .then(function (response) {
           $scope.orderSuccess = response.data.message;
-          console.log('Order submitted:', $scope.order);
+          console.log('Order submitted:', orderData);
           $scope.order = {};
         }, function (error) {
           console.error('Order submission failed:', error);
@@ -121,13 +150,13 @@ app.controller('CakeController', function ($scope, $http) {
       });
   };
 
-  // Signup (without auto-login)
+  // Signup
   $scope.signupUser = function () {
     $http.post('https://cake-shop-kd2j.onrender.com/api/auth/signup', $scope.signup)
       .then(function (response) {
         $scope.signupMessage = "Signup successful! Please login to continue.";
         $scope.signup = {};
-        $scope.authMode = 'login'; // Switch to login tab
+        $scope.authMode = 'login';
       }, function (error) {
         $scope.signupMessage = error.data.msg || "Signup failed.";
       });
