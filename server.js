@@ -9,6 +9,9 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static(__dirname));
 
+// Serve static images from /uploads
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 // MongoDB Connection URI
 const uri = "mongodb+srv://Ravikumar:BILLAdavid%4016@billa.yrg53j9.mongodb.net/cakeShop?retryWrites=true&w=majority&appName=Billa";
 const client = new MongoClient(uri);
@@ -31,6 +34,10 @@ async function run() {
     // Admin Routes (Orders, Messages, Actions)
     const adminRoutes = require('./routes/admin')(db);
     app.use('/api/admin', adminRoutes);
+
+    // Upload Route (Cake Image + Info)
+    const uploadRoutes = require('./routes/upload')(db);
+    app.use('/api/upload', uploadRoutes);
 
     // Customer Order Endpoint
     app.post('/api/order', async (req, res) => {
