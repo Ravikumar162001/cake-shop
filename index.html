@@ -130,7 +130,7 @@
       <button ng-if="!currentUser" ng-click="openAuthModal('login')">Login</button>
       <button ng-if="!currentUser" ng-click="openAuthModal('signup')">Sign Up</button>
       <button ng-if="currentUser" ng-click="logout()">Logout</button>
-      <button ng-click="cartVisible = true">🛒 Cart ({{cart.length}})</button>
+      <!-- <button ng-click="cartVisible = true">🛒 Cart ({{cart.length}})</button> -->
 
   
       <!-- Cart Button -->
@@ -290,14 +290,70 @@
     </div>
   </div>
 
-  <!-- ✅ Final Checkout Modal -->
+    <!-- 🛒 Cart Modal -->
+  <div class="auth-modal" ng-show="cartVisible">
+    <div class="auth-box">
+      <div class="auth-close" ng-click="cartVisible = false">&times;</div>
+      <h3>Your Cart</h3>
+
+      <table ng-if="cart.length">
+        <tr>
+          <th>Name</th>
+          <th>Qty</th>
+          <th>Price</th>
+          <th>Total</th>
+          <th>Actions</th>
+        </tr>
+        <tr ng-repeat="item in cart">
+          <td>{{item.name}}</td>
+          <td>{{item.qty}}</td>
+          <td>₹{{item.price}}</td>
+          <td>₹{{item.qty * item.price}}</td>
+          <td>
+            <button ng-click="increaseQty(item)">+</button>
+            <button ng-click="decreaseQty(item)">-</button>
+          </td>
+        </tr>
+      </table>
+
+      <p ng-if="!cart.length">Your cart is empty.</p>
+      <h4 ng-if="cart.length">Total: ₹{{getCartTotal()}}</h4>
+
+      <button ng-if="cart.length" ng-click="proceedToCheckout(); cartVisible = false;">
+        Proceed to Checkout
+      </button>
+    </div>
+  </div>
+
+
+    <!-- Checkout Modal -->
+  <div class="auth-modal" ng-show="checkoutVisible">
+    <div class="auth-box">
+      <div class="auth-close" ng-click="checkoutVisible = false">&times;</div>
+      <form ng-submit="submitOrder()">
+        <label>Name:</label>
+        <input type="text" ng-model="order.name" required>
+
+        <label>Phone Number:</label>
+        <input type="text" ng-model="order.phone" required>
+
+        <label>Address:</label>
+        <textarea ng-model="order.address" required></textarea>
+
+        <button type="submit">Place Order</button>
+      </form>
+      <p style="color: green;" ng-if="orderSuccess">{{orderSuccess}}</p>
+    </div>
+  </div>
+
+    <!-- ✅ Updated Checkout Modal -->
   <div class="auth-modal" ng-show="checkoutVisible">
     <div class="auth-box">
       <div class="auth-close" ng-click="checkoutVisible = false">&times;</div>
       <h3>Checkout</h3>
 
       <!-- Show Cart Summary -->
-      <table ng-if="cart.length">
+      <table>
         <tr>
           <th>Name</th>
           <th>Qty</th>
@@ -312,11 +368,9 @@
         </tr>
       </table>
 
-      <p ng-if="!cart.length">Your cart is empty.</p>
-      <h4 ng-if="cart.length">Total: ₹{{getCartTotal()}}</h4>
+      <h4>Total: ₹{{getCartTotal()}}</h4>
 
-      <!-- Order Form -->
-      <form ng-if="cart.length" ng-submit="submitOrder()">
+      <form ng-submit="submitOrder()">
         <label>Name:</label>
         <input type="text" ng-model="order.name" required>
 
@@ -328,8 +382,6 @@
 
         <button type="submit">Place Order</button>
       </form>
-
-      <p style="color: green;" ng-if="orderSuccess">{{orderSuccess}}</p>
     </div>
   </div>
 

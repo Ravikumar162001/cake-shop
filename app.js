@@ -227,6 +227,11 @@ app.controller('CakeController', function ($scope, $http) {
     }, () => alert("Upload failed"));
   };
 
+  $scope.toggleCart = function () {
+    $scope.cartVisible = !$scope.cartVisible;
+  };
+
+
   $scope.editCake = function (cake) {
     $scope.newCake = {
       name: cake.name,
