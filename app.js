@@ -177,23 +177,26 @@ app.controller('CakeController', function ($scope, $http) {
       phone: $scope.order.phone,
       address: $scope.order.address,
       userEmail: $scope.currentUser,
-      items: $scope.cart,
+      items: angular.copy($scope.cart), // Ensure clean copy
       totalAmount: $scope.getCartTotal(),
       status: 'Pending',
       timestamp: new Date().toISOString()
     };
-
+  
     $http.post('/api/order', orderData)
       .then(res => {
-        $scope.updateCartMap();
-        $scope.checkoutVisible = false;
+        alert("Order placed successfully!");
+  
+        // 🧹 Reset UI
         $scope.order = {};
-        $scope.orderSuccess = "Order placed successfully!";
-        setTimeout(() => $scope.$apply(() => $scope.orderSuccess = ''), 3000);
-      }, () => {
+        $scope.cart = [];
+        $scope.cartVisible = false;
+        $scope.checkoutVisible = false;
+      }, err => {
         alert("Failed to place order.");
       });
   };
+  
 
   $scope.sendMessage = function () {
     $http.post('/api/contact', $scope.contact)
