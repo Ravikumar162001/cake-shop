@@ -79,11 +79,6 @@ app.controller('CakeController', function ($scope, $http) {
     $http.get('/api/admin/messages').then(res => $scope.allMessages = res.data);
   };
 
-  $scope.markAsDelivered = function (orderId) {
-    $http.patch(`/api/admin/order/${orderId}/deliver`)
-      .then(() => $scope.fetchAdminData());
-  };
-
   $scope.deleteOrder = function (orderId) {
     if (confirm("Delete this order?")) {
       $http.delete(`/api/admin/order/${orderId}`)

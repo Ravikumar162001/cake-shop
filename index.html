@@ -220,11 +220,17 @@
           </td>
           <td>{{order.userEmail}}</td>
           <td>{{order.timestamp | date:'medium'}}</td>
-          <td>{{order.status}}</td>
           <td>
-            <button class="action-btn" ng-click="markAsDelivered(order._id)">Mark Delivered</button>
+            <select ng-model="order.status" ng-change="updateOrderStatus(order)">
+              <option value="Pending">Pending</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Delivered">Delivered</option>
+            </select>
+          </td>
+          <td>
             <button class="action-btn" ng-click="deleteOrder(order._id)">Delete</button>
           </td>
+          
         </tr>
       </table>
 
