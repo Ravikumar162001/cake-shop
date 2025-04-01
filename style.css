@@ -190,3 +190,26 @@ footer {
 .action-btn:hover {
   background-color: #a0522d;
 }
+
+.status-badge {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-weight: bold;
+  font-size: 13px;
+  text-transform: uppercase;
+}
+
+.status-badge.pending {
+  background-color: #ffdd57;
+  color: #5c4500;
+}
+
+.status-badge.in-progress {
+  background-color: #87ceeb;
+  color: #004466;
+}
+
+.status-badge.delivered {
+  background-color: #90ee90;
+  color: #155724;
+}

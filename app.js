@@ -285,6 +285,15 @@ app.controller('CakeController', function ($scope, $http) {
   $scope.closeOrderHistory = function () {
     $scope.orderHistoryVisible = false;
   };
+
+  $scope.updateOrderStatus = function (order) {
+    $http.patch(`/api/admin/order/${order._id}/status`, { status: order.status })
+      .then(() => {
+        console.log('✅ Status updated');
+      }, () => {
+        alert("Failed to update order status.");
+      });
+  };  
   
 
   // Init

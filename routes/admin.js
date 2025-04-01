@@ -40,7 +40,7 @@ module.exports = function(db) {
     }
   });
 
-  // Mark order as delivered
+  // Mark order as delivered (optional — you can keep or remove this)
   router.patch('/order/:id/deliver', async (req, res) => {
     try {
       const result = await orders.updateOne(
@@ -57,5 +57,24 @@ module.exports = function(db) {
     }
   });
 
+  // ✅ Update order status to any value (Pending / In Progress / Delivered)
+  router.patch('/order/:id/status', async (req, res) => {
+    const { status } = req.body;
+    try {
+      const result = await orders.updateOne(
+        { _id: new ObjectId(req.params.id) },
+        { $set: { status } }
+      );
+      if (result.modifiedCount === 1) {
+        res.json({ msg: `Order marked as ${status}` });
+      } else {
+        res.status(404).json({ msg: 'Order not found' });
+      }
+    } catch (err) {
+      res.status(500).json({ msg: 'Failed to update order status' });
+    }
+  });
+
   return router;
 };
+

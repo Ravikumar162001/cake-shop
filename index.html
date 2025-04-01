@@ -411,21 +411,27 @@
         <tr ng-repeat="order in userOrders">
           <td>{{order.timestamp | date:'medium'}}</td>
           <td>
-            <ul>
+            <ul style="margin: 0; padding-left: 15px;">
               <li ng-repeat="item in order.items">
                 {{item.name}} (x{{item.qty}})
               </li>
             </ul>
           </td>
           <td>₹{{order.totalAmount}}</td>
-          <td>{{order.status}}</td>
+          <td>
+            <span ng-class="{
+              'status-badge': true,
+              'pending': order.status === 'Pending',
+              'in-progress': order.status === 'In Progress',
+              'delivered': order.status === 'Delivered'
+            }">{{order.status}}</span>
+          </td>
         </tr>
       </table>
 
       <p ng-if="!userOrders.length">You haven't placed any orders yet.</p>
     </div>
   </div>
-
 
   <footer>
     <p>&copy; 2025 Sweet Bites | Call us: +91 98765-43210</p>
