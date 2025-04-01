@@ -40,6 +40,9 @@ app.controller('CakeController', function ($scope, $http) {
   $scope.allMessages = [];
   $scope.imagePreview = null;
   $scope.editingCakeId = null;
+  $scope.userOrders = [];
+  $scope.orderHistoryVisible = false;
+
 
   // 📌 Utility to update cart map for quick quantity lookup
   $scope.updateCartMap = function () {
@@ -268,6 +271,21 @@ app.controller('CakeController', function ($scope, $http) {
         $scope.cakes = res.data;
       });
   };
+  
+  $scope.fetchUserOrders = function () {
+    $http.get(`/api/orders/user/${$scope.currentUser}`)
+      .then(res => {
+        $scope.userOrders = res.data;
+        $scope.orderHistoryVisible = true;
+      }, err => {
+        alert("Couldn't load your orders.");
+      });
+  };
+  
+  $scope.closeOrderHistory = function () {
+    $scope.orderHistoryVisible = false;
+  };
+  
 
   // Init
   $scope.fetchCakes();

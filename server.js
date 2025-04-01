@@ -66,6 +66,18 @@ async function run() {
       }
     });
 
+    // ✅ Get Orders for a Specific User
+    app.get('/api/orders/user/:email', async (req, res) => {
+      try {
+        const email = req.params.email;
+        const orders = await ordersCollection.find({ userEmail: email }).sort({ timestamp: -1 }).toArray();
+        res.json(orders);
+      } catch (err) {
+        console.error('❌ Failed to fetch user orders:', err);
+        res.status(500).json({ msg: 'Failed to fetch user orders' });
+      }
+    });
+
     // ✅ Save Contact Message
     app.post('/api/contact', async (req, res) => {
       try {

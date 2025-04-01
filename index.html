@@ -130,6 +130,7 @@
       <button ng-if="!currentUser" ng-click="openAuthModal('login')">Login</button>
       <button ng-if="!currentUser" ng-click="openAuthModal('signup')">Sign Up</button>
       <button ng-if="currentUser" ng-click="logout()">Logout</button>
+      <button ng-if="currentUser" ng-click="fetchUserOrders()">My Orders</button>
       <button ng-click="cartVisible = true">🛒 Cart ({{cart.length}})</button>
  
       <!-- Admin button -->
@@ -393,6 +394,38 @@
       </form>
     </div>
   </div>
+
+    <!-- 🕒 User Order History Modal -->
+  <div class="auth-modal" ng-show="orderHistoryVisible">
+    <div class="auth-box">
+      <div class="auth-close" ng-click="closeOrderHistory()">&times;</div>
+      <h3>My Orders</h3>
+
+      <table ng-if="userOrders.length">
+        <tr>
+          <th>Date</th>
+          <th>Items</th>
+          <th>Total</th>
+          <th>Status</th>
+        </tr>
+        <tr ng-repeat="order in userOrders">
+          <td>{{order.timestamp | date:'medium'}}</td>
+          <td>
+            <ul>
+              <li ng-repeat="item in order.items">
+                {{item.name}} (x{{item.qty}})
+              </li>
+            </ul>
+          </td>
+          <td>₹{{order.totalAmount}}</td>
+          <td>{{order.status}}</td>
+        </tr>
+      </table>
+
+      <p ng-if="!userOrders.length">You haven't placed any orders yet.</p>
+    </div>
+  </div>
+
 
   <footer>
     <p>&copy; 2025 Sweet Bites | Call us: +91 98765-43210</p>
