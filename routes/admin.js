@@ -1,12 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const { ObjectId } = require('mongodb');
+const { sendOrderStatusEmail } = require('../mailer'); // ✅ Email function
 
 module.exports = function(db) {
   const orders = db.collection('orders');
   const contacts = db.collection('contacts');
 
-  // Get all orders
+  // ✅ Get all orders
   router.get('/orders', async (req, res) => {
     try {
       const allOrders = await orders.find().toArray();
@@ -16,7 +17,7 @@ module.exports = function(db) {
     }
   });
 
-  // Get all contact messages
+  // ✅ Get all contact messages
   router.get('/messages', async (req, res) => {
     try {
       const allMessages = await contacts.find().toArray();
@@ -26,7 +27,7 @@ module.exports = function(db) {
     }
   });
 
-  // Delete an order
+  // ✅ Delete an order
   router.delete('/order/:id', async (req, res) => {
     try {
       const result = await orders.deleteOne({ _id: new ObjectId(req.params.id) });
@@ -40,7 +41,7 @@ module.exports = function(db) {
     }
   });
 
-  // Mark order as delivered (optional — you can keep or remove this)
+  // ✅ Mark order as delivered (optional)
   router.patch('/order/:id/deliver', async (req, res) => {
     try {
       const result = await orders.updateOne(
@@ -57,19 +58,21 @@ module.exports = function(db) {
     }
   });
 
-  // ✅ Update order status to any value (Pending / In Progress / Delivered)
+  // ✅ Update order status & send email to user
   router.patch('/order/:id/status', async (req, res) => {
     const { status } = req.body;
     try {
-      const result = await orders.updateOne(
-        { _id: new ObjectId(req.params.id) },
-        { $set: { status } }
-      );
-      if (result.modifiedCount === 1) {
-        res.json({ msg: `Order marked as ${status}` });
-      } else {
-        res.status(404).json({ msg: 'Order not found' });
-      }
+      const order = await orders.findOne({ _id: new ObjectId(req.params.id) });
+      if (!order) return res.status(404).json({ msg: 'Order not found' });
+
+      await orders.updateOne({ _id: new ObjectId(req.params.id) }, { $set: { status } });
+
+      // ✅ Send status update email to user
+      sendOrderStatusEmail(order.userEmail, order.name, status)
+        .then(() => console.log(`✅ Status email sent to ${order.userEmail}`))
+        .catch(err => console.error('❌ Status email failed:', err));
+
+      res.json({ msg: `Order marked as ${status}` });
     } catch (err) {
       res.status(500).json({ msg: 'Failed to update order status' });
     }
@@ -77,4 +80,3 @@ module.exports = function(db) {
 
   return router;
 };
-

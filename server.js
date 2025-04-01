@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const { MongoClient } = require('mongodb');
 const path = require('path');
 const fs = require('fs');
+const { sendOrderEmail } = require('./mailer'); // ✅ Import email function
 
 // ===== Middleware =====
 app.use(cors());
@@ -54,11 +55,18 @@ async function run() {
       }
     });
 
-    // ✅ Save Order
+    // ✅ Save Order and Send Email
     app.post('/api/order', async (req, res) => {
       try {
-        console.log('📦 Order Received:', req.body);
-        await ordersCollection.insertOne(req.body);
+        const order = req.body;
+        console.log('📦 Order Received:', order);
+        await ordersCollection.insertOne(order);
+
+        // ✅ Send Confirmation Email
+        sendOrderEmail(order.userEmail, order)
+          .then(() => console.log('✅ Confirmation email sent'))
+          .catch(err => console.error('❌ Email send failed:', err));
+
         res.send({ message: 'Order received successfully and saved to database!' });
       } catch (err) {
         console.error('❌ Order Save Failed:', err);
