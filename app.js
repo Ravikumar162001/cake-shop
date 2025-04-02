@@ -107,10 +107,10 @@ app.controller('CakeController', function ($scope, $http) {
       .then(res => {
         localStorage.setItem('token', res.data.token);
         localStorage.setItem('userEmail', res.data.email);
-        localStorage.setItem('userName', res.data.name); // 👈 This is critical!
+        localStorage.setItem('userName', res.data.name); // ✅ MUST BE HERE
   
         $scope.currentUser = res.data.email;
-        $scope.currentUserName = res.data.name;          // 👈 This too!
+        $scope.currentUserName = res.data.name; // ✅ Also in $scope
   
         $scope.authModalVisible = false;
         $scope.login = {};
@@ -118,8 +118,6 @@ app.controller('CakeController', function ($scope, $http) {
         $scope.loginMessage = err.data.msg || "Login failed.";
       });
   };
-  
-  
 
   $scope.signupUser = function () {
     $http.post('/api/auth/signup', $scope.signup)
