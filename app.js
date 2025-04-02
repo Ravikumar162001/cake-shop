@@ -21,7 +21,6 @@ app.controller('CakeController', function ($scope, $http) {
   $scope.cart = [];
   $scope.cartMap = {};
   $scope.order = {};
-  $scope.contact = {};
   $scope.login = {};
   $scope.signup = {};
   $scope.newCake = {};
@@ -188,14 +187,6 @@ app.controller('CakeController', function ($scope, $http) {
         $scope.checkoutVisible = false;
       }, err => {
         alert("Failed to place order.");
-      });
-  };
-
-  $scope.sendMessage = function () {
-    $http.post('/api/contact', $scope.contact)
-      .then(res => {
-        $scope.messageSuccess = res.data.message;
-        $scope.contact = {};
       });
   };
 
