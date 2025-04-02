@@ -439,17 +439,26 @@
     </div>
   </div>
 
-    <!-- Write a Review -->
-  <h3>Leave a Review</h3>
-  <form ng-submit="submitReview()">
-    <label>Your Name:</label>
-    <input type="text" ng-model="newReview.name" required>
+  <!-- Customer Reviews -->
+  <section class="reviews">
+    <h2>Customer Reviews</h2>
 
-    <label>Review Message:</label>
-    <textarea ng-model="newReview.message" required></textarea>
+    <div class="review-card" ng-repeat="review in reviews">
+      <p>"{{review.message}}"</p>
+      <p>- {{review.name}}</p>
+    </div>
 
-    <button type="submit">Submit Review</button>
-  </form>
+    <h3>Leave a Review</h3>
+    <form ng-submit="submitReview()" class="review-form">
+      <label>Your Name:</label>
+      <input type="text" ng-model="newReview.name" required>
+
+      <label>Review Message:</label>
+      <textarea ng-model="newReview.message" required></textarea>
+
+      <button type="submit">Submit Review</button>
+    </form>
+  </section>
 
 
   <footer>
