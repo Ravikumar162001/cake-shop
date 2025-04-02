@@ -243,6 +243,26 @@ footer {
   background-color: #a0522d;
 }
 
+.contact-toggle {
+  text-align: center;
+  margin: 30px auto;
+}
+
+.toggle-btn {
+  background-color: #d2691e;
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.toggle-btn:hover {
+  background-color: #a0522d;
+}
+
 .contact-info {
   background: #fff;
   padding: 20px;
@@ -253,4 +273,3 @@ footer {
   font-size: 16px;
   line-height: 1.6;
 }
-

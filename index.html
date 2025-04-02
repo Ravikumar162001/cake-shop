@@ -161,13 +161,18 @@
     </div>
   </section>
 
-  <!-- Contact Info -->
-  <section class="contact-info">
-    <h2>Contact Us</h2>
-    <p><strong>Phone:</strong> +91 98765-43210</p>
-    <p><strong>Email:</strong> sweetbitescakes@gmail.com</p>
-    <p><strong>Location:</strong> Coimbatore, Tamil Nadu, India</p>
-    <p>We’re available 7 days a week from 9am to 9pm 🍰</p>
+  <!-- Contact Toggle -->
+  <section class="contact-toggle">
+    <button class="toggle-btn" ng-click="showContactInfo = !showContactInfo">
+      📞 Contact Us
+    </button>
+
+    <div class="contact-info" ng-show="showContactInfo">
+      <p><strong>Phone:</strong> +91 98765-43210</p>
+      <p><strong>Email:</strong> sweetbitescakes@gmail.com</p>
+      <p><strong>Location:</strong> Coimbatore, Tamil Nadu, India</p>
+      <p>We’re available 7 days a week from 9am to 9pm 🍰</p>
+    </div>
   </section>
 
   <!-- Admin Dashboard Modal -->
