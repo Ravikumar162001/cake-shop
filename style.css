@@ -147,17 +147,24 @@ button:hover {
 }
 
 @media (max-width: 600px) {
+  /* 🧁 Header Section */
+  header {
+    padding: 10px 0;
+    text-align: center;
+  }
+
   header h1 {
     font-size: 22px;
-    text-align: center;
+    margin: 0;
   }
 
   header p {
     font-size: 13px;
-    text-align: center;
     padding: 0 10px;
+    margin-bottom: 10px;
   }
 
+  /* ✅ Auth Buttons Layout */
   .auth-buttons-header {
     position: static;
     display: flex;
@@ -165,40 +172,32 @@ button:hover {
     align-items: center;
     gap: 8px;
     margin-top: 10px;
+    width: 100%;
+    padding: 0 15px;
   }
 
   .auth-buttons-header span {
     font-size: 14px;
+    align-self: flex-start;
   }
 
   .auth-buttons-header button {
-    width: 90%;
-    max-width: 180px;
+    width: 100%;
+    max-width: 280px;
     font-size: 14px;
+    padding: 10px;
   }
 
+  /* 🖼 Carousel */
   .carousel img {
     width: 100%;
     height: auto;
   }
 
+  /* 🧾 Forms & Inputs */
   .auth-box input,
   .auth-box button,
   .admin-box button {
-    width: 100%;
-  }
-
-  .admin-button {
-    width: 100%;
-    margin-top: 10px;
-  }
-
-  .cake-card {
-    width: 95%;
-    margin: 10px 0;
-  }
-
-  .review-form button {
     width: 100%;
   }
 
@@ -206,6 +205,24 @@ button:hover {
     padding: 20px;
   }
 
+  /* 🍰 Cakes */
+  .cake-card {
+    width: 95%;
+    margin: 10px auto;
+  }
+
+  /* 👩‍🍳 Admin Button */
+  .admin-button {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  /* ✍️ Reviews */
+  .review-form button {
+    width: 100%;
+  }
+
+  /* 📞 Footer Contact Info */
   footer {
     font-size: 14px;
     text-align: center;
@@ -221,6 +238,7 @@ button:hover {
     font-size: 14px;
   }
 }
+
 
 
 
