@@ -20,11 +20,6 @@ app.controller('CakeController', function ($scope, $http) {
   $scope.cakes = [];
   $scope.cart = [];
   $scope.cartMap = {};
-  $scope.reviews = [
-    { name: 'Priya', message: 'Best homemade cakes in town! Highly recommended.' },
-    { name: 'Rahul', message: 'Delicious and fresh, will order again!' }
-  ];
-
   $scope.order = {};
   $scope.contact = {};
   $scope.login = {};
@@ -289,8 +284,30 @@ app.controller('CakeController', function ($scope, $http) {
         alert("Failed to update order status.");
       });
   };  
-  
+
+  $scope.reviews = [];
+
+  $scope.fetchReviews = function () {
+    $http.get('/api/reviews')
+      .then(res => {
+        $scope.reviews = res.data;
+      });
+  };
+
+  $scope.newReview = {};
+
+  $scope.submitReview = function () {
+    if (!$scope.newReview.name || !$scope.newReview.message) return alert('Please fill all fields');
+    $http.post('/api/review', $scope.newReview)
+      .then(() => {
+        alert("Thanks for your review!");
+        $scope.newReview = {};
+        $scope.fetchReviews(); // Refresh
+      }, () => alert("Failed to submit review"));
+  };
 
   // Init
   $scope.fetchCakes();
+  $scope.fetchReviews();
+
 });

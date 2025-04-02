@@ -439,6 +439,19 @@
     </div>
   </div>
 
+    <!-- Write a Review -->
+  <h3>Leave a Review</h3>
+  <form ng-submit="submitReview()">
+    <label>Your Name:</label>
+    <input type="text" ng-model="newReview.name" required>
+
+    <label>Review Message:</label>
+    <textarea ng-model="newReview.message" required></textarea>
+
+    <button type="submit">Submit Review</button>
+  </form>
+
+
   <footer>
     <p>&copy; 2025 Sweet Bites | Call us: +91 98765-43210</p>
   </footer>

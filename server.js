@@ -32,6 +32,7 @@ async function run() {
     const db = client.db('cakeShop');
     const ordersCollection = db.collection('orders');
     const contactsCollection = db.collection('contacts');
+    const reviewsCollection = db.collection('reviews'); // ✅ New collection
 
     // ✅ Auth Routes
     const authRoutes = require('./auth')(db);
@@ -95,6 +96,31 @@ async function run() {
       } catch (err) {
         console.error('❌ Contact Save Failed:', err);
         res.status(500).send({ message: 'Failed to save contact message' });
+      }
+    });
+
+    // ✅ Save Review
+    app.post('/api/review', async (req, res) => {
+      try {
+        const { name, message } = req.body;
+        if (!name || !message) return res.status(400).send({ message: 'Name and message required' });
+
+        await reviewsCollection.insertOne({ name, message });
+        res.send({ message: 'Review saved!' });
+      } catch (err) {
+        console.error('❌ Failed to save review:', err);
+        res.status(500).send({ message: 'Error saving review' });
+      }
+    });
+
+    // ✅ Get All Reviews
+    app.get('/api/reviews', async (req, res) => {
+      try {
+        const reviews = await reviewsCollection.find().sort({ _id: -1 }).toArray();
+        res.json(reviews);
+      } catch (err) {
+        console.error('❌ Failed to fetch reviews:', err);
+        res.status(500).send({ message: 'Error fetching reviews' });
       }
     });
 
