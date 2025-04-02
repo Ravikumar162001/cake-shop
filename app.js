@@ -37,7 +37,8 @@ app.controller('CakeController', function ($scope, $http) {
   $scope.editingCakeId = null;
   $scope.userOrders = [];
   $scope.orderHistoryVisible = false;
-
+  $scope.currentUser = localStorage.getItem('userEmail') || null;
+  $scope.currentUserName = localStorage.getItem('userName') || null;
 
   // 📌 Utility to update cart map for quick quantity lookup
   $scope.updateCartMap = function () {
@@ -84,9 +85,11 @@ app.controller('CakeController', function ($scope, $http) {
   $scope.logout = function () {
     localStorage.clear();
     $scope.currentUser = null;
+    $scope.currentUserName = null;
     $scope.adminModalVisible = false;
     alert("Logged out.");
   };
+  
 
   $scope.openAuthModal = function (mode) {
     $scope.authMode = mode;
@@ -104,13 +107,16 @@ app.controller('CakeController', function ($scope, $http) {
       .then(res => {
         localStorage.setItem('token', res.data.token);
         localStorage.setItem('userEmail', res.data.email);
+        localStorage.setItem('userName', res.data.name); // 👈 add this
         $scope.currentUser = res.data.email;
+        $scope.currentUserName = res.data.name; // 👈 set in scope
         $scope.authModalVisible = false;
         $scope.login = {};
       }, err => {
         $scope.loginMessage = err.data.msg || "Login failed.";
       });
   };
+  
 
   $scope.signupUser = function () {
     $http.post('/api/auth/signup', $scope.signup)

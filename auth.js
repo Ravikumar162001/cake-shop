@@ -22,8 +22,10 @@ module.exports = function (db) {
 
     await users.insertOne({ name, email, password: hashedPassword, role });
 
-    const token = jwt.sign({ email, role }, JWT_SECRET, { expiresIn: '2d' });
-    res.json({ token, email, role });
+    const token = jwt.sign({ email, role, name }, JWT_SECRET, { expiresIn: '2d' });
+
+    // 👇 Include name in the response
+    res.json({ token, email, role, name });
   });
 
   // ✅ Login Route
@@ -35,9 +37,14 @@ module.exports = function (db) {
       return res.status(400).json({ msg: 'Invalid credentials' });
     }
 
-    // ✅ Include role in token
-    const token = jwt.sign({ email: user.email, role: user.role }, JWT_SECRET, { expiresIn: '2d' });
-    res.json({ token, email: user.email, role: user.role });
+    const token = jwt.sign(
+      { email: user.email, role: user.role, name: user.name },
+      JWT_SECRET,
+      { expiresIn: '2d' }
+    );
+
+    // 👇 Include name in the response
+    res.json({ token, email: user.email, role: user.role, name: user.name });
   });
 
   return router;

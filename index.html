@@ -126,7 +126,7 @@
     <p>Fresh Homemade Cakes for Every Occasion</p>
   
     <div class="auth-buttons-header">
-      <span ng-if="currentUser">Welcome, {{currentUser}}!</span>
+      <span ng-if="currentUser">Welcome, {{currentUserName}}!</span>
       <button ng-if="!currentUser" ng-click="openAuthModal('login')">Login</button>
       <button ng-if="!currentUser" ng-click="openAuthModal('signup')">Sign Up</button>
       <button ng-if="currentUser" ng-click="logout()">Logout</button>
