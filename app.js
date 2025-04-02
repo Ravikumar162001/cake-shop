@@ -350,6 +350,14 @@ app.controller('CakeController', function ($scope, $http) {
         $scope.forgotMsg = err.data.msg || "Failed to reset password.";
       });
   };
+
+  $scope.openForgotPassword = function () {
+    $scope.authModalVisible = false;
+    $scope.forgotModalVisible = true;
+    $scope.forgot = {};
+    $scope.otpSent = false;
+    $scope.forgotMsg = '';
+  };
   
 
   // Init
