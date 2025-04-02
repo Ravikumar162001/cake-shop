@@ -39,6 +39,11 @@ app.controller('CakeController', function ($scope, $http) {
   $scope.orderHistoryVisible = false;
   $scope.currentUser = localStorage.getItem('userEmail') || null;
   $scope.currentUserName = localStorage.getItem('userName') || null;
+  $scope.forgotModalVisible = false;
+  $scope.forgot = {};
+  $scope.otpSent = false;
+  $scope.forgotMsg = '';
+
 
   // 📌 Utility to update cart map for quick quantity lookup
   $scope.updateCartMap = function () {
@@ -311,6 +316,39 @@ app.controller('CakeController', function ($scope, $http) {
     }, err => {
       alert(err.data.msg || "Failed to submit review.");
     });
+  };
+
+  $scope.sendOtp = function () {
+    if (!$scope.forgot.email) return alert('Please enter your email');
+  
+    $http.post('/api/auth/forgot-password', { email: $scope.forgot.email })
+      .then(res => {
+        $scope.otpSent = true;
+        $scope.forgotMsg = "OTP sent to your email.";
+      }, err => {
+        $scope.forgotMsg = err.data.msg || "Failed to send OTP.";
+      });
+  };
+
+  $scope.resetPassword = function () {
+    if (!$scope.forgot.otp || !$scope.forgot.newPassword) return alert('Please fill all fields');
+  
+    const data = {
+      email: $scope.forgot.email,
+      otp: $scope.forgot.otp,
+      newPassword: $scope.forgot.newPassword
+    };
+  
+    $http.post('/api/auth/reset-password', data)
+      .then(res => {
+        alert("Password reset successful. You can now login.");
+        $scope.forgotModalVisible = false;
+        $scope.forgot = {};
+        $scope.otpSent = false;
+        $scope.forgotMsg = '';
+      }, err => {
+        $scope.forgotMsg = err.data.msg || "Failed to reset password.";
+      });
   };
   
 

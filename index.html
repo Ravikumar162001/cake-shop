@@ -132,6 +132,8 @@
       <button ng-if="currentUser" ng-click="logout()">Logout</button>
       <button ng-if="currentUser" ng-click="fetchUserOrders()">My Orders</button>
       <button ng-click="cartVisible = true">🛒 Cart ({{cart.length}})</button>
+      <p><a href="" ng-click="forgotModalVisible = true">Forgot Password?</a></p>
+
  
       <!-- Admin button -->
       <button class="admin-button" ng-if="currentUser === 'ravikumar162001@gmail.com'" ng-click="openAdminDashboard()">
@@ -438,6 +440,32 @@
     </p>
     
   </section>
+
+    <!-- 🔐 Forgot Password Modal -->
+  <div class="modal" ng-show="forgotModalVisible">
+    <div class="modal-box">
+      <span class="modal-close" ng-click="forgotModalVisible = false">&times;</span>
+      <h3>Forgot Password</h3>
+
+      <div ng-if="!otpSent">
+        <label>Email:</label>
+        <input type="email" ng-model="forgot.email" required>
+        <button ng-click="sendOtp()">Send OTP</button>
+      </div>
+
+      <div ng-if="otpSent">
+        <label>OTP:</label>
+        <input type="text" ng-model="forgot.otp" required>
+
+        <label>New Password:</label>
+        <input type="password" ng-model="forgot.newPassword" required>
+
+        <button ng-click="resetPassword()">Reset Password</button>
+      </div>
+
+      <p style="margin-top: 10px;" ng-if="forgotMsg">{{forgotMsg}}</p>
+    </div>
+  </div>
 
 
   <footer>

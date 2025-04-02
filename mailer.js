@@ -49,7 +49,27 @@ function sendOrderStatusEmail(to, name, status) {
   return transporter.sendMail(mailOptions);
 }
 
+// ✅ Send OTP Email for password reset
+function sendOtpEmail(to, otp) {
+  const mailOptions = {
+    from: process.env.EMAIL_USER,
+    to,
+    subject: 'Sweet Bites - Password Reset OTP',
+    html: `
+      <h3>Reset Your Password</h3>
+      <p>Use the OTP below to reset your password:</p>
+      <h2 style="color:#d2691e;">${otp}</h2>
+      <p>This OTP is valid for 10 minutes.</p>
+      <br>
+      <p>If you didn’t request this, please ignore the email.</p>
+    `
+  };
+
+  return transporter.sendMail(mailOptions);
+}
+
 module.exports = {
   sendOrderEmail,
-  sendOrderStatusEmail
+  sendOrderStatusEmail,
+  sendOtpEmail // ✅ Exported OTP function
 };
