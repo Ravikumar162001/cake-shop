@@ -92,6 +92,100 @@ button:hover {
   border-left: 5px solid #d2691e;
 }
 
+/* ======================= */
+/* 📱 Responsive Design 🧁 */
+/* ======================= */
+
+@media (max-width: 900px) {
+  .cakes {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .cake-card {
+    width: 90%;
+  }
+
+  .auth-box,
+  .admin-box,
+  .modal-box {
+    max-width: 95%;
+    padding: 20px;
+  }
+
+  .auth-buttons-header {
+    position: static;
+    text-align: center;
+    margin-top: 15px;
+  }
+
+  .auth-buttons-header button {
+    margin: 5px;
+    width: auto;
+  }
+
+  table, th, td {
+    font-size: 12px;
+  }
+
+  .admin-box table {
+    overflow-x: auto;
+    display: block;
+  }
+}
+
+@media (max-width: 600px) {
+  header h1 {
+    font-size: 24px;
+  }
+
+  header p {
+    font-size: 14px;
+  }
+
+  .auth-buttons-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .carousel img {
+    height: auto;
+  }
+
+  .auth-box input,
+  .auth-box button,
+  .admin-box button {
+    width: 100%;
+  }
+
+  .admin-button {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .cake-card {
+    margin: 10px 0;
+  }
+
+  .review-form button {
+    width: 100%;
+  }
+
+  .modal-box {
+    padding: 20px;
+  }
+
+  footer {
+    font-size: 14px;
+  }
+
+  footer .toggle-btn {
+    width: 90%;
+  }
+}
+
+
 /* ========================= */
 /* ===== Admin Styles ====== */
 /* ========================= */
