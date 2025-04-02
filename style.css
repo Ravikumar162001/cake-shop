@@ -170,22 +170,35 @@ button:hover {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 8px;
-    margin-top: 10px;
-    width: 100%;
+    justify-content: center;
+    gap: 6px;
+    margin: 8px 0 15px 0;
     padding: 0 15px;
+    width: 100%;
   }
 
   .auth-buttons-header span {
     font-size: 14px;
     align-self: flex-start;
+    margin-bottom: 5px;
   }
 
   .auth-buttons-header button {
     width: 100%;
-    max-width: 280px;
-    font-size: 14px;
-    padding: 10px;
+    max-width: 240px;
+    font-size: 15px;
+    padding: 10px 0;
+    border: 2px solid #d2691e;
+    border-radius: 8px;
+    background-color: #fff;
+    color: #d2691e;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease;
+  }
+
+  .auth-buttons-header button:hover {
+    background-color: #d2691e;
+    color: white;
   }
 
   /* 🖼 Carousel */
@@ -238,9 +251,6 @@ button:hover {
     font-size: 14px;
   }
 }
-
-
-
 
 /* ========================= */
 /* ===== Admin Styles ====== */
