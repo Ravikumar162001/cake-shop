@@ -445,32 +445,43 @@
     
   </section>
 
-    <!-- 🔐 Forgot Password Modal -->
+  <!-- 🔐 Forgot Password Modal -->
   <div class="modal" ng-show="forgotModalVisible">
     <div class="modal-box">
       <span class="modal-close" ng-click="forgotModalVisible = false">&times;</span>
       <h3>Forgot Password</h3>
 
+      <!-- Step 1: Email Input -->
       <div ng-if="!otpSent">
         <label>Email:</label>
-        <input type="email" ng-model="forgot.email" required>
+        <input type="email" ng-model="forgot.email" required style="width: 100%; margin-bottom: 10px;">
         <button ng-click="sendOtp()">Send OTP</button>
       </div>
 
+      <!-- Step 2: OTP + New Password -->
       <div ng-if="otpSent">
-        <label>OTP:</label>
-        <input type="text" ng-model="forgot.otp" required>
+        <div style="margin-bottom: 10px;">
+          <label>OTP:</label>
+          <input type="text" ng-model="forgot.otp" required style="width: 100%;">
+        </div>
 
-        <label>New Password:</label>
-        <input type="password" ng-model="forgot.newPassword" required>
+        <div style="margin-bottom: 10px;">
+          <label>New Password:</label>
+          <input type="password" ng-model="forgot.newPassword" required style="width: 100%;">
+        </div>
 
         <button ng-click="resetPassword()">Reset Password</button>
       </div>
 
+      <!-- Feedback Message -->
       <p style="margin-top: 10px;" ng-if="forgotMsg">{{forgotMsg}}</p>
+
+      <!-- Optional: Back to Login -->
+      <p style="text-align:center; margin-top: 15px;">
+        <a href="" ng-click="forgotModalVisible = false; authModalVisible = true">← Back to Login</a>
+      </p>
     </div>
   </div>
-
 
   <footer>
     <p>&copy; 2025 Sweet Bites</p>
