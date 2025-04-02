@@ -1,7 +1,7 @@
-// verifyToken.js
 const jwt = require('jsonwebtoken');
-const JWT_SECRET = 'supersecretcaketime'; // same as in auth.js
+const JWT_SECRET = 'supersecretcaketime'; // should match what's in auth.js
 
+// ✅ Middleware to verify any logged-in user
 function verifyToken(req, res, next) {
   const authHeader = req.headers.authorization;
   if (!authHeader) return res.status(401).json({ msg: 'No token provided' });
@@ -11,10 +11,20 @@ function verifyToken(req, res, next) {
 
   jwt.verify(token, JWT_SECRET, (err, decoded) => {
     if (err) return res.status(401).json({ msg: 'Invalid token' });
-    req.user = decoded; // decoded.email
+    req.user = decoded; // contains email & role
     next();
   });
 }
 
-module.exports = verifyToken;
+// ✅ Middleware to allow only admin users
+function verifyAdmin(req, res, next) {
+  if (req.user?.role !== 'admin') {
+    return res.status(403).json({ msg: 'Access denied: Admins only' });
+  }
+  next();
+}
 
+module.exports = {
+  verifyToken,
+  verifyAdmin
+};

@@ -6,7 +6,7 @@ const { MongoClient } = require('mongodb');
 const path = require('path');
 const fs = require('fs');
 const { sendOrderEmail } = require('./mailer');
-const verifyToken = require('./verifyToken'); // ✅ Import JWT middleware
+const { verifyToken, verifyAdmin } = require('./verifyToken'); // ✅ Import JWT + Admin check
 
 // ===== Middleware =====
 app.use(cors());
@@ -39,9 +39,9 @@ async function run() {
     const authRoutes = require('./auth')(db);
     app.use('/api/auth', authRoutes);
 
-    // ✅ Admin Routes
+    // ✅ Admin Routes (protected)
     const adminRoutes = require('./routes/admin')(db);
-    app.use('/api/admin', adminRoutes);
+    app.use('/api/admin', verifyToken, verifyAdmin, adminRoutes); // 🔐 Secure with both
 
     // ✅ Upload Routes
     const uploadRoutes = require('./routes/upload')(db);
@@ -103,7 +103,7 @@ async function run() {
     app.post('/api/review', verifyToken, async (req, res) => {
       try {
         const { message } = req.body;
-        const name = req.user.email.split('@')[0]; // name derived from email
+        const name = req.user.email.split('@')[0]; // derive name from email
 
         if (!message) return res.status(400).send({ message: 'Review message required' });
 
