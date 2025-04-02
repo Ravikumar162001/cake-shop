@@ -289,14 +289,23 @@ app.controller('CakeController', function ($scope, $http) {
   $scope.newReview = {};
 
   $scope.submitReview = function () {
-    if (!$scope.newReview.name || !$scope.newReview.message) return alert('Please fill all fields');
-    $http.post('/api/review', $scope.newReview)
-      .then(() => {
-        alert("Thanks for your review!");
-        $scope.newReview = {};
-        $scope.fetchReviews(); // Refresh
-      }, () => alert("Failed to submit review"));
+    if (!$scope.newReview.message) return alert('Please enter a message');
+  
+    const token = localStorage.getItem('token');
+  
+    $http.post('/api/review', $scope.newReview, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }).then(() => {
+      alert("Thanks for your review!");
+      $scope.newReview = {};
+      $scope.fetchReviews();
+    }, err => {
+      alert(err.data.msg || "Failed to submit review.");
+    });
   };
+  
 
   // Init
   $scope.fetchCakes();

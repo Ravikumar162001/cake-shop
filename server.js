@@ -5,7 +5,8 @@ const bodyParser = require('body-parser');
 const { MongoClient } = require('mongodb');
 const path = require('path');
 const fs = require('fs');
-const { sendOrderEmail } = require('./mailer'); // ✅ Import email function
+const { sendOrderEmail } = require('./mailer');
+const verifyToken = require('./verifyToken'); // ✅ Import JWT middleware
 
 // ===== Middleware =====
 app.use(cors());
@@ -32,7 +33,7 @@ async function run() {
     const db = client.db('cakeShop');
     const ordersCollection = db.collection('orders');
     const contactsCollection = db.collection('contacts');
-    const reviewsCollection = db.collection('reviews'); // ✅ New collection
+    const reviewsCollection = db.collection('reviews');
 
     // ✅ Auth Routes
     const authRoutes = require('./auth')(db);
@@ -42,11 +43,11 @@ async function run() {
     const adminRoutes = require('./routes/admin')(db);
     app.use('/api/admin', adminRoutes);
 
-    // ✅ Upload Routes (cake image + data)
+    // ✅ Upload Routes
     const uploadRoutes = require('./routes/upload')(db);
     app.use('/api/upload', uploadRoutes);
 
-    // ✅ Get Cakes from DB
+    // ✅ Get Cakes
     app.get('/api/cakes', async (req, res) => {
       try {
         const cakes = await db.collection('cakes').find().toArray();
@@ -56,14 +57,13 @@ async function run() {
       }
     });
 
-    // ✅ Save Order and Send Email
+    // ✅ Save Order & Send Email
     app.post('/api/order', async (req, res) => {
       try {
         const order = req.body;
         console.log('📦 Order Received:', order);
         await ordersCollection.insertOne(order);
 
-        // ✅ Send Confirmation Email
         sendOrderEmail(order.userEmail, order)
           .then(() => console.log('✅ Confirmation email sent'))
           .catch(err => console.error('❌ Email send failed:', err));
@@ -75,7 +75,7 @@ async function run() {
       }
     });
 
-    // ✅ Get Orders for a Specific User
+    // ✅ Get User Orders
     app.get('/api/orders/user/:email', async (req, res) => {
       try {
         const email = req.params.email;
@@ -99,11 +99,13 @@ async function run() {
       }
     });
 
-    // ✅ Save Review
-    app.post('/api/review', async (req, res) => {
+    // ✅ Save Review (secured with JWT)
+    app.post('/api/review', verifyToken, async (req, res) => {
       try {
-        const { name, message } = req.body;
-        if (!name || !message) return res.status(400).send({ message: 'Name and message required' });
+        const { message } = req.body;
+        const name = req.user.email.split('@')[0]; // name derived from email
+
+        if (!message) return res.status(400).send({ message: 'Review message required' });
 
         await reviewsCollection.insertOne({ name, message });
         res.send({ message: 'Review saved!' });
@@ -124,7 +126,7 @@ async function run() {
       }
     });
 
-    // ✅ Serve index.html as default route
+    // ✅ Serve index.html
     app.get('/', (req, res) => {
       res.sendFile(path.join(__dirname, 'index.html'));
     });
