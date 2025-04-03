@@ -124,13 +124,16 @@
   
     <!-- Dropdown Menu -->
     <div class="dropdown-menu" ng-show="menuOpen">
-      <button ng-click="menuOpen = false">🏠 Home</button>
+      <button ng-click="scrollToTop(); menuOpen = false">🏠 Home</button>
       <button ng-if="!currentUser" ng-click="openAuthModal('login'); menuOpen = false">👤 Login</button>
       <button ng-if="!currentUser" ng-click="openAuthModal('signup'); menuOpen = false">📝 Sign Up</button>
       <button ng-if="currentUser" ng-click="fetchUserOrders(); menuOpen = false">📦 My Orders</button>
-      <button ng-click="scrollToContact(); menuOpen = false">📞 Contact Us</button>
+      <button ng-click="openContactModal(); menuOpen = false">📞 Contact Us</button>
       <button class="admin-button" ng-if="currentUser === 'ravikumar162001@gmail.com'" ng-click="openAdminDashboard(); menuOpen = false">🛠 Admin Dashboard</button>
       <button ng-if="currentUser" ng-click="logout(); menuOpen = false">🚪 Logout</button>
+    </div>
+    <div class="menu-welcome" ng-if="currentUser">
+      👋 Welcome, {{currentUserName}}!
     </div>
   
     <!-- Cart button kept outside menu (optional) -->
@@ -480,6 +483,19 @@
       </p>
     </div>
   </div>
+
+    <!-- 📞 Contact Us Modal -->
+  <div class="auth-modal" ng-show="contactModalVisible">
+    <div class="auth-box">
+      <div class="auth-close" ng-click="contactModalVisible = false">&times;</div>
+      <h3>Contact Us</h3>
+      <p><strong>Phone:</strong> +91 98765-43210</p>
+      <p><strong>Email:</strong> sweetbitescakes@gmail.com</p>
+      <p><strong>Location:</strong> Coimbatore, Tamil Nadu, India</p>
+      <p>We’re available 7 days a week from 9am to 9pm 🍰</p>
+    </div>
+  </div>
+
 
   <footer>
     <p>&copy; 2025 Sweet Bites</p>

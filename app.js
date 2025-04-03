@@ -360,11 +360,21 @@ app.controller('CakeController', function ($scope, $http) {
   };
   
 
-  $scope.scrollToContact = function() {
-    const contact = document.querySelector('footer');
-    if (contact) {
-      contact.scrollIntoView({ behavior: 'smooth' });
-    }
+  // $scope.scrollToContact = function() {
+  //   const contact = document.querySelector('footer');
+  //   if (contact) {
+  //     contact.scrollIntoView({ behavior: 'smooth' });
+  //   }
+  // };
+
+  $scope.contactModalVisible = false;
+  $scope.openContactModal = function () {
+  $scope.contactModalVisible = true;
+};
+
+
+  $scope.scrollToTop = function () {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
   
   // Init

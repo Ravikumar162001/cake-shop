@@ -301,6 +301,14 @@ footer .contact-info {
 }
 
 
+.menu-welcome {
+  padding: 8px 10px;
+  font-weight: bold;
+  color: #d2691e;
+  border-bottom: 1px solid #f1c8a8;
+  margin-bottom: 5px;
+}
+
 .menu-toggle {
   font-size: 26px;
   cursor: pointer;
