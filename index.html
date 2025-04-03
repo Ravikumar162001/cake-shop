@@ -119,21 +119,25 @@
     <h1>Sweet Bites</h1>
     <p>Fresh Homemade Cakes for Every Occasion</p>
   
-    <div class="auth-buttons-header">
-      <span ng-if="currentUser">Welcome, {{currentUserName}}!</span>
-      <button ng-if="!currentUser" ng-click="openAuthModal('login')">Login</button>
-      <button ng-if="!currentUser" ng-click="openAuthModal('signup')">Sign Up</button>
-      <button ng-if="currentUser" ng-click="logout()">Logout</button>
-      <button ng-if="currentUser" ng-click="fetchUserOrders()">My Orders</button>
-      <button ng-click="cartVisible = true">🛒 Cart ({{cart.length}})</button>
- 
-      <!-- Admin button -->
-      <button class="admin-button" ng-if="currentUser === 'ravikumar162001@gmail.com'" ng-click="openAdminDashboard()">
-        Admin Dashboard
-      </button>
+    <!-- Hamburger Menu Icon -->
+    <div class="menu-toggle" ng-click="menuOpen = !menuOpen">☰</div>
+  
+    <!-- Dropdown Menu -->
+    <div class="dropdown-menu" ng-show="menuOpen">
+      <button ng-click="menuOpen = false">🏠 Home</button>
+      <button ng-if="!currentUser" ng-click="openAuthModal('login'); menuOpen = false">👤 Login</button>
+      <button ng-if="!currentUser" ng-click="openAuthModal('signup'); menuOpen = false">📝 Sign Up</button>
+      <button ng-if="currentUser" ng-click="fetchUserOrders(); menuOpen = false">📦 My Orders</button>
+      <button ng-click="scrollToContact(); menuOpen = false">📞 Contact Us</button>
+      <button class="admin-button" ng-if="currentUser === 'ravikumar162001@gmail.com'" ng-click="openAdminDashboard(); menuOpen = false">🛠 Admin Dashboard</button>
+      <button ng-if="currentUser" ng-click="logout(); menuOpen = false">🚪 Logout</button>
+    </div>
+  
+    <!-- Cart button kept outside menu (optional) -->
+    <div class="cart-button-wrapper" ng-click="cartVisible = true">
+      🛒 Cart ({{cart.length}})
     </div>
   </header>
-  
 
   <!-- Carousel -->
   <section class="carousel">

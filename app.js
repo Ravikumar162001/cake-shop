@@ -360,6 +360,13 @@ app.controller('CakeController', function ($scope, $http) {
   };
   
 
+  $scope.scrollToContact = function() {
+    const contact = document.querySelector('footer');
+    if (contact) {
+      contact.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+  
   // Init
   $scope.fetchCakes();
   $scope.fetchReviews();

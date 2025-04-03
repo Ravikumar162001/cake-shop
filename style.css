@@ -299,3 +299,53 @@ footer .contact-info {
   cursor: pointer;
   color: #d2691e;
 }
+
+
+.menu-toggle {
+  font-size: 26px;
+  cursor: pointer;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  color: white;
+  z-index: 100;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 60px;
+  right: 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  z-index: 999;
+  width: 180px;
+}
+
+.dropdown-menu button {
+  background: none;
+  border: none;
+  padding: 10px;
+  text-align: left;
+  font-size: 15px;
+  cursor: pointer;
+  color: #d2691e;
+  font-weight: 600;
+  transition: background 0.2s ease;
+}
+
+.dropdown-menu button:hover {
+  background: #f9e0c9;
+}
+
+.cart-button-wrapper {
+  text-align: right;
+  margin-top: 10px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  padding-right: 20px;
+}
