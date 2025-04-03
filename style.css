@@ -332,9 +332,10 @@ footer {
 }
 
 .logo-img {
-  height: 40px;
-  width: auto;
+  height: 100px;           /* Adjust height to match header bar */
   object-fit: contain;
+  background-color: transparent;
+  border-radius: 6px;      /* Optional: smooth edges */
 }
 
 /* 📦 Right Section: Welcome, Cart, Menu */
