@@ -116,10 +116,7 @@
 
 <body ng-controller="CakeController">
   <header style="position: relative;">
-    <h1>Sweet Bites</h1>
-    <p>Fresh Homemade Cakes for Every Occasion</p>
-  
-    <!-- 📦 Welcome, Cart & Menu Bar Grouped Top Right -->
+    <!-- 📦 Top Right -->
     <div class="top-bar">
       <div class="top-right">
         <div class="welcome" ng-if="currentUser">
@@ -132,6 +129,9 @@
       </div>
     </div>
   
+    <h1>Sweet Bites</h1>
+    <p>Fresh Homemade Cakes for Every Occasion</p>
+  
     <!-- 🍔 Dropdown Menu -->
     <div class="dropdown-menu" ng-show="menuOpen">
       <button ng-click="scrollToTop(); menuOpen = false">🏠 Home</button>
@@ -143,7 +143,7 @@
       <button ng-if="currentUser" ng-click="logout(); menuOpen = false">🚪 Logout</button>
     </div>
   </header>
-
+ 
   <!-- Carousel -->
   <section class="carousel">
     <img src="https://via.placeholder.com/800x300?text=Fresh+Homemade+Cakes" alt="Cake Banner" />
