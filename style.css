@@ -342,12 +342,12 @@ footer {
   height: 100%;
 }
 
-.logo-img {
+/* .logo-img {
   height: 50px;
   width: auto;
   object-fit: contain;
   border-radius: 6px;
-}
+} */
 
 /* 📦 Right Side Controls */
 .top-right {
