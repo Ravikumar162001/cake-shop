@@ -119,12 +119,12 @@
     <h1>Sweet Bites</h1>
     <p>Fresh Homemade Cakes for Every Occasion</p>
   
-    <!-- 📦 Welcome, Cart & Menu in One Top Bar -->
+    <!-- 📦 Welcome, Cart & Menu Bar Grouped Top Right -->
     <div class="top-bar">
-      <div class="welcome" ng-if="currentUser">
-        👋 Welcome, {{currentUserName.toUpperCase()}}!
-      </div>
-      <div class="top-icons">
+      <div class="top-right">
+        <div class="welcome" ng-if="currentUser">
+          👋 Welcome, {{currentUserName.toUpperCase()}}!
+        </div>
         <div class="cart-button" ng-click="cartVisible = true">
           🛒 Cart ({{cart.length}})
         </div>
@@ -143,7 +143,6 @@
       <button ng-if="currentUser" ng-click="logout(); menuOpen = false">🚪 Logout</button>
     </div>
   </header>
-  
 
   <!-- Carousel -->
   <section class="carousel">

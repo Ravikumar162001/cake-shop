@@ -359,14 +359,7 @@ app.controller('CakeController', function ($scope, $http) {
     $scope.otpSent = false;
     $scope.forgotMsg = '';
   };
-  
 
-  // $scope.scrollToContact = function() {
-  //   const contact = document.querySelector('footer');
-  //   if (contact) {
-  //     contact.scrollIntoView({ behavior: 'smooth' });
-  //   }
-  // };
 
   $scope.contactModalVisible = false;
   $scope.openContactModal = function () {

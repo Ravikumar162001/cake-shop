@@ -330,36 +330,35 @@ footer {
 
 .top-bar {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
+  padding: 10px 20px;
+}
+
+.top-right {
+  display: flex;
   align-items: center;
-  padding: 8px 20px;
-  margin-top: 5px;
+  gap: 12px;
 }
 
 .welcome {
-  color: white;
-  font-weight: bold;
-  font-size: 15px;
   background-color: #d2691e;
+  color: white;
   padding: 4px 10px;
   border-radius: 6px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
-}
-
-.top-icons {
-  display: flex;
-  align-items: center;
-  gap: 15px;
+  font-weight: bold;
+  font-size: 14px;
+  white-space: nowrap;
 }
 
 .cart-button {
   color: white;
   font-weight: bold;
   cursor: pointer;
+  white-space: nowrap;
 }
 
 .menu-toggle {
-  font-size: 26px;
+  font-size: 24px;
   cursor: pointer;
   color: white;
 }
