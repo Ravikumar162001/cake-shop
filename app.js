@@ -93,6 +93,11 @@ app.controller('CakeController', function ($scope, $http) {
     $scope.currentUser = null;
     $scope.currentUserName = null;
     $scope.adminModalVisible = false;
+  
+    // 🧹 Clear cart and cartMap
+    $scope.cart = [];
+    $scope.cartMap = {};
+  
     alert("Logged out.");
   };
   
