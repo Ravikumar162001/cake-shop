@@ -344,7 +344,7 @@ footer {
 
 .logo-img {
   height: 100px;
-  width: 50px;
+  width: auto;
   object-fit: contain;
   border-radius: 6px;
 }
