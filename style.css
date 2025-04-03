@@ -318,10 +318,8 @@ footer {
   background-color: #d2691e;
   padding: 0;
   margin: 0;
-  height: 100px; /* Total height including title and tagline */
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   color: white;
   position: relative;
 }
@@ -331,20 +329,17 @@ footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 20px;
-  height: 60px;
+  padding: 10px 20px;
 }
 
 /* 🔰 Logo Styling */
 .top-left {
   display: flex;
   align-items: center;
-  height: 100%;
 }
 
 .logo-img {
-  height: 100px;
-  width: auto;
+  height: 60px;           /* fits neatly without pushing down h1 */
   object-fit: contain;
   border-radius: 6px;
 }
@@ -354,7 +349,6 @@ footer {
   display: flex;
   align-items: center;
   gap: 12px;
-  height: 100%;
 }
 
 .welcome {
