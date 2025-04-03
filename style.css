@@ -318,7 +318,7 @@ footer {
   background-color: #d2691e;
   padding: 0;
   margin: 0;
-  height: 100px; /* Total height including title and tagline */
+  height: 100px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -335,21 +335,18 @@ footer {
   height: 60px;
 }
 
+/* 🔰 Logo Area */
 .top-left {
   height: 100%;
   display: flex;
   align-items: center;
 }
 
-
-/* 🧁 Make logo fill the header height */
 .logo-img {
   height: 100%;
-  max-height: 60px;       /* Or however tall your .top-bar is */
-  object-fit: cover;      /* Fills container while cropping if necessary */
-  border-radius: 8px;     /* Optional: rounded edges */
+  object-fit: cover;   /* Fully cover the vertical space */
+  border-radius: 8px;  /* Optional: smooth corners */
 }
-
 
 /* 📦 Right Side Controls */
 .top-right {
