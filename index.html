@@ -12,7 +12,7 @@
     body {
       font-family: Arial, sans-serif;
     }
-
+  
     .auth-buttons-header {
       display: flex;
       flex-wrap: wrap;
@@ -21,9 +21,8 @@
       align-items: center;
       padding: 10px;
     }
-
+  
     .auth-buttons-header button {
-      margin-left: 10px;
       padding: 8px 16px;
       background-color: #fff;
       color: #d2691e;
@@ -31,7 +30,7 @@
       cursor: pointer;
       border-radius: 4px;
     }
-
+  
     .auth-modal, .admin-modal {
       position: fixed;
       top: 0; left: 0;
@@ -42,7 +41,7 @@
       align-items: center;
       z-index: 1000;
     }
-
+  
     .auth-box, .admin-box {
       background: #fff;
       padding: 30px;
@@ -53,13 +52,13 @@
       overflow-y: auto;
       max-height: 90vh;
     }
-
+  
     .auth-tabs {
       display: flex;
       justify-content: space-around;
       margin-bottom: 20px;
     }
-
+  
     .auth-tabs button {
       flex: 1;
       padding: 10px;
@@ -67,12 +66,12 @@
       cursor: pointer;
       background: #f2f2f2;
     }
-
+  
     .auth-tabs button.active {
       background: #d2691e;
       color: white;
     }
-
+  
     .auth-box input {
       width: 100%;
       margin-bottom: 15px;
@@ -80,7 +79,7 @@
       border-radius: 4px;
       border: 1px solid #ccc;
     }
-
+  
     .auth-box button[type="submit"],
     .admin-box button.action-btn {
       background: #d2691e;
@@ -91,25 +90,25 @@
       border-radius: 4px;
       cursor: pointer;
     }
-
+  
     .auth-close, .admin-close {
       text-align: right;
       font-size: 20px;
       cursor: pointer;
     }
-
+  
     table {
       width: 100%;
       border-collapse: collapse;
       margin: 20px 0;
     }
-
+  
     th, td {
       border: 1px solid #ccc;
       padding: 8px;
       text-align: left;
     }
-
+  
     .admin-button {
       display: inline-block;
       margin-left: 10px;
@@ -120,10 +119,8 @@
       border-radius: 4px;
       cursor: pointer;
     }
-
-    /* ===================== */
+  
     /* 📱 Mobile Responsiveness */
-    /* ===================== */
     @media (max-width: 600px) {
       .auth-buttons-header {
         flex-direction: column;
@@ -132,72 +129,33 @@
         margin: 10px 0;
         padding: 0 15px;
       }
-
-      .auth-buttons-header button {
+  
+      .auth-buttons-header button,
+      .admin-button {
         width: 100%;
         max-width: 240px;
         margin: 6px 0;
       }
-
-      .admin-button {
-        width: 100%;
-        max-width: 240px;
-      }
-
+  
       header {
         padding-top: 20px;
         padding-bottom: 10px;
         text-align: center;
       }
-
+  
       header h1 {
         font-size: 22px;
         margin: 5px 0;
       }
-
+  
       header p {
         font-size: 14px;
         padding: 0 10px;
         margin-bottom: 15px;
       }
-
-      .carousel img {
-        width: 100%;
-        height: auto;
-      }
-
-      .cake-card {
-        width: 95%;
-        margin: 10px auto;
-      }
-
-      .auth-box input,
-      .auth-box button,
-      .admin-box button {
-        width: 100%;
-      }
-
-      .modal-box {
-        padding: 20px;
-      }
-
-      footer {
-        font-size: 14px;
-        text-align: center;
-      }
-
-      footer .toggle-btn {
-        width: 90%;
-        margin-top: 10px;
-      }
-
-      .contact-info {
-        padding: 10px;
-        font-size: 14px;
-      }
     }
-</style>
-
+  </style>
+  
 </head>
 
 <body ng-controller="CakeController">
