@@ -43,8 +43,8 @@ app.controller('CakeController', function ($scope, $http) {
   $scope.forgot = {};
   $scope.otpSent = false;
   $scope.forgotMsg = '';
-
-
+  $scope.showLoginPassword = false;
+  $scope.showSignupPassword = false;
 
   // 📌 Utility to update cart map for quick quantity lookup
   $scope.updateCartMap = function () {

@@ -357,33 +357,55 @@
     <div class="auth-box">
       <div class="auth-close" ng-click="authModalVisible = false">&times;</div>
 
+      <!-- Tabs -->
       <div class="auth-tabs">
         <button ng-click="showAuthForm('login')" ng-class="{active: authMode==='login'}">Login</button>
         <button ng-click="showAuthForm('signup')" ng-class="{active: authMode==='signup'}">Sign Up</button>
       </div>
 
+      <!-- 🔐 Login Form -->
       <form ng-submit="loginUser()" ng-show="authMode === 'login'">
         <input type="email" ng-model="login.email" placeholder="Email" required>
-        <input type="password" ng-model="login.password" placeholder="Password" required>
+
+        <div class="password-wrapper">
+          <input type="{{showLoginPassword ? 'text' : 'password'}}"
+                ng-model="login.password"
+                placeholder="Password"
+                required>
+          <span class="toggle-password" ng-click="showLoginPassword = !showLoginPassword">
+            {{showLoginPassword ? '🙈' : '👁️'}}
+          </span>
+        </div>
+
         <button type="submit">Login</button>
         <p ng-if="loginMessage">{{loginMessage}}</p>
-      
-        <!-- 👇 Add this below -->
+
         <p style="text-align:right; font-size: 14px;">
           <a href="" ng-click="openForgotPassword()">Forgot Password?</a>
         </p>
       </form>
-      
 
+      <!-- 📝 Signup Form -->
       <form ng-submit="signupUser()" ng-show="authMode === 'signup'">
         <input type="text" ng-model="signup.name" placeholder="Name" required>
         <input type="email" ng-model="signup.email" placeholder="Email" required>
-        <input type="password" ng-model="signup.password" placeholder="Password" required>
+
+        <div class="password-wrapper">
+          <input type="{{showSignupPassword ? 'text' : 'password'}}"
+                ng-model="signup.password"
+                placeholder="Password"
+                required>
+          <span class="toggle-password" ng-click="showSignupPassword = !showSignupPassword">
+            {{showSignupPassword ? '🙈' : '👁️'}}
+          </span>
+        </div>
+
         <button type="submit">Sign Up</button>
         <p ng-if="signupMessage">{{signupMessage}}</p>
       </form>
     </div>
   </div>
+
 
     <!-- 🕒 User Order History Modal -->
   <div class="auth-modal" ng-show="orderHistoryVisible">
