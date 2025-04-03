@@ -14,9 +14,12 @@
     }
 
     .auth-buttons-header {
-      position: absolute;
-      top: 20px;
-      right: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 10px;
     }
 
     .auth-buttons-header button {
@@ -117,7 +120,84 @@
       border-radius: 4px;
       cursor: pointer;
     }
-  </style>
+
+    /* ===================== */
+    /* 📱 Mobile Responsiveness */
+    /* ===================== */
+    @media (max-width: 600px) {
+      .auth-buttons-header {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin: 10px 0;
+        padding: 0 15px;
+      }
+
+      .auth-buttons-header button {
+        width: 100%;
+        max-width: 240px;
+        margin: 6px 0;
+      }
+
+      .admin-button {
+        width: 100%;
+        max-width: 240px;
+      }
+
+      header {
+        padding-top: 20px;
+        padding-bottom: 10px;
+        text-align: center;
+      }
+
+      header h1 {
+        font-size: 22px;
+        margin: 5px 0;
+      }
+
+      header p {
+        font-size: 14px;
+        padding: 0 10px;
+        margin-bottom: 15px;
+      }
+
+      .carousel img {
+        width: 100%;
+        height: auto;
+      }
+
+      .cake-card {
+        width: 95%;
+        margin: 10px auto;
+      }
+
+      .auth-box input,
+      .auth-box button,
+      .admin-box button {
+        width: 100%;
+      }
+
+      .modal-box {
+        padding: 20px;
+      }
+
+      footer {
+        font-size: 14px;
+        text-align: center;
+      }
+
+      footer .toggle-btn {
+        width: 90%;
+        margin-top: 10px;
+      }
+
+      .contact-info {
+        padding: 10px;
+        font-size: 14px;
+      }
+    }
+</style>
+
 </head>
 
 <body ng-controller="CakeController">
