@@ -293,3 +293,46 @@ footer .contact-info {
   cursor: pointer;
   color: #d2691e;
 }
+
+/* === Refined Mobile Header === */
+@media (max-width: 600px) {
+  .auth-buttons-header {
+    background-color: #fff8f0;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    padding: 15px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin: 15px auto;
+    width: 90%;
+  }
+
+  .auth-buttons-header span {
+    font-weight: 600;
+    color: #333;
+    align-self: flex-start;
+  }
+
+  .auth-buttons-header button,
+  .admin-button {
+    width: 100%;
+    max-width: 260px;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 10px;
+    margin: 0;
+    border-radius: 6px;
+    background-color: #fff;
+    color: #d2691e;
+    border: 2px solid #d2691e;
+    transition: 0.2s ease;
+  }
+
+  .auth-buttons-header button:hover,
+  .admin-button:hover {
+    background-color: #d2691e;
+    color: #fff;
+  }
+}
