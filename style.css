@@ -316,12 +316,15 @@ footer {
 /* 📦 Top Bar with logo and right-aligned actions */
 .top-bar {
   position: absolute;
-  top: 10px;
-  left: 20px;
-  right: 20px;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 0 20px;
+  background-color: #d2691e;  /* In case header needs it explicitly */
   z-index: 10;
 }
 
@@ -329,13 +332,17 @@ footer {
 .top-left {
   display: flex;
   align-items: center;
+  height: 100%;
 }
 
 .logo-img {
-  height: 100px;           /* Adjust height to match header bar */
+  height: 40px;           /* ✅ Clean, proportional size */
+  width: auto;
   object-fit: contain;
   background-color: transparent;
-  border-radius: 6px;      /* Optional: smooth edges */
+  border-radius: 6px;
+  margin-top: 4px;         /* Optional tweak */
+  margin-bottom: 4px;
 }
 
 /* 📦 Right Section: Welcome, Cart, Menu */
@@ -343,7 +350,7 @@ footer {
   display: flex;
   align-items: center;
   gap: 12px;
-  height: 30px;
+  height: 100%;
 }
 
 .welcome {
