@@ -115,9 +115,15 @@
 </head>
 
 <body ng-controller="CakeController">
-  <header style="position: relative;">
-    <!-- 📦 Top Right -->
+  <header class="header-wrapper">
+    <!-- 🍰 Top Bar: Logo + Welcome + Cart + Menu -->
     <div class="top-bar">
+      <!-- 🔰 Left: Logo -->
+      <div class="top-left">
+        <img src="https://github.com/Ravikumar162001/cake-shop/blob/main/uploads/logo.jpeg" alt="Sweet Bites Logo" class="logo-img">
+      </div>
+  
+      <!-- 📦 Right: Welcome, Cart, Menu -->
       <div class="top-right">
         <div class="welcome" ng-if="currentUser">
           👋 Welcome, {{currentUserName.toUpperCase()}}!
@@ -129,6 +135,7 @@
       </div>
     </div>
   
+    <!-- 🧁 Brand Title & Subtitle -->
     <h1>Sweet Bites</h1>
     <p>Fresh Homemade Cakes for Every Occasion</p>
   
@@ -143,6 +150,7 @@
       <button ng-if="currentUser" ng-click="logout(); menuOpen = false">🚪 Logout</button>
     </div>
   </header>
+  
  
   <!-- Carousel -->
   <section class="carousel">

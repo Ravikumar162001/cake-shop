@@ -318,22 +318,37 @@ footer {
   padding-right: 20px;
 }
 
+/* 📦 Top Bar with logo and right-aligned actions */
 .top-bar {
   position: absolute;
   top: 10px;
+  left: 20px;
   right: 20px;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
   z-index: 10;
 }
 
+/* 🔰 Logo */
+.top-left {
+  display: flex;
+  align-items: center;
+}
+
+.logo-img {
+  height: 40px;
+  width: auto;
+  object-fit: contain;
+}
+
+/* 📦 Right Section: Welcome, Cart, Menu */
 .top-right {
   display: flex;
   align-items: center;
   gap: 12px;
-  height: 30px; /* Optional: Ensures consistent row height */
+  height: 30px;
 }
-
 
 .welcome {
   background-color: #d2691e;
@@ -352,6 +367,7 @@ footer {
   white-space: nowrap;
 }
 
+/* ☰ Menu Icon */
 .menu-toggle {
   font-size: 22px;
   cursor: pointer;
