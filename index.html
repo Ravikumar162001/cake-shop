@@ -390,6 +390,7 @@
         <input type="text" ng-model="signup.name" placeholder="Name" required>
         <input type="email" ng-model="signup.email" placeholder="Email" required>
 
+        <!-- Password -->
         <div class="password-wrapper">
           <input type="{{showSignupPassword ? 'text' : 'password'}}"
                 ng-model="signup.password"
@@ -399,6 +400,22 @@
             {{showSignupPassword ? '🙈' : '👁️'}}
           </span>
         </div>
+
+        <!-- Confirm Password -->
+        <div class="password-wrapper">
+          <input type="{{showSignupPassword ? 'text' : 'password'}}"
+                ng-model="signup.confirmPassword"
+                placeholder="Confirm Password"
+                required>
+          <span class="toggle-password" ng-click="showSignupPassword = !showSignupPassword">
+            {{showSignupPassword ? '🙈' : '👁️'}}
+          </span>
+        </div>
+
+        <!-- 🔄 Live password match feedback -->
+        <p style="margin-top: -10px; font-size: 13px; color: {{signup.password === signup.confirmPassword ? 'green' : 'red'}}">
+          {{signup.password === signup.confirmPassword ? '✅ Passwords match' : '❌ Passwords do not match'}}
+        </p>
 
         <button type="submit">Sign Up</button>
         <p ng-if="signupMessage">{{signupMessage}}</p>

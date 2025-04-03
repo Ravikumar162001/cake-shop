@@ -131,15 +131,21 @@ app.controller('CakeController', function ($scope, $http) {
   };
 
   $scope.signupUser = function () {
+    if ($scope.signup.password !== $scope.signup.confirmPassword) {
+      $scope.signupMessage = "❌ Passwords do not match!";
+      return;
+    }
+  
     $http.post('/api/auth/signup', $scope.signup)
       .then(res => {
-        $scope.signupMessage = "Signup successful! Please login.";
+        $scope.signupMessage = "✅ Signup successful! Please login.";
         $scope.authMode = 'login';
         $scope.signup = {};
       }, err => {
         $scope.signupMessage = err.data.msg || "Signup failed.";
       });
   };
+  
 
   $scope.addToCart = function (cake) {
     const existing = $scope.cart.find(c => c._id === cake._id || c.name === cake.name);
