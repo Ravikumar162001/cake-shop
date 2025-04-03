@@ -382,8 +382,4 @@ app.controller('CakeController', function ($scope, $http) {
   $scope.fetchCakes();
   $scope.fetchReviews();
 
-  // 🔁 Restore user name from localStorage after refresh
-  if ($scope.currentUser && !$scope.currentUserName) {
-    $scope.currentUserName = localStorage.getItem('userName');
-  }
 });
