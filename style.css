@@ -341,7 +341,9 @@ footer {
   display: flex;
   align-items: center;
   gap: 12px;
+  height: 30px; /* Optional: Ensures consistent row height */
 }
+
 
 .welcome {
   background-color: #d2691e;
@@ -361,7 +363,11 @@ footer {
 }
 
 .menu-toggle {
-  font-size: 24px;
+  font-size: 22px;
   cursor: pointer;
   color: white;
+  padding: 4px 6px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
 }
