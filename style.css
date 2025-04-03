@@ -96,6 +96,12 @@ button:hover {
 /* ===== Admin Styles ====== */
 /* ========================= */
 
+.auth-buttons-header {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
 .auth-buttons-header button {
   margin-left: 10px;
   padding: 8px 16px;
