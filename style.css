@@ -313,42 +313,39 @@ footer {
   padding-right: 20px;
 }
 
-/* 🧁 Full Header Wrapper */
-.header-wrapper {
-  background-color: #d2691e;
-  padding: 0;
-  margin: 0;
-  height: 100px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  color: white;
-  position: relative;
-}
-
-/* 🔝 Top Bar (Logo + Right Controls) */
+/* 📦 Top Bar with logo and right-aligned actions */
 .top-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 20px;
-  height: 60px;
+  background-color: #d2691e;  /* In case header needs it explicitly */
+  z-index: 10;
 }
 
-/* 🔰 Logo Area */
+/* 🔰 Logo */
 .top-left {
-  height: 100%;
   display: flex;
   align-items: center;
+  height: 100%;
 }
 
 .logo-img {
-  height: 100%;
-  object-fit: cover;   /* Fully cover the vertical space */
-  border-radius: 8px;  /* Optional: smooth corners */
+  height: 40px;           /* ✅ Clean, proportional size */
+  width: auto;
+  object-fit: contain;
+  background-color: transparent;
+  border-radius: 6px;
+  margin-top: 4px;         /* Optional tweak */
+  margin-bottom: 4px;
 }
 
-/* 📦 Right Side Controls */
+/* 📦 Right Section: Welcome, Cart, Menu */
 .top-right {
   display: flex;
   align-items: center;
@@ -373,29 +370,13 @@ footer {
   white-space: nowrap;
 }
 
+/* ☰ Menu Icon */
 .menu-toggle {
   font-size: 22px;
   cursor: pointer;
   color: white;
   padding: 4px 6px;
+  line-height: 1;
   display: flex;
   align-items: center;
-}
-
-/* 🧁 Title & Tagline */
-.header-wrapper h1,
-.header-wrapper p {
-  text-align: center;
-  margin: 0;
-  line-height: 1.2;
-}
-
-.header-wrapper h1 {
-  font-size: 24px;
-  margin-top: 4px;
-}
-
-.header-wrapper p {
-  font-size: 14px;
-  margin-bottom: 8px;
 }
