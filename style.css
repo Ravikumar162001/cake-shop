@@ -242,36 +242,6 @@ footer {
   text-align: center;
   padding: 20px;
 }
-
-footer .toggle-btn {
-  background-color: white;
-  color: #d2691e;
-  border: 2px solid #fff;
-  margin-top: 10px;
-  padding: 8px 16px;
-  font-size: 14px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-footer .toggle-btn:hover {
-  background-color: #f7e0ce;
-  color: #a0522d;
-}
-
-footer .contact-info {
-  background: white;
-  color: #333;
-  margin-top: 15px;
-  padding: 15px;
-  border-radius: 6px;
-  max-width: 500px;
-  margin-left: auto;
-  margin-right: auto;
-  font-size: 14px;
-  line-height: 1.5;
-}
-
 .modal {
   position: fixed;
   top: 0; left: 0;
