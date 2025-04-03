@@ -335,19 +335,21 @@ footer {
   height: 60px;
 }
 
-/* 🔰 Logo Styling */
 .top-left {
+  height: 100%;
   display: flex;
   align-items: center;
-  height: 100%;
 }
 
+
+/* 🧁 Make logo fill the header height */
 .logo-img {
-  height: 50px;
-  width: auto;
-  object-fit: contain;
-  border-radius: 6px;
+  height: 100%;
+  max-height: 60px;       /* Or however tall your .top-bar is */
+  object-fit: cover;      /* Fills container while cropping if necessary */
+  border-radius: 8px;     /* Optional: rounded edges */
 }
+
 
 /* 📦 Right Side Controls */
 .top-right {
