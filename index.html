@@ -119,10 +119,20 @@
     <h1>Sweet Bites</h1>
     <p>Fresh Homemade Cakes for Every Occasion</p>
   
-    <!-- Hamburger Menu Icon -->
-    <div class="menu-toggle" ng-click="menuOpen = !menuOpen">☰</div>
+    <!-- 📦 Welcome, Cart & Menu in One Top Bar -->
+    <div class="top-bar">
+      <div class="welcome" ng-if="currentUser">
+        👋 Welcome, {{currentUserName.toUpperCase()}}!
+      </div>
+      <div class="top-icons">
+        <div class="cart-button" ng-click="cartVisible = true">
+          🛒 Cart ({{cart.length}})
+        </div>
+        <div class="menu-toggle" ng-click="menuOpen = !menuOpen">☰</div>
+      </div>
+    </div>
   
-    <!-- Dropdown Menu -->
+    <!-- 🍔 Dropdown Menu -->
     <div class="dropdown-menu" ng-show="menuOpen">
       <button ng-click="scrollToTop(); menuOpen = false">🏠 Home</button>
       <button ng-if="!currentUser" ng-click="openAuthModal('login'); menuOpen = false">👤 Login</button>
@@ -132,15 +142,8 @@
       <button class="admin-button" ng-if="currentUser === 'ravikumar162001@gmail.com'" ng-click="openAdminDashboard(); menuOpen = false">🛠 Admin Dashboard</button>
       <button ng-if="currentUser" ng-click="logout(); menuOpen = false">🚪 Logout</button>
     </div>
-    <div class="menu-welcome" ng-if="currentUser">
-      👋 Welcome, {{currentUserName}}!
-    </div>
-  
-    <!-- Cart button kept outside menu (optional) -->
-    <div class="cart-button-wrapper" ng-click="cartVisible = true">
-      🛒 Cart ({{cart.length}})
-    </div>
   </header>
+  
 
   <!-- Carousel -->
   <section class="carousel">
