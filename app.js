@@ -45,6 +45,7 @@ app.controller('CakeController', function ($scope, $http) {
   $scope.forgotMsg = '';
 
 
+
   // 📌 Utility to update cart map for quick quantity lookup
   $scope.updateCartMap = function () {
     $scope.cartMap = {};
@@ -381,4 +382,8 @@ app.controller('CakeController', function ($scope, $http) {
   $scope.fetchCakes();
   $scope.fetchReviews();
 
+  // 🔁 Restore user name from localStorage after refresh
+  if ($scope.currentUser && !$scope.currentUserName) {
+    $scope.currentUserName = localStorage.getItem('userName');
+  }
 });
