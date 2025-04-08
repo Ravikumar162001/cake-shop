@@ -90,20 +90,31 @@ app.controller('CakeController', function ($scope, $http) {
   $scope.fetchAdminData = function () {
     const token = localStorage.getItem('token');
   
+    if (!token) {
+      console.warn("❗ No token found — admin not logged in");
+      return;
+    }
+  
+    // ✅ Fetch all orders
     $http.get('/api/admin/orders', {
       headers: { Authorization: `Bearer ${token}` }
     }).then(res => {
+      console.log('✅ Orders fetched:', res.data.length);
       $scope.allOrders = res.data;
     }, err => {
       console.error('❌ Failed to fetch orders', err);
+      alert("Failed to load orders.");
     });
   
+    // ✅ Fetch contact messages
     $http.get('/api/admin/messages', {
       headers: { Authorization: `Bearer ${token}` }
     }).then(res => {
+      console.log('✅ Messages fetched:', res.data.length);
       $scope.allMessages = res.data;
     }, err => {
       console.error('❌ Failed to fetch messages', err);
+      alert("Failed to load messages.");
     });
   };
   
