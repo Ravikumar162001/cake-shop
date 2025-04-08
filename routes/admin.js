@@ -9,8 +9,14 @@ module.exports = function (db) {
 
   // ✅ Get all orders (admin only)
   router.get('/orders', async (req, res) => {
+    console.log('✅ Admin hit /orders - user:', req.user?.email, '| Role:', req.user?.role);
+
+    if (!req.user || req.user.role !== 'admin') {
+      console.warn('🚫 Unauthorized access attempt to /orders');
+      return res.status(403).json({ msg: 'Access denied: Admins only' });
+    }
+
     try {
-      console.log('✅ Admin hit /orders - user:', req.user?.email);
       const allOrders = await orders.find().sort({ timestamp: -1 }).toArray();
       res.json(allOrders);
     } catch (err) {
@@ -21,6 +27,13 @@ module.exports = function (db) {
 
   // ✅ Get all contact messages (admin only)
   router.get('/messages', async (req, res) => {
+    console.log('✅ Admin hit /messages - user:', req.user?.email, '| Role:', req.user?.role);
+
+    if (!req.user || req.user.role !== 'admin') {
+      console.warn('🚫 Unauthorized access attempt to /messages');
+      return res.status(403).json({ msg: 'Access denied: Admins only' });
+    }
+
     try {
       const allMessages = await contacts.find().sort({ _id: -1 }).toArray();
       res.json(allMessages);

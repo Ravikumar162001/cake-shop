@@ -77,6 +77,12 @@ app.controller('CakeController', function ($scope, $http) {
   };
 
   $scope.openAdminDashboard = function () {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      alert("You're not logged in as admin.");
+      return;
+    }
+  
     $scope.adminModalVisible = true;
     $scope.fetchAdminData();
     $scope.fetchCoupons(); 
