@@ -128,12 +128,21 @@ app.controller('CakeController', function ($scope, $http) {
   
 
   $scope.deleteOrder = function (orderId) {
+    const token = localStorage.getItem('token');
+  
     if (confirm("Delete this order?")) {
-      $http.delete(`/api/admin/order/${orderId}`)
-        .then(() => $scope.fetchAdminData());
+      $http.delete(`/api/admin/order/${orderId}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      }).then(() => {
+        console.log("🗑️ Order deleted");
+        $scope.fetchAdminData(); // refresh orders
+      }, err => {
+        alert("Failed to delete order.");
+        console.error('❌ Delete error:', err);
+      });
     }
   };
-
+  
   $scope.logout = function () {
     localStorage.clear();
     $scope.currentUser = null;
