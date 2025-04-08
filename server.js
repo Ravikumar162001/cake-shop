@@ -46,9 +46,10 @@ async function run() {
     // ✅ Upload Routes
     const uploadRoutes = require('./routes/upload')(db);
     app.use('/api/upload', uploadRoutes);
+
+    // ✅ Coupon Routes
     const couponRoutes = require('./routes/coupons')(db);
     app.use('/api/coupons', couponRoutes);
-
 
     // ✅ Get Cakes
     app.get('/api/cakes', async (req, res) => {
@@ -65,7 +66,22 @@ async function run() {
       try {
         const order = req.body;
         console.log('📦 Order Received:', order);
+
         await ordersCollection.insertOne(order);
+
+        // ✅ If coupon applied, increment usage
+        if (order.couponCode) {
+          const couponUpdate = await db.collection('coupons').updateOne(
+            { code: order.couponCode },
+            { $inc: { usedCount: 1 } }
+          );
+
+          if (couponUpdate.modifiedCount === 1) {
+            console.log(`🎟️ Coupon usage incremented for ${order.couponCode}`);
+          } else {
+            console.warn(`⚠️ Coupon code not found or update failed: ${order.couponCode}`);
+          }
+        }
 
         sendOrderEmail(order.userEmail, order)
           .then(() => console.log('✅ Confirmation email sent'))
