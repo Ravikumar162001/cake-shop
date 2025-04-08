@@ -452,7 +452,7 @@
   </div>
 
 
-    <!-- 🕒 User Order History Modal -->
+  <!-- 🕒 User Order History Modal -->
   <div class="auth-modal" ng-show="orderHistoryVisible">
     <div class="auth-box">
       <div class="auth-close" ng-click="closeOrderHistory()">&times;</div>
@@ -482,6 +482,13 @@
               'in-progress': order.status === 'In Progress',
               'delivered': order.status === 'Delivered'
             }">{{order.status}}</span>
+
+            <!-- 📄 Invoice Button -->
+            <div style="margin-top: 6px;">
+              <a ng-href="/api/order/{{order._id}}/invoice" target="_blank">
+                <button class="action-btn">Download Invoice</button>
+              </a>
+            </div>
           </td>
         </tr>
       </table>
@@ -489,7 +496,6 @@
       <p ng-if="!userOrders.length">You haven't placed any orders yet.</p>
     </div>
   </div>
-
   <!-- Customer Reviews -->
   <section class="reviews">
     <h2>Customer Reviews</h2>

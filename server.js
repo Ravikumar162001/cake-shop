@@ -2,11 +2,12 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const { MongoClient } = require('mongodb');
+const { MongoClient, ObjectId } = require('mongodb');
 const path = require('path');
 const fs = require('fs');
+const PDFDocument = require('pdfkit');
 const { sendOrderEmail } = require('./mailer');
-const { verifyToken, verifyAdmin } = require('./verifyToken'); // ✅ Import JWT + Admin check
+const { verifyToken, verifyAdmin } = require('./verifyToken');
 
 // ===== Middleware =====
 app.use(cors());
@@ -41,7 +42,7 @@ async function run() {
 
     // ✅ Admin Routes (protected)
     const adminRoutes = require('./routes/admin')(db);
-    app.use('/api/admin', verifyToken, verifyAdmin, adminRoutes); // 🔐 Secure with both
+    app.use('/api/admin', verifyToken, verifyAdmin, adminRoutes);
 
     // ✅ Upload Routes
     const uploadRoutes = require('./routes/upload')(db);
@@ -69,13 +70,11 @@ async function run() {
 
         await ordersCollection.insertOne(order);
 
-        // ✅ If coupon applied, increment usage
         if (order.couponCode) {
           const couponUpdate = await db.collection('coupons').updateOne(
             { code: order.couponCode },
             { $inc: { usedCount: 1 } }
           );
-
           if (couponUpdate.modifiedCount === 1) {
             console.log(`🎟️ Coupon usage incremented for ${order.couponCode}`);
           } else {
@@ -91,6 +90,46 @@ async function run() {
       } catch (err) {
         console.error('❌ Order Save Failed:', err);
         res.status(500).send({ message: 'Failed to save order' });
+      }
+    });
+
+    // ✅ Order Invoice (PDF)
+    app.get('/api/order/:id/invoice', async (req, res) => {
+      try {
+        const orderId = req.params.id;
+        const order = await ordersCollection.findOne({ _id: new ObjectId(orderId) });
+
+        if (!order) return res.status(404).send('Order not found');
+
+        const doc = new PDFDocument();
+        res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader('Content-Disposition', `attachment; filename=invoice_${orderId}.pdf`);
+        doc.pipe(res);
+
+        doc.fontSize(20).text('🧁 Sweet Bites - Order Invoice', { align: 'center' });
+        doc.moveDown();
+        doc.fontSize(12).text(`Name: ${order.name}`);
+        doc.text(`Email: ${order.userEmail}`);
+        doc.text(`Phone: ${order.phone}`);
+        doc.text(`Delivery Area: ${order.deliveryArea}`);
+        doc.text(`Address: ${order.address}`);
+        doc.text(`Date: ${new Date(order.timestamp).toLocaleString()}`);
+        doc.moveDown();
+
+        doc.text('📦 Items:');
+        order.items.forEach((item, idx) => {
+          doc.text(`${idx + 1}. ${item.name} (x${item.qty}) - ₹${item.price}`);
+        });
+
+        doc.moveDown();
+        doc.text(`Subtotal: ₹${order.totalAmount}`);
+        doc.text(`Discount: ₹${order.discountAmount || 0}`);
+        doc.text(`Final Total: ₹${order.finalAmount}`);
+        doc.end();
+
+      } catch (err) {
+        console.error('❌ Invoice generation failed:', err);
+        res.status(500).send('Failed to generate invoice');
       }
     });
 
@@ -118,11 +157,11 @@ async function run() {
       }
     });
 
-    // ✅ Save Review (secured with JWT)
+    // ✅ Save Review
     app.post('/api/review', verifyToken, async (req, res) => {
       try {
         const { message } = req.body;
-        const name = req.user.email.split('@')[0]; // derive name from email
+        const name = req.user.email.split('@')[0];
 
         if (!message) return res.status(400).send({ message: 'Review message required' });
 
