@@ -551,47 +551,49 @@
     </div>
   </div>
 
-    <!-- 🎟️ Coupon Manager -->
-  <h3>Manage Coupons</h3>
+    <!-- 🎟️ Coupon Manager (Only for Admin) -->
+  <div ng-if="currentUser === 'ravikumar162001@gmail.com'">
+    <h3>Manage Coupons</h3>
 
-  <!-- ➕ Create Coupon Form -->
-  <form ng-submit="createCoupon()" style="margin-bottom: 20px;">
-    <label>Coupon Code:</label>
-    <input type="text" ng-model="newCoupon.code" required>
+    <!-- ➕ Create Coupon Form -->
+    <form ng-submit="createCoupon()" style="margin-bottom: 20px;">
+      <label>Coupon Code:</label>
+      <input type="text" ng-model="newCoupon.code" required>
 
-    <label>Discount (%):</label>
-    <input type="number" ng-model="newCoupon.discount" required>
+      <label>Discount (%):</label>
+      <input type="number" ng-model="newCoupon.discount" required>
 
-    <label>Expiry Date:</label>
-    <input type="date" ng-model="newCoupon.expiry" required>
+      <label>Expiry Date:</label>
+      <input type="date" ng-model="newCoupon.expiry" required>
 
-    <label>Usage Limit:</label>
-    <input type="number" ng-model="newCoupon.usageLimit" required>
+      <label>Usage Limit:</label>
+      <input type="number" ng-model="newCoupon.usageLimit" required>
 
-    <button type="submit" class="action-btn">Add Coupon</button>
-    <p style="color: green;" ng-if="couponMessage">{{couponMessage}}</p>
-  </form>
+      <button type="submit" class="action-btn">Add Coupon</button>
+      <p style="color: green;" ng-if="couponMessage">{{couponMessage}}</p>
+    </form>
 
-  <!-- 📋 Existing Coupons -->
-  <table>
-    <tr>
-      <th>Code</th>
-      <th>Discount</th>
-      <th>Expiry</th>
-      <th>Usage</th>
-      <th>Actions</th>
-    </tr>
-    <tr ng-repeat="c in coupons">
-      <td>{{c.code}}</td>
-      <td>{{c.discount}}%</td>
-      <td>{{c.expiry | date:'yyyy-MM-dd'}}</td>
-      <td>{{c.usedCount || 0}} / {{c.usageLimit}}</td>
-      <td>
-        <button class="action-btn" ng-click="deleteCoupon(c._id)">Delete</button>
-      </td>
-    </tr>
-  </table>
-  
+    <!-- 📋 Existing Coupons -->
+    <table>
+      <tr>
+        <th>Code</th>
+        <th>Discount</th>
+        <th>Expiry</th>
+        <th>Usage</th>
+        <th>Actions</th>
+      </tr>
+      <tr ng-repeat="c in coupons">
+        <td>{{c.code}}</td>
+        <td>{{c.discount}}%</td>
+        <td>{{c.expiry | date:'yyyy-MM-dd'}}</td>
+        <td>{{c.usedCount || 0}} / {{c.usageLimit}}</td>
+        <td>
+          <button class="action-btn" ng-click="deleteCoupon(c._id)">Delete</button>
+        </td>
+      </tr>
+    </table>
+  </div>
+
   <footer>
     <p>&copy; 2025 Sweet Bites</p>
   </footer>
