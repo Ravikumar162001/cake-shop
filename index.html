@@ -312,13 +312,13 @@
   </div>
 
 
-  <!-- ✅ Updated Checkout Modal -->
+    <!-- ✅ Updated Checkout Modal with Promo Code -->
   <div class="auth-modal" ng-show="checkoutVisible">
     <div class="auth-box">
       <div class="auth-close" ng-click="checkoutVisible = false">&times;</div>
       <h3>Checkout</h3>
 
-      <!-- Show Cart Summary -->
+      <!-- 🧾 Cart Summary -->
       <table>
         <tr>
           <th>Name</th>
@@ -334,8 +334,20 @@
         </tr>
       </table>
 
-      <h4>Total: ₹{{getCartTotal()}}</h4>
+      <!-- 💸 Promo Code -->
+      <div style="margin: 15px 0;">
+        <label>Promo Code:</label>
+        <input type="text" ng-model="couponCode" style="width: 100%; margin-bottom: 8px;" placeholder="e.g. WELCOME10">
+        <button type="button" ng-click="applyCoupon()" style="margin-bottom: 10px;">Apply</button>
+        <p style="color: green;" ng-if="couponMessage">{{couponMessage}}</p>
+      </div>
 
+      <!-- 🧾 Totals -->
+      <h4>Subtotal: ₹{{getCartTotal()}}</h4>
+      <h4 ng-if="discountAmount">Discount: ₹{{discountAmount}}</h4>
+      <h3 ng-if="discountAmount">Final Amount: ₹{{getCartTotal() - discountAmount}}</h3>
+
+      <!-- 📝 User Details Form -->
       <form ng-submit="submitOrder()">
         <label>Name:</label>
         <input type="text" ng-model="order.name" required>
@@ -539,7 +551,47 @@
     </div>
   </div>
 
+    <!-- 🎟️ Coupon Manager -->
+  <h3>Manage Coupons</h3>
 
+  <!-- ➕ Create Coupon Form -->
+  <form ng-submit="createCoupon()" style="margin-bottom: 20px;">
+    <label>Coupon Code:</label>
+    <input type="text" ng-model="newCoupon.code" required>
+
+    <label>Discount (%):</label>
+    <input type="number" ng-model="newCoupon.discount" required>
+
+    <label>Expiry Date:</label>
+    <input type="date" ng-model="newCoupon.expiry" required>
+
+    <label>Usage Limit:</label>
+    <input type="number" ng-model="newCoupon.usageLimit" required>
+
+    <button type="submit" class="action-btn">Add Coupon</button>
+    <p style="color: green;" ng-if="couponMessage">{{couponMessage}}</p>
+  </form>
+
+  <!-- 📋 Existing Coupons -->
+  <table>
+    <tr>
+      <th>Code</th>
+      <th>Discount</th>
+      <th>Expiry</th>
+      <th>Usage</th>
+      <th>Actions</th>
+    </tr>
+    <tr ng-repeat="c in coupons">
+      <td>{{c.code}}</td>
+      <td>{{c.discount}}%</td>
+      <td>{{c.expiry | date:'yyyy-MM-dd'}}</td>
+      <td>{{c.usedCount || 0}} / {{c.usageLimit}}</td>
+      <td>
+        <button class="action-btn" ng-click="deleteCoupon(c._id)">Delete</button>
+      </td>
+    </tr>
+  </table>
+  
   <footer>
     <p>&copy; 2025 Sweet Bites</p>
   </footer>

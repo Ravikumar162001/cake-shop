@@ -46,6 +46,9 @@ async function run() {
     // ✅ Upload Routes
     const uploadRoutes = require('./routes/upload')(db);
     app.use('/api/upload', uploadRoutes);
+    const couponRoutes = require('./routes/coupons')(db);
+    app.use('/api/coupons', couponRoutes);
+
 
     // ✅ Get Cakes
     app.get('/api/cakes', async (req, res) => {

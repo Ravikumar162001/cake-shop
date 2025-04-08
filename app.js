@@ -45,6 +45,14 @@ app.controller('CakeController', function ($scope, $http) {
   $scope.forgotMsg = '';
   $scope.showLoginPassword = false;
   $scope.showSignupPassword = false;
+  $scope.couponCode = '';
+  $scope.discountAmount = 0;
+  $scope.couponMessage = '';
+  $scope.appliedCoupon = null;
+  $scope.newCoupon = {};
+  $scope.coupons = [];
+  $scope.couponMessage = '';
+
 
   // 📌 Utility to update cart map for quick quantity lookup
   $scope.updateCartMap = function () {
@@ -69,6 +77,7 @@ app.controller('CakeController', function ($scope, $http) {
   $scope.openAdminDashboard = function () {
     $scope.adminModalVisible = true;
     $scope.fetchAdminData();
+    $scope.fetchCoupons(); 
   };
 
   $scope.closeAdminDashboard = function () {
@@ -196,6 +205,9 @@ app.controller('CakeController', function ($scope, $http) {
       userEmail: $scope.currentUser,
       items: angular.copy($scope.cart),
       totalAmount: $scope.getCartTotal(),
+      discountAmount: $scope.discountAmount || 0,
+      finalAmount: $scope.getCartTotal() - ($scope.discountAmount || 0),
+      couponCode: $scope.appliedCoupon || null,
       status: 'Pending',
       timestamp: new Date().toISOString()
     };
@@ -207,13 +219,18 @@ app.controller('CakeController', function ($scope, $http) {
         // 🧹 Reset UI
         $scope.order = {};
         $scope.cart = [];
-        $scope.updateCartMap();  // ✅ Add this line
+        $scope.updateCartMap();
         $scope.cartVisible = false;
         $scope.checkoutVisible = false;
+        $scope.couponCode = '';
+        $scope.discountAmount = 0;
+        $scope.appliedCoupon = null;
+        $scope.couponMessage = '';
       }, err => {
         alert("Failed to place order.");
       });
   };
+  
 
   $scope.uploadCake = function () {
     const formData = new FormData();
@@ -375,8 +392,57 @@ app.controller('CakeController', function ($scope, $http) {
   $scope.contactModalVisible = false;
   $scope.openContactModal = function () {
   $scope.contactModalVisible = true;
-};
+  };
 
+  $scope.applyCoupon = function () {
+    if (!$scope.couponCode) return;
+
+    $http.post('/api/coupons/validate', { code: $scope.couponCode })
+      .then(res => {
+        const discountPercent = res.data.discount;
+        const total = $scope.getCartTotal();
+        $scope.discountAmount = Math.round((discountPercent / 100) * total);
+        $scope.couponMessage = res.data.msg;
+        $scope.appliedCoupon = $scope.couponCode;
+      }, err => {
+        $scope.couponMessage = err.data.msg || 'Invalid coupon';
+        $scope.discountAmount = 0;
+        $scope.appliedCoupon = null;
+      });
+  };
+
+  $scope.createCoupon = function () {
+    const token = localStorage.getItem('token');
+    const data = {
+      ...$scope.newCoupon,
+      expiry: new Date($scope.newCoupon.expiry).toISOString()
+    };
+  
+    $http.post('/api/coupons', data, {
+      headers: { Authorization: `Bearer ${token}` }
+    }).then(() => {
+      $scope.couponMessage = "Coupon added!";
+      $scope.newCoupon = {};
+      $scope.fetchCoupons();
+    }, err => {
+      $scope.couponMessage = err.data.msg || "Failed to create coupon";
+    });
+  };
+
+  $scope.fetchCoupons = function () {
+    $http.get('/api/coupons').then(res => {
+      $scope.coupons = res.data;
+    });
+  };
+
+  $scope.deleteCoupon = function (id) {
+    if (!confirm("Delete this coupon?")) return;
+    const token = localStorage.getItem('token');
+  
+    $http.delete(`/api/coupons/${id}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    }).then(() => $scope.fetchCoupons());
+  };
 
   $scope.scrollToTop = function () {
     window.scrollTo({ top: 0, behavior: 'smooth' });
