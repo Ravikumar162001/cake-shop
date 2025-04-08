@@ -178,6 +178,7 @@
         <tr>
           <th>Name</th>
           <th>Phone</th>
+          <th>Area</th> <!-- ✅ NEW COLUMN -->
           <th>Address</th>
           <th>Cakes</th>
           <th>Email</th>
@@ -188,6 +189,7 @@
         <tr ng-repeat="order in allOrders">
           <td>{{order.name}}</td>
           <td>{{order.phone}}</td>
+          <td>{{order.deliveryArea}}</td> <!-- ✅ DELIVERY AREA VALUE -->
           <td>{{order.address}}</td>
           <td>
             <ul style="margin: 0; padding-left: 15px;">
@@ -208,7 +210,6 @@
           <td>
             <button class="action-btn" ng-click="deleteOrder(order._id)">Delete</button>
           </td>
-          
         </tr>
       </table>
 
