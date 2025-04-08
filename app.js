@@ -98,6 +98,7 @@ app.controller('CakeController', function ($scope, $http) {
   
     if (!token) {
       console.warn("❗ No token found — admin not logged in");
+      alert("You must be logged in as admin to view this.");
       return;
     }
   
@@ -109,7 +110,7 @@ app.controller('CakeController', function ($scope, $http) {
       $scope.allOrders = res.data;
     }, err => {
       console.error('❌ Failed to fetch orders', err);
-      alert("Failed to load orders.");
+      alert("❌ Failed to load orders. Check console for details.");
     });
   
     // ✅ Fetch contact messages
@@ -120,9 +121,10 @@ app.controller('CakeController', function ($scope, $http) {
       $scope.allMessages = res.data;
     }, err => {
       console.error('❌ Failed to fetch messages', err);
-      alert("Failed to load messages.");
+      alert("❌ Failed to load messages. Check console for details.");
     });
   };
+  
   
 
   $scope.deleteOrder = function (orderId) {

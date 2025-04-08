@@ -1,10 +1,11 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const router = express.Router();
-const JWT_SECRET = 'supersecretcaketime';
 const crypto = require('crypto');
-const { sendOtpEmail } = require('./mailer'); // ✅ Send OTP email
+const router = express.Router();
+
+const JWT_SECRET = 'supersecretcaketime';
+const { sendOtpEmail } = require('./mailer'); // ✅ Mailer for OTP
 
 module.exports = function (db) {
   const users = db.collection('users');
@@ -51,7 +52,7 @@ module.exports = function (db) {
     if (!user) return res.status(404).json({ msg: 'User not found' });
 
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
-    const expiresAt = new Date(Date.now() + 10 * 60000); // 10 minutes
+    const expiresAt = new Date(Date.now() + 10 * 60000); // 10 minutes from now
 
     await users.updateOne({ email }, { $set: { resetOtp: otp, resetOtpExpires: expiresAt } });
 
