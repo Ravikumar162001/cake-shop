@@ -340,6 +340,11 @@
         <input type="text" ng-model="couponCode" style="width: 100%; margin-bottom: 8px;" placeholder="e.g. WELCOME10">
         <button type="button" ng-click="applyCoupon()" style="margin-bottom: 10px;">Apply</button>
         <p style="color: green;" ng-if="couponMessage">{{couponMessage}}</p>
+
+        <!-- ❌ Remove Coupon Button -->
+        <button ng-if="appliedCoupon" type="button" ng-click="removeCoupon()" style="margin-bottom: 10px;">
+          Remove Coupon
+        </button>
       </div>
 
       <!-- 🧾 Totals -->

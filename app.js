@@ -411,6 +411,14 @@ app.controller('CakeController', function ($scope, $http) {
       });
   };
 
+  $scope.removeCoupon = function () {
+    $scope.couponCode = '';
+    $scope.discountAmount = 0;
+    $scope.appliedCoupon = null;
+    $scope.couponMessage = '';
+  };
+  
+
   $scope.createCoupon = function () {
     const token = localStorage.getItem('token');
     const data = {
