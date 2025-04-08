@@ -356,13 +356,21 @@ app.controller('CakeController', function ($scope, $http) {
   };
 
   $scope.updateOrderStatus = function (order) {
-    $http.patch(`/api/admin/order/${order._id}/status`, { status: order.status })
-      .then(() => {
-        console.log('✅ Status updated');
-      }, () => {
-        alert("Failed to update order status.");
-      });
-  };  
+    const token = localStorage.getItem('token');
+  
+    $http.patch(`/api/admin/order/${order._id}/status`, 
+      { status: order.status },
+      {
+        headers: { Authorization: `Bearer ${token}` }
+      }
+    ).then(() => {
+      console.log('✅ Status updated');
+    }, err => {
+      alert("Failed to update order status.");
+      console.error('❌ Update failed:', err);
+    });
+  };
+   
 
   $scope.reviews = [];
 
