@@ -17,6 +17,7 @@ app.directive('fileModel', ['$parse', function ($parse) {
 }]);
 
 app.controller('CakeController', function ($scope, $http) {
+  const allowedZones = ["Coimbatore", "Peelamedu", "RS Puram", "Ganapathy"];
   $scope.cakes = [];
   $scope.cart = [];
   $scope.cartMap = {};
@@ -52,6 +53,7 @@ app.controller('CakeController', function ($scope, $http) {
   $scope.newCoupon = {};
   $scope.coupons = [];
   $scope.couponMessage = '';
+  $scope.invalidZoneMessage = '';
 
 
   // 📌 Utility to update cart map for quick quantity lookup
@@ -198,10 +200,18 @@ app.controller('CakeController', function ($scope, $http) {
   };
 
   $scope.submitOrder = function () {
+    if (!allowedZones.includes($scope.order.deliveryArea)) {
+      $scope.invalidZoneMessage = "❌ Sorry, we don't deliver to this area.";
+      return;
+    } else {
+      $scope.invalidZoneMessage = '';
+    }
+  
     const orderData = {
       name: $scope.order.name,
       phone: $scope.order.phone,
       address: $scope.order.address,
+      deliveryArea: $scope.order.deliveryArea,
       userEmail: $scope.currentUser,
       items: angular.copy($scope.cart),
       totalAmount: $scope.getCartTotal(),
@@ -226,6 +236,7 @@ app.controller('CakeController', function ($scope, $http) {
         $scope.discountAmount = 0;
         $scope.appliedCoupon = null;
         $scope.couponMessage = '';
+        $scope.invalidZoneMessage = '';
       }, err => {
         alert("Failed to place order.");
       });

@@ -312,7 +312,7 @@
   </div>
 
 
-    <!-- ✅ Updated Checkout Modal with Promo Code -->
+  <!-- ✅ Updated Checkout Modal with Promo Code + Delivery Area -->
   <div class="auth-modal" ng-show="checkoutVisible">
     <div class="auth-box">
       <div class="auth-close" ng-click="checkoutVisible = false">&times;</div>
@@ -359,6 +359,16 @@
 
         <label>Phone Number:</label>
         <input type="text" ng-model="order.phone" required>
+
+        <label>Delivery Area:</label>
+        <select ng-model="order.deliveryArea" required>
+          <option value="">-- Select Area --</option>
+          <option value="Coimbatore">Coimbatore</option>
+          <option value="Peelamedu">Peelamedu</option>
+          <option value="RS Puram">RS Puram</option>
+          <option value="Ganapathy">Ganapathy</option>
+        </select>
+        <p style="color: red;" ng-if="invalidZoneMessage">{{invalidZoneMessage}}</p>
 
         <label>Address:</label>
         <textarea ng-model="order.address" required></textarea>
