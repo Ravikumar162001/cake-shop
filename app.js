@@ -79,7 +79,7 @@ app.controller('CakeController', function ($scope, $http) {
   $scope.openAdminDashboard = function () {
     $scope.adminModalVisible = true;
     $scope.fetchAdminData();
-    $scope.fetchCoupons(); 
+    // $scope.fetchCoupons(); 
   };
 
   $scope.closeAdminDashboard = function () {
