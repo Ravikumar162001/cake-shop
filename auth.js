@@ -27,7 +27,7 @@ module.exports = function (db) {
     res.json({ token, email, role, name });
   });
 
-  // ✅ Login Route
+  // ✅ Login Route (💥 FIXED: force role based on email)
   router.post('/login', async (req, res) => {
     const { email, password } = req.body;
 
@@ -36,13 +36,16 @@ module.exports = function (db) {
       return res.status(400).json({ msg: 'Invalid credentials' });
     }
 
+    // 💥 Ensure role is correctly assigned
+    const role = email === 'ravikumar162001@gmail.com' ? 'admin' : 'user';
+
     const token = jwt.sign(
-      { email: user.email, role: user.role, name: user.name },
+      { email: user.email, role, name: user.name },
       JWT_SECRET,
       { expiresIn: '2d' }
     );
 
-    res.json({ token, email: user.email, role: user.role, name: user.name });
+    res.json({ token, email: user.email, role, name: user.name });
   });
 
   // ✅ Forgot Password - Send OTP
