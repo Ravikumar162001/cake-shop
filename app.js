@@ -79,7 +79,7 @@ app.controller('CakeController', function ($scope, $http) {
   $scope.openAdminDashboard = function () {
     $scope.adminModalVisible = true;
     $scope.fetchAdminData();
-    // $scope.fetchCoupons(); 
+    $scope.fetchCoupons(); 
   };
 
   $scope.closeAdminDashboard = function () {
@@ -88,9 +88,25 @@ app.controller('CakeController', function ($scope, $http) {
   };
 
   $scope.fetchAdminData = function () {
-    $http.get('/api/admin/orders').then(res => $scope.allOrders = res.data);
-    $http.get('/api/admin/messages').then(res => $scope.allMessages = res.data);
+    const token = localStorage.getItem('token');
+  
+    $http.get('/api/admin/orders', {
+      headers: { Authorization: `Bearer ${token}` }
+    }).then(res => {
+      $scope.allOrders = res.data;
+    }, err => {
+      console.error('❌ Failed to fetch orders', err);
+    });
+  
+    $http.get('/api/admin/messages', {
+      headers: { Authorization: `Bearer ${token}` }
+    }).then(res => {
+      $scope.allMessages = res.data;
+    }, err => {
+      console.error('❌ Failed to fetch messages', err);
+    });
   };
+  
 
   $scope.deleteOrder = function (orderId) {
     if (confirm("Delete this order?")) {
