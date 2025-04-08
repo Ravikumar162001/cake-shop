@@ -281,6 +281,7 @@ app.controller('CakeController', function ($scope, $http) {
         $scope.appliedCoupon = null;
         $scope.couponMessage = '';
         $scope.invalidZoneMessage = '';
+        $scope.fetchCoupons();
       }, err => {
         alert("Failed to place order.");
       });
@@ -502,9 +503,13 @@ app.controller('CakeController', function ($scope, $http) {
 
   $scope.fetchCoupons = function () {
     $http.get('/api/coupons').then(res => {
-      $scope.coupons = res.data;
+      $scope.coupons = res.data.map(coupon => ({
+        ...coupon,
+        usedCount: coupon.usedCount || 0 // default to 0 if undefined
+      }));
     });
   };
+  
 
   $scope.deleteCoupon = function (id) {
     if (!confirm("Delete this coupon?")) return;
