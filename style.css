@@ -415,3 +415,151 @@ footer {
   font-size: 16px;
   color: #d2691e;
 }
+
+
+/* 🍰 Responsive Style Overrides for Devices < 1200px */
+@media (max-width: 1199px) {
+  body {
+    font-size: 16px;
+    background-color: #61122f;
+    color: #fff;
+    font-family: 'Oxygen', sans-serif;
+  }
+
+  .header-wrapper {
+    background-color: #f6b319;
+    color: #61122f;
+  }
+
+  .top-bar {
+    padding: 12px 20px;
+    background-color: #f6b319;
+    border-bottom: 2px solid #e4b401;
+  }
+
+  .logo-img {
+    height: 80px;
+    width: auto;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  }
+
+  .header-wrapper h1 {
+    font-family: 'Lora', serif;
+    color: #557c3e;
+    font-size: 1.6em;
+    text-shadow: 1px 1px 1px #222;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+  }
+
+  .header-wrapper p {
+    font-size: 0.9em;
+    color: #000;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .dropdown-menu button {
+    font-size: 1em;
+    color: #951C49;
+    font-weight: bold;
+    background-color: transparent;
+  }
+
+  .dropdown-menu button:hover {
+    background-color: #eee2da;
+    color: #61122f;
+  }
+
+  .cart-button {
+    background-color: #fff;
+    color: #61122f;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-weight: bold;
+  }
+
+  .menu-toggle {
+    background-color: #61122f;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 4px;
+  }
+
+  .cake-card {
+    border: 2px solid #3F0C1F;
+    box-shadow: 0 2px 10px rgba(255, 255, 255, 0.1);
+    width: 90%;
+    margin: 15px auto;
+  }
+
+  .cake-card img {
+    height: 200px;
+    object-fit: cover;
+    border-radius: 0;
+  }
+
+  .cake-card h2 {
+    font-size: 20px;
+    color: #f6b319;
+  }
+
+  .price {
+    color: #f6b319;
+    font-size: 18px;
+  }
+
+  button {
+    background-color: #f6b319;
+    color: #61122f;
+  }
+
+  button:hover {
+    background-color: #e1a615;
+    color: white;
+  }
+
+  .auth-box, .admin-box {
+    background: #fffaf5;
+    border: 1px solid #f3ded0;
+    padding: 25px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  }
+
+  footer {
+    background-color: #222;
+    color: #fff;
+    padding: 30px 20px;
+    font-size: 14px;
+  }
+
+  .review-card {
+    background: #61122f;
+    border-left: 5px solid #f6b319;
+    color: #fff;
+  }
+
+  .review-form {
+    background: #fff8f0;
+    border: 2px dashed #f6b319;
+  }
+
+  .modal-box {
+    background-color: #fff;
+    color: #61122f;
+  }
+
+  .admin-box table th,
+  .admin-box table td {
+    font-size: 13px;
+    color: #222;
+  }
+
+  .status-badge {
+    border-radius: 12px;
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+}
+
