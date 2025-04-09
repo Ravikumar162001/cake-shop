@@ -118,8 +118,16 @@ async function run() {
 
         doc.text('📦 Items:');
         order.items.forEach((item, idx) => {
-          doc.text(`${idx + 1}. ${item.name} (x${item.qty}) - ₹${item.price}`);
+          const weight = item.weight || '1kg';
+          let weightMult = 1;
+          if (weight === '0.5kg') weightMult = 0.5;
+          else if (weight === '1.5kg') weightMult = 1.5;
+          else if (weight === '2kg') weightMult = 2;
+        
+          const itemTotal = item.price * item.qty * weightMult;
+          doc.text(`${idx + 1}. ${item.name} (${weight} x${item.qty}) - ₹${itemTotal}`);
         });
+        
 
         doc.moveDown();
         doc.text(`Subtotal: ₹${order.totalAmount}`);

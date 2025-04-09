@@ -56,6 +56,16 @@ app.controller('CakeController', function ($scope, $http) {
   $scope.invalidZoneMessage = '';
 
 
+  function getWeightMultiplier(weight) {
+    switch (weight) {
+      case '0.5kg': return 0.5;
+      case '1kg': return 1;
+      case '1.5kg': return 1.5;
+      case '2kg': return 2;
+      default: return 1;
+    }
+  }
+
   // 📌 Utility to update cart map for quick quantity lookup
   $scope.updateCartMap = function () {
     $scope.cartMap = {};
@@ -231,8 +241,12 @@ app.controller('CakeController', function ($scope, $http) {
   };
 
   $scope.getCartTotal = function () {
-    return $scope.cart.reduce((total, c) => total + (c.price * c.qty), 0);
+    return $scope.cart.reduce((total, item) => {
+      const weightMult = getWeightMultiplier(item.weight);
+      return total + (item.price * item.qty * weightMult);
+    }, 0);
   };
+  
 
   $scope.proceedToCheckout = function () {
     if (!$scope.currentUser) return alert("Please login to continue.");
