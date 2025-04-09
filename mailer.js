@@ -11,7 +11,17 @@ const transporter = nodemailer.createTransport({
 
 // ✅ Send email when order is placed
 function sendOrderEmail(to, order) {
-  const cakeList = order.items.map(item => `${item.name} (x${item.qty})`).join(', ');
+  const cakeList = order.items.map(item => {
+    const weight = item.weight || '1kg';
+    let multiplier = 1;
+    if (weight === '0.5kg') multiplier = 0.5;
+    else if (weight === '1.5kg') multiplier = 1.5;
+    else if (weight === '2kg') multiplier = 2;
+
+    const itemTotal = item.price * item.qty * multiplier;
+
+    return `${item.name} (${weight} x${item.qty}) - ₹${itemTotal}`;
+  }).join('<br>');
 
   const mailOptions = {
     from: process.env.EMAIL_USER,
@@ -21,7 +31,7 @@ function sendOrderEmail(to, order) {
       <h3>Thanks for your order, ${order.name}!</h3>
       <p>Here’s your order summary:</p>
       <ul>
-        <li><strong>Cakes:</strong> ${cakeList}</li>
+        <li><strong>Cakes:</strong><br>${cakeList}</li>
         <li><strong>Total:</strong> ₹${order.totalAmount}</li>
         <li><strong>Status:</strong> ${order.status}</li>
       </ul>
