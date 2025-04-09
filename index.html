@@ -277,7 +277,7 @@
     </div>
   </div>
 
-    <!-- 🛒 Cart Modal -->
+  <!-- 🛒 Cart Modal with Weight Dropdown -->
   <div class="auth-modal" ng-show="cartVisible">
     <div class="auth-box">
       <div class="auth-close" ng-click="cartVisible = false">&times;</div>
@@ -287,6 +287,7 @@
         <tr>
           <th>Name</th>
           <th>Qty</th>
+          <th>Weight</th> <!-- 🆕 -->
           <th>Price</th>
           <th>Total</th>
           <th>Actions</th>
@@ -294,6 +295,14 @@
         <tr ng-repeat="item in cart">
           <td>{{item.name}}</td>
           <td>{{item.qty}}</td>
+          <td>
+            <select ng-model="item.weight" style="padding: 4px;">
+              <option value="0.5kg">0.5kg</option>
+              <option value="1kg">1kg</option>
+              <option value="1.5kg">1.5kg</option>
+              <option value="2kg">2kg</option>
+            </select>
+          </td>
           <td>₹{{item.price}}</td>
           <td>₹{{item.qty * item.price}}</td>
           <td>
@@ -311,7 +320,6 @@
       </button>
     </div>
   </div>
-
 
   <!-- ✅ Updated Checkout Modal with Promo Code + Delivery Area -->
   <div class="auth-modal" ng-show="checkoutVisible">
