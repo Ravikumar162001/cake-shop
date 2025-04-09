@@ -194,7 +194,7 @@
           <td>
             <ul style="margin: 0; padding-left: 15px;">
               <li ng-repeat="item in order.items">
-                {{item.name}} (x{{item.qty}})
+                {{item.name}} ({{item.weight}} x{{item.qty}})
               </li>
             </ul>
           </td>
@@ -336,7 +336,7 @@
           <th>Total</th>
         </tr>
         <tr ng-repeat="item in cart">
-          <td>{{item.name}}</td>
+          <td>{{item.name}} ({{item.weight}})</td>
           <td>{{item.qty}}</td>
           <td>₹{{item.price}}</td>
           <td>₹{{item.price * item.qty}}</td>
@@ -478,7 +478,7 @@
           <td>
             <ul style="margin: 0; padding-left: 15px;">
               <li ng-repeat="item in order.items">
-                {{item.name}} (x{{item.qty}})
+                {{item.name}} ({{item.weight}} x{{item.qty}})
               </li>
             </ul>
           </td>
