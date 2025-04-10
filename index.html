@@ -122,7 +122,7 @@
       <div class="top-left">
         <img src="/uploads/logo.jpeg" alt="Sweet Bites Logo" class="logo-img">
       </div>
-  
+
       <!-- 📦 Right: Welcome, Cart, Menu -->
       <div class="top-right">
         <div class="welcome" ng-if="currentUser">
@@ -134,14 +134,15 @@
           </div>
           <div class="menu-toggle" ng-click="menuOpen = !menuOpen">☰</div>
         </div>
-      </div>
-               
+      </div>   
     </div>
-  
+
     <!-- 🧁 Brand Title & Subtitle -->
-    <h1>Sweet Bites</h1>
-    <p>Fresh Homemade Cakes for Every Occasion</p>
-  
+    <div class="brand-block">
+      <h1>Sweet Bites</h1>
+      <p>Fresh Homemade Cakes for Every Occasion</p>
+    </div>
+
     <!-- 🍔 Dropdown Menu -->
     <div class="dropdown-menu" ng-show="menuOpen">
       <button ng-click="scrollToTop(); menuOpen = false">🏠 Home</button>

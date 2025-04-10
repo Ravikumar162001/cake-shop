@@ -449,86 +449,60 @@ footer {
     width: 100%;
     box-sizing: border-box;
   }
-  
+
   .top-bar {
     display: flex !important;
-    justify-content: space-between !important;
-    align-items: center !important;
-    flex-wrap: nowrap !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 10px;
     padding: 12px 20px;
     background-color: #f6b319;
     border-bottom: 2px solid #e4b401;
     width: 100%;
   }
-  
+
   .top-left {
     display: flex !important;
     align-items: center !important;
-    flex-wrap: nowrap !important;
-    flex-direction: row !important;
+    width: 100%;
   }
-  
+
+  .logo-img {
+    height: 60px;
+    width: auto;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  }
+
   .top-right {
     display: flex !important;
     flex-direction: column !important;
     align-items: flex-end !important;
     justify-content: flex-start !important;
-    gap: 6px;
     width: 100%;
-    box-sizing: border-box;
+    gap: 6px;
   }
-  
-  /* New: Force the welcome text to shrink and wrap, so it doesn't force overlap */
+
   .top-right > .welcome {
     flex-shrink: 1;
     min-width: 0;
-    white-space: normal;  /* Allow wrapping */
-  }
-  
-  /* New: Ensure the action buttons (cart + menu) are on one row */
-  .right-actions {
-    display: flex;
-    gap: 8px;
-    justify-content: flex-end;
-    align-items: center;
+    white-space: normal;
+    text-align: right;
     width: 100%;
-  }
-  
-  .logo-img {
-    height: 80px;
-    width: auto;
-    border-radius: 10px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-  }
-  
-  .header-wrapper h1 {
-    font-family: 'Lora', serif;
-    color: #557c3e;
-    font-size: 1.6em;
-    text-shadow: 1px 1px 1px #222;
-    margin-bottom: 4px;
-    text-transform: uppercase;
-  }
-  
-  .header-wrapper p {
-    font-size: 0.9em;
-    color: #000;
-    text-transform: uppercase;
-    margin-bottom: 10px;
-  }
-  
-  .dropdown-menu button {
-    font-size: 1em;
-    color: #951C49;
+    font-size: 14px;
     font-weight: bold;
-    background-color: transparent;
-  }
-  
-  .dropdown-menu button:hover {
-    background-color: #eee2da;
     color: #61122f;
   }
-  
+
+  .right-actions {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    justify-content: flex-end;
+    width: 100%;
+  }
+
   .cart-button {
     background-color: #fff;
     color: #61122f;
@@ -537,7 +511,7 @@ footer {
     font-weight: bold;
     white-space: nowrap;
   }
-  
+
   .menu-toggle {
     background-color: #61122f;
     color: white;
@@ -548,7 +522,35 @@ footer {
     align-items: center;
     cursor: pointer;
   }
-  
+
+  .header-wrapper h1 {
+    font-family: 'Lora', serif;
+    color: #557c3e;
+    font-size: 1.6em;
+    text-shadow: 1px 1px 1px #222;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+  }
+
+  .header-wrapper p {
+    font-size: 0.9em;
+    color: #000;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .dropdown-menu button {
+    font-size: 1em;
+    color: #951C49;
+    font-weight: bold;
+    background-color: transparent;
+  }
+
+  .dropdown-menu button:hover {
+    background-color: #eee2da;
+    color: #61122f;
+  }
+
   .cake-card {
     border: 2px solid #f6b319;
     box-shadow: 0 2px 10px rgba(255, 255, 255, 0.1);
@@ -557,33 +559,33 @@ footer {
     width: 90%;
     margin: 15px auto;
   }
-  
+
   .cake-card img {
     height: 200px;
     object-fit: cover;
     border-radius: 0;
   }
-  
+
   .cake-card h2 {
     font-size: 20px;
     color: #f6b319;
   }
-  
+
   .price {
     color: #f6b319;
     font-size: 18px;
   }
-  
+
   button {
     background-color: #f6b319;
     color: #61122f;
   }
-  
+
   button:hover {
     background-color: #e1a615;
     color: white;
   }
-  
+
   .auth-box,
   .admin-box {
     background: #fffaf5;
@@ -593,7 +595,7 @@ footer {
     color: #61122f;
     position: relative;
   }
-  
+
   .auth-box input,
   .auth-box label,
   .auth-box p,
@@ -604,7 +606,7 @@ footer {
   .modal-box a {
     color: #61122f !important;
   }
-  
+
   .auth-close,
   .admin-close,
   .modal-close {
@@ -618,19 +620,19 @@ footer {
     right: 15px;
     cursor: pointer;
   }
-  
+
   .auth-box a,
   .modal-box a {
     color: #d2691e;
     font-weight: bold;
     text-decoration: underline;
   }
-  
+
   .auth-box a:hover,
   .modal-box a:hover {
     color: #a0522d;
   }
-  
+
   footer {
     background-color: #222;
     color: #fff;
@@ -639,19 +641,19 @@ footer {
     width: 100%;
     box-sizing: border-box;
   }
-  
+
   .review-card {
     background: #61122f !important;
     border-left: 5px solid #f6b319;
     color: #fff;
   }
-  
+
   .reviews,
   .review-form {
     background: #61122f !important;
     color: white;
   }
-  
+
   .review-login-msg {
     color: #f6b319;
     font-style: italic;
@@ -659,14 +661,14 @@ footer {
     text-align: center;
     margin-top: 10px;
   }
-  
+
   .review-form label {
     font-size: 14px;
     margin-bottom: 5px;
     display: block;
     color: #fff;
   }
-  
+
   .review-form input,
   .review-form textarea {
     padding: 10px;
@@ -679,7 +681,7 @@ footer {
     width: 100%;
     box-sizing: border-box;
   }
-  
+
   .review-form button {
     background-color: #f6b319;
     color: #61122f;
@@ -690,43 +692,39 @@ footer {
     cursor: pointer;
     font-size: 14px;
   }
-  
+
   .review-form button:hover {
     background-color: #a0522d;
     color: white;
   }
-  
+
   .modal-box {
     background-color: #fff;
     color: #61122f;
     position: relative;
   }
-  
+
   .admin-box table th,
   .admin-box table td {
     font-size: 13px;
     color: #222;
   }
-  
+
   .status-badge {
     border-radius: 12px;
     padding: 6px 10px;
     font-size: 12px;
   }
-  
+
   .welcome {
-    padding: 6px 10px;
+    padding: 4px 10px;
     font-size: 14px;
-    background-color: #f6b319;
-    color: #61122f;
-    font-weight: bold;
-    border-radius: 6px;
-    width: 100%;
-    text-align: right;
-    word-break: break-word;
+    line-height: 1.2;
+    max-width: none;
+    overflow: visible;
+    text-overflow: clip;
   }
 }
-
 /* Reset for Desktop (≥ 1200px) */
 @media (min-width: 1200px) {
   .top-right {
