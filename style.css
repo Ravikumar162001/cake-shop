@@ -473,7 +473,9 @@ footer {
     flex-direction: column !important;
     align-items: flex-end !important;
     justify-content: flex-start !important;
-    gap: 4px;
+    gap: 6px;
+    width: 100%;
+    box-sizing: border-box;
   }
   
   /* New: Force the welcome text to shrink and wrap, so it doesn't force overlap */
@@ -486,11 +488,10 @@ footer {
   /* New: Ensure the action buttons (cart + menu) are on one row */
   .right-actions {
     display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 10px;
-    width: 100%;
+    gap: 8px;
     justify-content: flex-end;
+    align-items: center;
+    width: 100%;
   }
   
   .logo-img {
@@ -714,13 +715,15 @@ footer {
   }
   
   .welcome {
-    padding: 4px 10px;
+    padding: 6px 10px;
     font-size: 14px;
-    line-height: 1.2;
-    /* Remove fixed max-width to prevent overlap */
-    max-width: none;
-    overflow: visible;
-    text-overflow: clip;
+    background-color: #f6b319;
+    color: #61122f;
+    font-weight: bold;
+    border-radius: 6px;
+    width: 100%;
+    text-align: right;
+    word-break: break-word;
   }
 }
 
