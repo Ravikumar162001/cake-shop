@@ -442,7 +442,10 @@ footer {
   .header-wrapper {
     background-color: #f6b319;
     color: #61122f;
+    width: 100vw;
+    box-sizing: border-box;
   }
+  
 
   .top-bar {
     display: flex !important;
@@ -616,7 +619,10 @@ footer {
     color: #fff;
     padding: 30px 20px;
     font-size: 14px;
+    width: 100vw;
+    box-sizing: border-box;
   }
+  
 
   .review-card {
     background: #61122f;
