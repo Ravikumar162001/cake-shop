@@ -125,15 +125,14 @@
   
       <!-- 📦 Right: Welcome, Cart, Menu -->
       <div class="top-right">
-        <div class="welcome">{{currentUserName.toUpperCase()}}</div>
+        <div class="welcome" ng-if="currentUser">
+          👋 Welcome, {{currentUserName.toUpperCase()}}!
+        </div>
         <div class="right-actions">
-          <div class="cart-button" ng-click="cartVisible = true">
-            🛒 Cart ({{cart.length}})
-          </div>
+          <div class="cart-button" ng-click="cartVisible = true">🛒 Cart ({{cart.length}})</div>
           <div class="menu-toggle" ng-click="menuOpen = !menuOpen">☰</div>
         </div>
-      </div>
-           
+      </div>           
     </div>
   
     <!-- 🧁 Brand Title & Subtitle -->
