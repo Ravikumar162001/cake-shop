@@ -445,9 +445,26 @@ footer {
   }
 
   .top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     padding: 12px 20px;
     background-color: #f6b319;
     border-bottom: 2px solid #e4b401;
+    flex-wrap: nowrap; /* Prevent wrap */
+  }
+
+  .top-left {
+    display: flex;
+    align-items: center;
+  }
+
+  .top-right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: nowrap;
+    gap: 12px;
   }
 
   .logo-img {
@@ -491,6 +508,7 @@ footer {
     padding: 6px 10px;
     border-radius: 6px;
     font-weight: bold;
+    white-space: nowrap;
   }
 
   .menu-toggle {
@@ -498,6 +516,10 @@ footer {
     color: white;
     padding: 6px 10px;
     border-radius: 4px;
+    font-size: 22px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
   }
 
   .cake-card {
@@ -675,13 +697,6 @@ footer {
     font-size: 12px;
   }
 
-  .top-right {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 12px;
-  }
-  
   .welcome {
     padding: 4px 10px;
     font-size: 14px;
