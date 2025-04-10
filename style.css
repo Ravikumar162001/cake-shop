@@ -471,19 +471,18 @@ footer {
   }
 
   .welcome {
-    padding: 4px 10px;
-    font-size: 14px;
-    line-height: 1.2;
-    white-space: nowrap;
-    max-width: 100%;
+    max-width: 140px;
     overflow: hidden;
     text-overflow: ellipsis;
-    background-color: #d2691e;
-    color: white;
-    border-radius: 6px;
-    font-weight: bold;
+    white-space: nowrap;
     text-align: right;
-  }
+    padding: 4px 8px;
+    background-color: #d2691e;
+    border-radius: 6px;
+    color: #fff;
+    font-weight: bold;
+    font-size: 14px;
+  }  
 
   .cart-button {
     background-color: #fff;
@@ -510,9 +509,11 @@ footer {
   }
 
   .cake-card img {
-    height: 200px;
+    width: 100%;
+    height: auto;
     object-fit: cover;
-    border-radius: 0;
+    max-height: 200px;
+    border-radius: 8px;
   }
 
   .cake-card h2 {
