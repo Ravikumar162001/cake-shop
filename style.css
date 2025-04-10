@@ -432,11 +432,7 @@ footer {
 
 /* 🍰 Responsive Style Overrides for Devices < 1200px */
 @media (max-width: 1199px) {
-  html, body {
-    width: 100%;
-    margin: 0;
-    padding: 0;
-    overflow-x: hidden;
+  body {
     font-size: 16px;
     background-color: #61122f;
     color: #fff;
@@ -446,80 +442,47 @@ footer {
   .header-wrapper {
     background-color: #f6b319;
     color: #61122f;
-    width: 100%;
-    box-sizing: border-box;
   }
 
   .top-bar {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    flex-wrap: nowrap !important;
     padding: 12px 20px;
     background-color: #f6b319;
     border-bottom: 2px solid #e4b401;
     width: 100%;
-    gap: 8px;
   }
 
   .top-left {
-    width: 100%;
+    display: flex !important;
+    align-items: center !important;
+    flex-wrap: nowrap !important;
+    flex-direction: row !important;
+  }
+
+  .top-right {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-end !important;
+    justify-content: flex-start !important;
+    gap: 4px;
+  }
+
+  .right-actions {
     display: flex;
-    justify-content: flex-start;
+    gap: 10px;
     align-items: center;
   }
+
   .logo-img {
-    height: 60px;
+    height: 80px;
     width: auto;
     border-radius: 10px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
   }
 
-  .top-right {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 6px;
-  }
-
-  .top-right .welcome {
-    font-size: 14px;
-    background-color: #f6b319;
-    color: #61122f;
-    font-weight: bold;
-    text-align: right;
-    width: 100%;
-    white-space: normal;
-  }
-
-  .right-actions {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    gap: 10px;
-    width: 100%;
-  }
-
-  .cart-button {
-    background-color: #fff;
-    color: #61122f;
-    padding: 6px 10px;
-    border-radius: 6px;
-    font-weight: bold;
-    white-space: nowrap;
-  }
-
-  .menu-toggle {
-    background-color: #61122f;
-    color: white;
-    padding: 6px 10px;
-    border-radius: 4px;
-    font-size: 22px;
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-  }
-  
   .header-wrapper h1 {
     font-family: 'Lora', serif;
     color: #557c3e;
@@ -548,11 +511,29 @@ footer {
     color: #61122f;
   }
 
-  .cake-card {
-    border: 2px solid #f6b319;
-    box-shadow: 0 2px 10px rgba(255, 255, 255, 0.1);
+  .cart-button {
+    background-color: #fff;
+    color: #61122f;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-weight: bold;
+    white-space: nowrap;
+  }
+
+  .menu-toggle {
     background-color: #61122f;
     color: white;
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 22px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  .cake-card {
+    border: 2px solid #3F0C1F;
+    box-shadow: 0 2px 10px rgba(255, 255, 255, 0.1);
     width: 90%;
     margin: 15px auto;
   }
@@ -635,35 +616,48 @@ footer {
     color: #fff;
     padding: 30px 20px;
     font-size: 14px;
-    width: 100%;
-    box-sizing: border-box;
   }
 
   .review-card {
-    background: #61122f !important;
+    background: #61122f;
     border-left: 5px solid #f6b319;
     color: #fff;
   }
 
-  .reviews,
-  .review-form {
-    background: #61122f !important;
-    color: white;
+  .reviews {
+    background: #fffaf0;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px auto;
+    width: 90%;
+    color: #61122f;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   }
 
   .review-login-msg {
-    color: #f6b319;
+    color: #61122f;
     font-style: italic;
     font-weight: 500;
     text-align: center;
     margin-top: 10px;
   }
 
+  .review-form {
+    background: #fffaf0;
+    border: 2px dashed #d2691e;
+    padding: 18px;
+    border-radius: 8px;
+    margin: 16px auto;
+    color: #61122f;
+    width: 90%;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  }
+
   .review-form label {
     font-size: 14px;
     margin-bottom: 5px;
     display: block;
-    color: #fff;
+    color: #61122f;
   }
 
   .review-form input,
@@ -680,8 +674,8 @@ footer {
   }
 
   .review-form button {
-    background-color: #f6b319;
-    color: #61122f;
+    background-color: #d2691e;
+    color: white;
     padding: 10px 18px;
     border: none;
     border-radius: 4px;
@@ -692,7 +686,6 @@ footer {
 
   .review-form button:hover {
     background-color: #a0522d;
-    color: white;
   }
 
   .modal-box {
@@ -717,11 +710,13 @@ footer {
     padding: 4px 10px;
     font-size: 14px;
     line-height: 1.2;
-    max-width: none;
-    overflow: visible;
-    text-overflow: clip;
+    white-space: nowrap;
+    max-width: 140px;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
+
 /* Reset for Desktop (≥ 1200px) */
 @media (min-width: 1200px) {
   .top-right {
