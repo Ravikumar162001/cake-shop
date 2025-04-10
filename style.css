@@ -464,11 +464,16 @@ footer {
 
   .top-right {
     display: flex !important;
-    align-items: center !important;
-    justify-content: flex-end !important;
-    flex-wrap: nowrap !important;
-    flex-direction: row !important;
-    gap: 12px;
+    flex-direction: column !important;
+    align-items: flex-end !important;
+    justify-content: flex-start !important;
+    gap: 4px;
+  }
+
+  .right-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
   }
 
   .logo-img {
