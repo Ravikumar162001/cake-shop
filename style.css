@@ -716,3 +716,19 @@ footer {
     text-overflow: ellipsis;
   }
 }
+
+/* Reset for Desktop (≥ 1200px) */
+@media (min-width: 1200px) {
+  .top-right {
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 12px;
+  }
+
+  .right-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+}
