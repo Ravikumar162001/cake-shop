@@ -416,7 +416,6 @@ footer {
   color: #d2691e;
 }
 
-
 /* 🍰 Responsive Style Overrides for Devices < 1200px */
 @media (max-width: 1199px) {
   body {
@@ -525,6 +524,41 @@ footer {
     border: 1px solid #f3ded0;
     padding: 25px;
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    color: #61122f;
+  }
+
+  .auth-box input,
+  .auth-box label,
+  .auth-box p,
+  .auth-box a,
+  .modal-box input,
+  .modal-box label,
+  .modal-box p,
+  .modal-box a {
+    color: #61122f !important;
+  }
+
+  .auth-close,
+  .admin-close,
+  .modal-close {
+    color: #61122f;
+    font-weight: bold;
+    font-size: 24px;
+    background: #f6b319;
+    padding: 4px 10px;
+    border-radius: 4px;
+  }
+
+  .auth-box a,
+  .modal-box a {
+    color: #d2691e;
+    font-weight: bold;
+    text-decoration: underline;
+  }
+
+  .auth-box a:hover,
+  .modal-box a:hover {
+    color: #a0522d;
   }
 
   footer {
@@ -562,4 +596,3 @@ footer {
     font-size: 12px;
   }
 }
-
