@@ -678,10 +678,10 @@ footer {
   .top-right {
     display: flex;
     align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 12px;
   }
-
+  
   .welcome {
     padding: 4px 10px;
     font-size: 14px;
