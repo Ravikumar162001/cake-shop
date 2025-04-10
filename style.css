@@ -451,22 +451,22 @@ footer {
   }
 
   .top-bar {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: flex-start !important;
-    gap: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     padding: 12px 20px;
     background-color: #f6b319;
     border-bottom: 2px solid #e4b401;
     width: 100%;
+    gap: 8px;
   }
 
   .top-left {
-    display: flex !important;
-    align-items: center !important;
     width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
   }
-
   .logo-img {
     height: 60px;
     width: auto;
@@ -475,31 +475,28 @@ footer {
   }
 
   .top-right {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: flex-end !important;
-    justify-content: flex-start !important;
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
     gap: 6px;
   }
 
-  .top-right > .welcome {
-    flex-shrink: 1;
-    min-width: 0;
-    white-space: normal;
+  .top-right .welcome {
+    font-size: 14px;
+    background-color: #f6b319;
+    color: #61122f;
+    font-weight: bold;
     text-align: right;
     width: 100%;
-    font-size: 14px;
-    font-weight: bold;
-    color: #61122f;
+    white-space: normal;
   }
 
   .right-actions {
     display: flex;
     flex-direction: row;
-    align-items: center;
-    gap: 10px;
     justify-content: flex-end;
+    gap: 10px;
     width: 100%;
   }
 
@@ -522,7 +519,7 @@ footer {
     align-items: center;
     cursor: pointer;
   }
-
+  
   .header-wrapper h1 {
     font-family: 'Lora', serif;
     color: #557c3e;
