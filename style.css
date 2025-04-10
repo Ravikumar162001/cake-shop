@@ -432,7 +432,11 @@ footer {
 
 /* 🍰 Responsive Style Overrides for Devices < 1200px */
 @media (max-width: 1199px) {
-  body {
+  html, body {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
     font-size: 16px;
     background-color: #61122f;
     color: #fff;
@@ -442,10 +446,9 @@ footer {
   .header-wrapper {
     background-color: #f6b319;
     color: #61122f;
-    width: 100vw;
+    width: 100%;
     box-sizing: border-box;
   }
-  
 
   .top-bar {
     display: flex !important;
@@ -535,8 +538,10 @@ footer {
   }
 
   .cake-card {
-    border: 2px solid #3F0C1F;
+    border: 2px solid #f6b319;
     box-shadow: 0 2px 10px rgba(255, 255, 255, 0.1);
+    background-color: #61122f;
+    color: white;
     width: 90%;
     margin: 15px auto;
   }
@@ -619,51 +624,35 @@ footer {
     color: #fff;
     padding: 30px 20px;
     font-size: 14px;
-    width: 100vw;
+    width: 100%;
     box-sizing: border-box;
   }
-  
 
   .review-card {
-    background: #61122f;
+    background: #61122f !important;
     border-left: 5px solid #f6b319;
     color: #fff;
   }
 
-  .reviews {
-    background: #fffaf0;
-    padding: 20px;
-    border-radius: 8px;
-    margin: 20px auto;
-    width: 90%;
-    color: #61122f;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  .reviews,
+  .review-form {
+    background: #61122f !important;
+    color: white;
   }
 
   .review-login-msg {
-    color: #61122f;
+    color: #f6b319;
     font-style: italic;
     font-weight: 500;
     text-align: center;
     margin-top: 10px;
   }
 
-  .review-form {
-    background: #fffaf0;
-    border: 2px dashed #d2691e;
-    padding: 18px;
-    border-radius: 8px;
-    margin: 16px auto;
-    color: #61122f;
-    width: 90%;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  }
-
   .review-form label {
     font-size: 14px;
     margin-bottom: 5px;
     display: block;
-    color: #61122f;
+    color: #fff;
   }
 
   .review-form input,
@@ -680,8 +669,8 @@ footer {
   }
 
   .review-form button {
-    background-color: #d2691e;
-    color: white;
+    background-color: #f6b319;
+    color: #61122f;
     padding: 10px 18px;
     border: none;
     border-radius: 4px;
@@ -692,6 +681,7 @@ footer {
 
   .review-form button:hover {
     background-color: #a0522d;
+    color: white;
   }
 
   .modal-box {
