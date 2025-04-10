@@ -475,11 +475,12 @@ footer {
     justify-content: flex-start !important;
     gap: 4px;
   }
-
+  
   .right-actions {
     display: flex;
-    gap: 10px;
+    flex-direction: row;
     align-items: center;
+    gap: 10px;
   }
 
   .logo-img {
