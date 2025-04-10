@@ -592,11 +592,57 @@ footer {
     border-left: 5px solid #f6b319;
     color: #fff;
   }
+
   .reviews p {
     color: #61122f;
     font-style: italic;
     font-weight: 500;
     text-align: center;
+  }
+
+  .review-form {
+    background: #fffaf0;
+    border: 2px dashed #d2691e;
+    padding: 18px;
+    border-radius: 8px;
+    margin: 16px auto;
+    color: #61122f;
+    width: 90%;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  }
+
+  .review-form label {
+    font-size: 14px;
+    margin-bottom: 5px;
+    display: block;
+    color: #61122f;
+  }
+
+  .review-form input,
+  .review-form textarea {
+    padding: 10px;
+    font-size: 15px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    background: #fff;
+    color: #61122f;
+    margin-bottom: 12px;
+    width: 100%;
+  }
+
+  .review-form button {
+    background-color: #d2691e;
+    color: white;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 14px;
+  }
+
+  .review-form button:hover {
+    background-color: #a0522d;
   }
 
   .modal-box {
