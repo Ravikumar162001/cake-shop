@@ -639,6 +639,7 @@ footer {
     color: #61122f;
     margin-bottom: 12px;
     width: 100%;
+    box-sizing: border-box;
   }
 
   .review-form button {
@@ -672,5 +673,22 @@ footer {
     border-radius: 12px;
     padding: 6px 10px;
     font-size: 12px;
+  }
+
+  .top-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .welcome {
+    padding: 4px 10px;
+    font-size: 14px;
+    line-height: 1.2;
+    white-space: nowrap;
+    max-width: 140px;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
