@@ -102,9 +102,11 @@ async function run() {
         if (!order) return res.status(404).send('Order not found');
 
         const doc = new PDFDocument();
-        res.setHeader('Content-Type', 'application/pdf');
-        res.setHeader('Content-Disposition', `attachment; filename=invoice_${orderId}.pdf`);
+        // ✅ Load custom font
+        doc.registerFont('DejaVu', path.join(__dirname, 'fonts', 'DejaVuSans.ttf'));
+        doc.font('DejaVu');
         doc.pipe(res);
+
 
         doc.fontSize(20).text('🧁 Sweet Bites - Order Invoice', { align: 'center' });
         doc.moveDown();
@@ -132,7 +134,7 @@ async function run() {
         doc.moveDown();
         doc.text(`Subtotal: ₹${order.totalAmount}`);
         doc.text(`Discount: ₹${order.discountAmount || 0}`);
-        doc.text(`Final Total: ₹${order.finalAmount}`);
+        doc.text(`Final Total: ₹${order.finalAmount.toFixed(2)}`);
         doc.end();
 
       } catch (err) {
