@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const app = express();
 const cors = require('cors');
@@ -23,7 +24,11 @@ if (!fs.existsSync(uploadsPath)) {
 app.use('/uploads', express.static(uploadsPath));
 
 // ===== MongoDB Connection =====
-const uri = "mongodb+srv://Ravikumar:BILLAdavid%4016@billa.yrg53j9.mongodb.net/cakeShop?retryWrites=true&w=majority&appName=Billa";
+const uri = process.env.MONGODB_URI;
+if (!uri) {
+  console.error('❌ MONGODB_URI is not set. Add it to your .env file or environment.');
+  process.exit(1);
+}
 const client = new MongoClient(uri);
 
 async function run() {
@@ -44,9 +49,9 @@ async function run() {
     const adminRoutes = require('./routes/admin')(db);
     app.use('/api/admin', verifyToken, verifyAdmin, adminRoutes);
 
-    // ✅ Upload Routes
+    // ✅ Upload Routes (protected — admin only for writes)
     const uploadRoutes = require('./routes/upload')(db);
-    app.use('/api/upload', uploadRoutes);
+    app.use('/api/upload', verifyToken, verifyAdmin, uploadRoutes);
 
     // ✅ Coupon Routes
     const couponRoutes = require('./routes/coupons')(db);

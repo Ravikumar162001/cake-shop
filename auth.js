@@ -4,8 +4,13 @@ const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const router = express.Router();
 
-const JWT_SECRET = 'supersecretcaketime';
+const JWT_SECRET = process.env.JWT_SECRET;
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
 const { sendOtpEmail } = require('./mailer'); // ✅ Mailer for OTP
+
+if (!JWT_SECRET) {
+  throw new Error('JWT_SECRET is not set. Add it to your .env file or environment.');
+}
 
 module.exports = function (db) {
   const users = db.collection('users');
@@ -18,7 +23,7 @@ module.exports = function (db) {
     if (existingUser) return res.status(400).json({ msg: 'User already exists' });
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const role = email === 'ravikumar162001@gmail.com' ? 'admin' : 'user';
+    const role = email === ADMIN_EMAIL ? 'admin' : 'user';
 
     await users.insertOne({ name, email, password: hashedPassword, role });
 
@@ -37,7 +42,7 @@ module.exports = function (db) {
     }
 
     // 💥 Ensure role is correctly assigned
-    const role = email === 'ravikumar162001@gmail.com' ? 'admin' : 'user';
+    const role = email === ADMIN_EMAIL ? 'admin' : 'user';
 
     const token = jwt.sign(
       { email: user.email, role, name: user.name },

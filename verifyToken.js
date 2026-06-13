@@ -1,5 +1,9 @@
 const jwt = require('jsonwebtoken');
-const JWT_SECRET = 'supersecretcaketime'; // Must match your auth.js secret
+const JWT_SECRET = process.env.JWT_SECRET; // Must match your auth.js secret
+
+if (!JWT_SECRET) {
+  throw new Error('JWT_SECRET is not set. Add it to your .env file or environment.');
+}
 
 // ✅ Middleware to verify any logged-in user
 function verifyToken(req, res, next) {
