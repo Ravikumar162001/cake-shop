@@ -1,13 +1,33 @@
 const nodemailer = require('nodemailer');
 require('dotenv').config(); // ✅ Load .env file
 
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.EMAIL_USER, // 👈 Loaded securely
-    pass: process.env.EMAIL_PASS  // 👈 Loaded securely
+// In local testing you often don't have real Gmail credentials. When they're
+// missing we fall back to a no-send transport and log the message (including
+// any OTP) to the console so you can still exercise the email flows.
+const hasEmailCreds = Boolean(process.env.EMAIL_USER && process.env.EMAIL_PASS);
+
+const transporter = hasEmailCreds
+  ? nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.EMAIL_USER, // 👈 Loaded securely
+        pass: process.env.EMAIL_PASS  // 👈 Loaded securely
+      }
+    })
+  : nodemailer.createTransport({ jsonTransport: true });
+
+if (!hasEmailCreds) {
+  console.warn('✉️  EMAIL_USER/EMAIL_PASS not set — running in DEV email mode: messages are logged to the console instead of being sent.');
+}
+
+// Send (or, in dev mode, log) an email
+function deliver(mailOptions) {
+  if (!hasEmailCreds) {
+    console.log('📧 [DEV EMAIL] To:', mailOptions.to, '| Subject:', mailOptions.subject);
+    console.log(mailOptions.html);
   }
-});
+  return transporter.sendMail(mailOptions);
+}
 
 // ✅ Send email when order is placed
 function sendOrderEmail(to, order) {
@@ -39,7 +59,7 @@ function sendOrderEmail(to, order) {
     `
   };
 
-  return transporter.sendMail(mailOptions);
+  return deliver(mailOptions);
 }
 
 // ✅ Send email when admin updates order status
@@ -56,7 +76,7 @@ function sendOrderStatusEmail(to, name, status) {
     `
   };
 
-  return transporter.sendMail(mailOptions);
+  return deliver(mailOptions);
 }
 
 // ✅ Send OTP Email for password reset
@@ -75,7 +95,7 @@ function sendOtpEmail(to, otp) {
     `
   };
 
-  return transporter.sendMail(mailOptions);
+  return deliver(mailOptions);
 }
 
 module.exports = {
