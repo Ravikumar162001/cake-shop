@@ -300,6 +300,7 @@ app.controller('CakeController', function ($scope, $http) {
   
 
   $scope.uploadCake = function () {
+    const token = localStorage.getItem('token');
     const formData = new FormData();
     formData.append('name', $scope.newCake.name);
     formData.append('description', $scope.newCake.description);
@@ -316,7 +317,7 @@ app.controller('CakeController', function ($scope, $http) {
 
     method(url, formData, {
       transformRequest: angular.identity,
-      headers: { 'Content-Type': undefined }
+      headers: { 'Content-Type': undefined, Authorization: `Bearer ${token}` }
     }).then(() => {
       $scope.uploadMessage = $scope.editingCakeId ? "Cake updated!" : "Cake added!";
       $scope.resetCakeForm();
@@ -342,8 +343,10 @@ app.controller('CakeController', function ($scope, $http) {
 
   $scope.deleteCake = function (id) {
     if (confirm("Delete this cake?")) {
-      $http.delete(`/api/upload/cake/${id}`)
-        .then(() => $scope.fetchCakes());
+      const token = localStorage.getItem('token');
+      $http.delete(`/api/upload/cake/${id}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      }).then(() => $scope.fetchCakes());
     }
   };
 

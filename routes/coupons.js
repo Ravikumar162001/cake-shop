@@ -1,12 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const { ObjectId } = require('mongodb');
+const { verifyToken, verifyAdmin } = require('../verifyToken');
 
 module.exports = function (db) {
   const coupons = db.collection('coupons');
 
   // ✅ Create a new coupon (Admin only)
-  router.post('/', async (req, res) => {
+  router.post('/', verifyToken, verifyAdmin, async (req, res) => {
     const { code, discount, expiry, usageLimit } = req.body;
 
     if (!code || !discount || !expiry || !usageLimit) {
@@ -70,8 +71,8 @@ module.exports = function (db) {
     }
   });
 
-  // ✅ (Optional) Delete coupon by ID
-  router.delete('/:id', async (req, res) => {
+  // ✅ (Optional) Delete coupon by ID (Admin only)
+  router.delete('/:id', verifyToken, verifyAdmin, async (req, res) => {
     try {
       const id = req.params.id;
       await coupons.deleteOne({ _id: new ObjectId(id) });

@@ -19,6 +19,13 @@ module.exports = function (db) {
   router.post('/signup', async (req, res) => {
     const { name, email, password } = req.body;
 
+    if (typeof email !== 'string' || typeof password !== 'string' || typeof name !== 'string') {
+      return res.status(400).json({ msg: 'Name, email and password are required' });
+    }
+    if (password.length < 6) {
+      return res.status(400).json({ msg: 'Password must be at least 6 characters' });
+    }
+
     const existingUser = await users.findOne({ email });
     if (existingUser) return res.status(400).json({ msg: 'User already exists' });
 
@@ -35,6 +42,10 @@ module.exports = function (db) {
   // ✅ Login Route (💥 FIXED: force role based on email)
   router.post('/login', async (req, res) => {
     const { email, password } = req.body;
+
+    if (typeof email !== 'string' || typeof password !== 'string') {
+      return res.status(400).json({ msg: 'Invalid credentials' });
+    }
 
     const user = await users.findOne({ email });
     if (!user || !(await bcrypt.compare(password, user.password))) {

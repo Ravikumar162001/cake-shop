@@ -3,6 +3,9 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
+const mongoSanitize = require('express-mongo-sanitize');
 const { MongoClient, ObjectId } = require('mongodb');
 const path = require('path');
 const fs = require('fs');
@@ -11,8 +14,22 @@ const { sendOrderEmail } = require('./mailer');
 const { verifyToken, verifyAdmin } = require('./verifyToken');
 
 // ===== Middleware =====
+// Security headers (CSP disabled so the AngularJS CDN / inline templates keep working)
+app.use(helmet({ contentSecurityPolicy: false }));
 app.use(cors());
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: '1mb' }));
+// Strip MongoDB operators ($, .) from user input to prevent NoSQL injection
+app.use(mongoSanitize());
+
+// Throttle auth endpoints to slow down brute-force / OTP-spam
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 20,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { msg: 'Too many attempts. Please try again later.' }
+});
+
 app.use(express.static(__dirname));
 
 // ✅ Serve static images from /uploads
@@ -22,6 +39,17 @@ if (!fs.existsSync(uploadsPath)) {
   console.log('📁 /uploads folder created automatically');
 }
 app.use('/uploads', express.static(uploadsPath));
+
+// Weight → price multiplier (kept in sync with the frontend)
+function getWeightMultiplier(weight) {
+  switch (weight) {
+    case '0.5kg': return 0.5;
+    case '1kg': return 1;
+    case '1.5kg': return 1.5;
+    case '2kg': return 2;
+    default: return 1;
+  }
+}
 
 // ===== MongoDB Connection =====
 const uri = process.env.MONGODB_URI;
@@ -41,9 +69,9 @@ async function run() {
     const contactsCollection = db.collection('contacts');
     const reviewsCollection = db.collection('reviews');
 
-    // ✅ Auth Routes
+    // ✅ Auth Routes (rate-limited)
     const authRoutes = require('./auth')(db);
-    app.use('/api/auth', authRoutes);
+    app.use('/api/auth', authLimiter, authRoutes);
 
     // ✅ Admin Routes (protected)
     const adminRoutes = require('./routes/admin')(db);
@@ -68,22 +96,98 @@ async function run() {
     });
 
     // ✅ Save Order & Send Email
+    // Totals are recomputed server-side from authoritative cake prices and
+    // coupon data — client-supplied amounts are never trusted.
     app.post('/api/order', async (req, res) => {
       try {
-        const order = req.body;
-        console.log('📦 Order Received:', order);
+        const body = req.body || {};
+
+        // --- Validate basic shape ---
+        if (!Array.isArray(body.items) || body.items.length === 0) {
+          return res.status(400).send({ message: 'Order must contain at least one item' });
+        }
+        if (!body.userEmail || typeof body.userEmail !== 'string') {
+          return res.status(400).send({ message: 'A valid user email is required' });
+        }
+
+        // --- Recompute each line item from the database price ---
+        let subtotal = 0;
+        const items = [];
+        for (const raw of body.items) {
+          let cake = null;
+          try {
+            if (raw && raw._id) {
+              cake = await db.collection('cakes').findOne({ _id: new ObjectId(raw._id) });
+            }
+          } catch (e) {
+            cake = null; // invalid ObjectId
+          }
+          if (!cake) {
+            return res.status(400).send({ message: `Unknown or invalid cake in cart: ${raw && raw.name}` });
+          }
+
+          const qty = parseInt(raw.qty, 10);
+          if (!Number.isInteger(qty) || qty < 1) {
+            return res.status(400).send({ message: `Invalid quantity for ${cake.name}` });
+          }
+
+          const weight = ['0.5kg', '1kg', '1.5kg', '2kg'].includes(raw.weight) ? raw.weight : '1kg';
+          const weightMult = getWeightMultiplier(weight);
+          const lineTotal = cake.price * qty * weightMult;
+          subtotal += lineTotal;
+
+          items.push({
+            _id: cake._id,
+            name: cake.name,
+            price: cake.price, // authoritative price from DB
+            qty,
+            weight
+          });
+        }
+
+        // --- Recompute discount from the coupon record (if any) ---
+        let discountAmount = 0;
+        let appliedCouponCode = null;
+        if (body.couponCode && typeof body.couponCode === 'string') {
+          const coupon = await db.collection('coupons').findOne({ code: body.couponCode });
+          const now = new Date();
+          if (
+            coupon &&
+            now <= new Date(coupon.expiry) &&
+            (coupon.usedCount || 0) < coupon.usageLimit
+          ) {
+            discountAmount = Math.round((coupon.discount / 100) * subtotal);
+            appliedCouponCode = coupon.code;
+          }
+        }
+
+        const finalAmount = subtotal - discountAmount;
+
+        // --- Build the trusted order document ---
+        const order = {
+          name: typeof body.name === 'string' ? body.name : '',
+          phone: typeof body.phone === 'string' ? body.phone : '',
+          address: typeof body.address === 'string' ? body.address : '',
+          deliveryArea: typeof body.deliveryArea === 'string' ? body.deliveryArea : '',
+          userEmail: body.userEmail,
+          items,
+          totalAmount: subtotal,
+          discountAmount,
+          finalAmount,
+          couponCode: appliedCouponCode,
+          status: 'Pending',
+          timestamp: new Date().toISOString()
+        };
 
         await ordersCollection.insertOne(order);
 
-        if (order.couponCode) {
+        if (appliedCouponCode) {
           const couponUpdate = await db.collection('coupons').updateOne(
-            { code: order.couponCode },
+            { code: appliedCouponCode },
             { $inc: { usedCount: 1 } }
           );
           if (couponUpdate.modifiedCount === 1) {
-            console.log(`🎟️ Coupon usage incremented for ${order.couponCode}`);
-          } else {
-            console.warn(`⚠️ Coupon code not found or update failed: ${order.couponCode}`);
+            console.log(`🎟️ Coupon usage incremented for ${appliedCouponCode}`);
           }
         }
 
