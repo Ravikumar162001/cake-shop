@@ -32,14 +32,14 @@ app.controller('CakeController', function ($scope, $http) {
   $scope.showContactInfo = false;
   $scope.cartVisible = false;
   $scope.currentUser = localStorage.getItem('userEmail') || null;
+  $scope.currentUserName = localStorage.getItem('userName') || null;
+  $scope.userRole = localStorage.getItem('userRole') || null;
   $scope.allOrders = [];
   $scope.allMessages = [];
   $scope.imagePreview = null;
   $scope.editingCakeId = null;
   $scope.userOrders = [];
   $scope.orderHistoryVisible = false;
-  $scope.currentUser = localStorage.getItem('userEmail') || null;
-  $scope.currentUserName = localStorage.getItem('userName') || null;
   $scope.forgotModalVisible = false;
   $scope.forgot = {};
   $scope.otpSent = false;
@@ -157,6 +157,7 @@ app.controller('CakeController', function ($scope, $http) {
     localStorage.clear();
     $scope.currentUser = null;
     $scope.currentUserName = null;
+    $scope.userRole = null;
     $scope.adminModalVisible = false;
   
     // 🧹 Clear cart and cartMap
@@ -184,9 +185,11 @@ app.controller('CakeController', function ($scope, $http) {
         localStorage.setItem('token', res.data.token);
         localStorage.setItem('userEmail', res.data.email);
         localStorage.setItem('userName', res.data.name); // ✅ MUST BE HERE
-  
+        localStorage.setItem('userRole', res.data.role); // ✅ Drives admin UI
+
         $scope.currentUser = res.data.email;
         $scope.currentUserName = res.data.name; // ✅ Also in $scope
+        $scope.userRole = res.data.role;
   
         $scope.authModalVisible = false;
         $scope.login = {};

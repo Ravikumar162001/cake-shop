@@ -146,7 +146,7 @@
       <button ng-if="!currentUser" ng-click="openAuthModal('signup'); menuOpen = false">📝 Sign Up</button>
       <button ng-if="currentUser" ng-click="fetchUserOrders(); menuOpen = false">📦 My Orders</button>
       <button ng-click="openContactModal(); menuOpen = false">📞 Contact Us</button>
-      <button class="admin-button" ng-if="currentUser === 'ravikumar162001@gmail.com'" ng-click="openAdminDashboard(); menuOpen = false">🛠 Admin Dashboard</button>
+      <button class="admin-button" ng-if="userRole === 'admin'" ng-click="openAdminDashboard(); menuOpen = false">🛠 Admin Dashboard</button>
       <button ng-if="currentUser" ng-click="logout(); menuOpen = false">🚪 Logout</button>
     </div>
   </header>
@@ -582,7 +582,7 @@
   </div>
 
     <!-- 🎟️ Coupon Manager (Only for Admin) -->
-  <div ng-if="currentUser === 'ravikumar162001@gmail.com'">
+  <div ng-if="userRole === 'admin'">
     <h3>Manage Coupons</h3>
 
     <!-- ➕ Create Coupon Form -->
