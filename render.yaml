@@ -8,4 +8,16 @@ services:
     envVars:
       - key: NODE_ENV
         value: production
+      # The values below are secrets — set them in the Render dashboard.
+      # The app will not start unless MONGODB_URI and JWT_SECRET are present.
+      - key: MONGODB_URI
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: ADMIN_EMAIL
+        sync: false
+      - key: EMAIL_USER
+        sync: false
+      - key: EMAIL_PASS
+        sync: false
 
