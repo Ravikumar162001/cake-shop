@@ -6,19 +6,25 @@
   <title>Sweet Bites - Homemade Cakes</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
   <script src="app.js"></script>
 </head>
 
 <body ng-controller="CakeController">
+  <!-- 📣 Announcement Bar -->
+  <div class="announcement-bar">
+    🚚 Free delivery across Coimbatore on orders above ₹999 · Freshly baked every morning
+  </div>
+
   <header class="header-wrapper">
-    <!-- 🍰 Top Bar: Logo + Welcome + Cart + Menu -->
+    <!-- 🍰 Top Bar: Logo + Brand + Cart + Menu -->
     <div class="top-bar">
-      <!-- 🔰 Left: Logo -->
+      <!-- 🔰 Left: Logo + Brand Name -->
       <div class="top-left">
         <img src="/uploads/logo.jpeg" alt="Sweet Bites Logo" class="logo-img">
+        <span class="brand-name">Sweet Bites</span>
       </div>
 
       <!-- 📦 Right: Welcome, Cart, Menu -->
@@ -33,10 +39,6 @@
       </div>
     </div>
 
-    <!-- 🧁 Brand Title & Subtitle -->
-    <h1>Sweet Bites</h1>
-    <p>Fresh Homemade Cakes for Every Occasion</p>
-
     <!-- 🍔 Dropdown Menu -->
     <div class="dropdown-menu" ng-show="menuOpen">
       <button ng-click="scrollToTop(); menuOpen = false">🏠 Home</button>
@@ -49,23 +51,62 @@
     </div>
   </header>
 
+  <!-- 🎂 Hero Banner -->
+  <section class="hero">
+    <div class="hero-content">
+      <p class="hero-eyebrow">Handcrafted · Eggless options · Made to order</p>
+      <h1>Freshly Baked Happiness</h1>
+      <p class="hero-sub">Celebration cakes, classic bakes and custom creations — delivered fresh to your door.</p>
+      <a href="#our-cakes" class="hero-cta">Explore Our Cakes</a>
+    </div>
+  </section>
+
+  <!-- ✨ Trust Indicators -->
+  <section class="trust-bar">
+    <div class="trust-item">
+      <div class="ico">🧁</div>
+      <h4>Handmade Daily</h4>
+      <p>Baked fresh every morning</p>
+    </div>
+    <div class="trust-item">
+      <div class="ico">🌿</div>
+      <h4>No Preservatives</h4>
+      <p>Pure, wholesome ingredients</p>
+    </div>
+    <div class="trust-item">
+      <div class="ico">🚚</div>
+      <h4>Same-Day Delivery</h4>
+      <p>Across Coimbatore</p>
+    </div>
+    <div class="trust-item">
+      <div class="ico">⭐</div>
+      <h4>Loved Locally</h4>
+      <p>Trusted by happy customers</p>
+    </div>
+  </section>
+
   <!-- Cake Listing -->
-  <section class="menu-section">
+  <section class="menu-section" id="our-cakes">
     <div class="section-heading">
       <h2 class="section-title">Our Cakes</h2>
+      <span class="title-divider"></span>
       <p>Freshly baked, made to order — pick your favourite 🍰</p>
     </div>
 
     <div class="cakes">
       <div class="cake-card" ng-repeat="cake in cakes">
-        <img ng-src="{{cake.image}}" alt="{{cake.name}}">
-        <h2>{{cake.name}}</h2>
-        <p>{{cake.description}}</p>
-        <p class="price">₹{{cake.price}}</p>
+        <div class="cake-img-wrap">
+          <img ng-src="{{cake.image}}" alt="{{cake.name}}">
+        </div>
+        <div class="cake-body">
+          <h2>{{cake.name}}</h2>
+          <p>{{cake.description}}</p>
+          <p class="price">₹{{cake.price}}</p>
 
-        <div>
-          <button ng-click="addToCart(cake)">Add to Cart</button>
-          <span ng-if="cartMap[cake._id]">Qty: {{cartMap[cake._id]}}</span>
+          <div class="cake-actions">
+            <button ng-click="addToCart(cake)">Add to Cart</button>
+            <span ng-if="cartMap[cake._id]">Qty: {{cartMap[cake._id]}}</span>
+          </div>
         </div>
       </div>
     </div>
@@ -411,11 +452,17 @@
   </div>
   <!-- Customer Reviews -->
   <section class="reviews">
-    <h2>Customer Reviews</h2>
+    <div class="section-heading">
+      <h2 class="section-title">Customer Reviews</h2>
+      <span class="title-divider"></span>
+      <p>What our sweet-toothed customers say</p>
+    </div>
 
-    <div class="review-card" ng-repeat="review in reviews">
-      <p>"{{review.message}}"</p>
-      <p>- {{review.name}}</p>
+    <div class="reviews-grid">
+      <div class="review-card" ng-repeat="review in reviews">
+        <p>"{{review.message}}"</p>
+        <p>- {{review.name}}</p>
+      </div>
     </div>
 
     <h3>Leave a Review</h3>
@@ -487,7 +534,7 @@
   </div>
 
     <!-- 🎟️ Coupon Manager (Only for Admin) -->
-  <div ng-if="userRole === 'admin'">
+  <div class="coupon-manager" ng-if="userRole === 'admin'">
     <h3>Manage Coupons</h3>
 
     <!-- ➕ Create Coupon Form -->
@@ -529,8 +576,52 @@
     </table>
   </div>
 
-  <footer>
-    <p>&copy; 2025 Sweet Bites · Baked with love in Coimbatore 🧁</p>
+  <!-- 🦶 Footer -->
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div class="footer-col footer-brand">
+        <h3>Sweet Bites</h3>
+        <p>Handcrafted homemade cakes for every celebration, baked fresh in Coimbatore.</p>
+        <div class="footer-social">
+          <span>📘</span><span>📷</span><span>🐦</span><span>📺</span>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="" ng-click="scrollToTop()">Home</a></li>
+          <li><a href="#our-cakes">Our Cakes</a></li>
+          <li><a href="" ng-if="currentUser" ng-click="fetchUserOrders()">My Orders</a></li>
+          <li><a href="" ng-if="!currentUser" ng-click="openAuthModal('login')">Login / Sign Up</a></li>
+          <li><a href="" ng-click="openContactModal()">Contact Us</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Get In Touch</h4>
+        <ul>
+          <li>📞 +91 98765-43210</li>
+          <li>✉️ sweetbitescakes@gmail.com</li>
+          <li>📍 Coimbatore, Tamil Nadu</li>
+          <li>🕒 Open 9am – 9pm, all week</li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Delivery Areas</h4>
+        <ul>
+          <li>Coimbatore</li>
+          <li>Peelamedu</li>
+          <li>RS Puram</li>
+          <li>Ganapathy</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; 2025 Sweet Bites · Baked with love in Coimbatore 🧁</p>
+    </div>
   </footer>
 
 </body>
