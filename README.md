@@ -52,3 +52,24 @@ Open **http://localhost:3000** in your browser.
 - Uploaded cake images are saved to the `uploads/` folder (ignored by git except for the seed assets).
 - `.env` is git-ignored — never commit real credentials.
 - To run against the cloud database used in production, paste that Atlas connection string into `MONGODB_URI`.
+
+## Protecting secrets
+
+The three secrets this app uses (MongoDB password, Gmail App Password, JWT secret) must **never** appear in code or commits — only in `.env` locally and in the Render dashboard (Environment tab) in production.
+
+### If a secret ever leaks (or was ever committed), rotate it:
+1. **MongoDB Atlas password:** Atlas → Database Access → edit the DB user → Edit Password → Autogenerate → Update User. Put the new password into `MONGODB_URI` in `.env` and on Render.
+2. **Gmail App Password:** Google Account → Security → 2-Step Verification → App passwords → delete the old one, create a new one, update `EMAIL_PASS`.
+3. **JWT secret:** generate a fresh random string (`openssl rand -base64 48`), update `JWT_SECRET`. All users get logged out — that's expected.
+
+Rotating is mandatory after a leak: removing a secret from the latest commit does **not** remove it from git history.
+
+### Guard rails in this repo
+- **CI secret scan:** `.github/workflows/secret-scan.yml` runs [gitleaks](https://github.com/gitleaks/gitleaks) on every push/PR and fails if a secret is present in the tree. Rules live in `.gitleaks.toml`.
+- **Pre-commit hook:** blocks commits containing secrets before they ever leave your machine. Enable once per clone:
+  ```bash
+  git config core.hooksPath .githooks
+  ```
+  (Requires gitleaks installed locally; the hook skips gracefully if it isn't.)
+- **GitHub settings (do this once, in the browser):** Repo → Settings → Advanced Security → enable **Secret scanning** and **Push protection**, and keep the repo **Private**.
+- Also recommended in Atlas: give the DB user `readWrite` on the `cakeShop` database only, and restrict **Network Access** to known IPs instead of `0.0.0.0/0`.

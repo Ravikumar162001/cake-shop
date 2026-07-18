@@ -1,0 +1,17 @@
+#!/bin/sh
+# Pre-commit secret scan. Enable once per clone with:
+#   git config core.hooksPath .githooks
+# Requires gitleaks: https://github.com/gitleaks/gitleaks#installing
+
+if command -v gitleaks >/dev/null 2>&1; then
+  gitleaks protect --staged --redact --verbose
+  if [ $? -ne 0 ]; then
+    echo ""
+    echo "❌ Commit blocked: a secret was detected in your staged changes."
+    echo "   Remove the secret (put it in .env instead) and try again."
+    exit 1
+  fi
+else
+  echo "⚠️  gitleaks is not installed — skipping secret scan."
+  echo "   Install it from https://github.com/gitleaks/gitleaks#installing to enable this check."
+fi

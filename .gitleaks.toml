@@ -1,0 +1,20 @@
+# Gitleaks configuration — blocks secrets from being committed.
+# Used by .github/workflows/secret-scan.yml and the .githooks/pre-commit hook.
+
+[extend]
+# Start from gitleaks' built-in rules (API keys, tokens, private keys, etc.)
+useDefault = true
+
+# Catch MongoDB connection strings that embed credentials,
+# e.g. mongodb+srv://user:password@cluster.mongodb.net/...
+[[rules]]
+id = "mongodb-uri-with-creds"
+description = "MongoDB connection string with embedded credentials"
+regex = '''mongodb(\+srv)?://[^\s:@/<>]+:[^\s@/<>]+@'''
+
+[allowlist]
+description = "Files that intentionally contain placeholder values only"
+paths = [
+  '''\.env\.example$''',
+  '''\.gitleaks\.toml$''',
+]
